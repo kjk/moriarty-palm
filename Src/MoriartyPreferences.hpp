@@ -48,10 +48,13 @@ struct PediaPreferences: public Serializable
 struct DictionaryPreferences: public Serializable
 {
     enum {
-        maxDictionaryCodeLen = 10
+        maxDictionaryCodeLen = 5,
+        maxDictionaryNameLen = 20
     };
     
     char_t dictionaryCode[maxDictionaryCodeLen + 1];
+    
+    char_t dictionaryName[maxDictionaryNameLen + 1];
     
     enum {wordsCountNotChecked = ulong_t(-1)};
     

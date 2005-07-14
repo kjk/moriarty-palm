@@ -209,7 +209,7 @@ private:
     status_t completeEBookSearchResultsField(FieldPayloadProtocolConnection::PayloadHandler& handler);
 
     status_t completeEBookDownloadField(FieldPayloadProtocolConnection::PayloadHandler& handler);
-    
+
     template<LookupResult result>
     status_t completeLocationAmbiguousField(FieldPayloadProtocolConnection::PayloadHandler& handler)
     {
@@ -224,6 +224,8 @@ private:
     status_t completeWeatherDataField(FieldPayloadProtocolConnection::PayloadHandler& handler);
 
     status_t completeGasPricesDataField(FieldPayloadProtocolConnection::PayloadHandler& handler);
+
+    status_t completeDictStatsField(FieldPayloadProtocolConnection::PayloadHandler& handler);
 
     status_t completeHoroscopesDataField(FieldPayloadProtocolConnection::PayloadHandler& handler);
 
@@ -244,7 +246,7 @@ private:
     status_t complete411AreaByCityField(FieldPayloadProtocolConnection::PayloadHandler& handler);
 
     status_t complete411ZipByCityField(FieldPayloadProtocolConnection::PayloadHandler& handler);
-    
+
     struct FieldDescriptor {
     
         const char_t* name;

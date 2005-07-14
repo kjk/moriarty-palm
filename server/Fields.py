@@ -162,7 +162,10 @@ outNetflixQueue           = "Netflix-Queue"
 
 getUrlDict = getUrl + "-dictterm"
 getUrlDictRandom = getUrl + "-dictrandom"
+getUrlDictStats = getUrl + "-dictstats"
+outDictStats = "Dict-Stats"
 outDictDef = "Dict-Def"
+
 
 # for quotes module
 outQuotes    = "Quotes"
@@ -310,6 +313,7 @@ fieldsInfo = {
     outFlights                  : (fieldTypeServer, valuePayload),
     outEBay                     : (fieldTypeServer, valuePayload),
     outEBayNoCache              : (fieldTypeServer, valuePayload),
+    outDictStats                : (fieldTypeServer, valuePayload),
 
     getUrlLyricsItem        : (fieldTypeClient, valueInline),
     getUrlLyricsSearch      : (fieldTypeClient, valueInline),
@@ -334,6 +338,7 @@ fieldsInfo = {
     getUrlEBay                   : (fieldTypeClient, valueInline),
     getUrlEBayLogin              : (fieldTypeClient, valueInline),
     getUrlEBayNoCache            : (fieldTypeClient, valueInline),
+    getUrlDictStats              : (fieldTypeClient, valueInline),
 
     outDictDef              : (fieldTypeServer, valuePayload),
 

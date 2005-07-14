@@ -8,7 +8,7 @@ import sys, os, os.path, string, bisect, cPickle, random
 from threading import Lock
 import multiUserSupport, parserUtils, arsutils
 from ResultType import *
-from parserUtils import universalDataFormatWithDefinition
+from parserUtils import universalDataFormatWithDefinition, universalDataFormat
 from definitionBuilder import *
 
 # Format of dictionary data:
@@ -329,7 +329,6 @@ def getDictionaryDef(searchTerm, fDebug=False):
     global g_words, g_fDisabled
     initDictionary()
     if g_fDisabled:
-        print "----------\n\n\nn\n\n\n\n\n\n\n\n--------"
         return (MODULE_DOWN, None)
 
     parts = searchTerm.split(" ", 1)
@@ -361,6 +360,27 @@ def getDictionaryDef(searchTerm, fDebug=False):
     udf = universalDataFormatWithDefinition(df, [["H", word]])
 
     return (DICT_DEF, udf)
+
+# request is dict type ("wn " for now)
+def getDictionaryStats(request):
+    global g_words, g_fDisabled
+    initDictionary()
+    if g_fDisabled:
+        return (MODULE_DOWN, None)
+    
+    request = request.strip()
+    if 0 == len(request):
+        # TODO: null request can return page, to select dictionary...
+        pass
+
+    res = []        
+    if "wn" == request:
+        res.append(["N","Word net"])
+        res.append(["S","wn "])
+        res.append(["C",str(len(g_words))])
+    else:
+        return INVALID_REQUEST, None
+    return RESULTS_DATA, universalDataFormat(res)
 
 def usage():
     print "dictionary.py searchTerm"

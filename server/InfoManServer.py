@@ -2136,6 +2136,19 @@ class InfoManProtocol(LineReceiver):
 
         return ServerErrors.moduleTemporarilyDown
 
+    def handleDictionaryStats(self, fieldName, fieldValue):
+        (resultType, resultBody) = dictionary.getDictionaryStats(fieldValue)
+
+        if INVALID_REQUEST == resultType:
+            return ServerErrors.unexpectedRequestArgument
+
+        if RESULTS_DATA == resultType:
+            self.appendPayloadField(Fields.outDictStats, resultBody)
+            return None
+
+        # TODO: handle empty dictstats, to get BCF list of dictionaries
+        return ServerErrors.moduleTemporarilyDown
+
     def handleDictionaryRandom(self, fieldName, fieldValue):
         (resultType, resultBody) = dictionary.getDictionaryRandom(fieldValue)
 
@@ -2143,8 +2156,6 @@ class InfoManProtocol(LineReceiver):
             self.appendPayloadField(Fields.outDictDef, resultBody)
             return None
 
-        assertParseFailed(resultType,resultBody,"handleDictionary")
-        logParsingFailure(fieldName, fieldValue, fieldValue)
         return ServerErrors.moduleTemporarilyDown
 
     def outputPediaArticle(self, title, body, reverseLinks, langCode):
@@ -2504,6 +2515,7 @@ g_fieldsInfo = {
     Fields.getUrlAmazonWishList    : (InfoManProtocol.handleGetAmazonWishlist, False, None),
     Fields.getUrlDict              : (InfoManProtocol.handleDictionary, False, None),
     Fields.getUrlDictRandom        : (InfoManProtocol.handleDictionaryRandom, False, None),
+    Fields.getUrlDictStats         : (InfoManProtocol.handleDictionaryStats, True, None),
     Fields.getUrlNetflixItem       : (InfoManProtocol.handleGetNetflixItem,  False, None),
     Fields.getUrlNetflixBrowse     : (InfoManProtocol.handleGetNetflixBrowse,  False, None),
     Fields.getUrlNetflixSearch     : (InfoManProtocol.handleGetNetflixSearch,  False, None),
@@ -2527,7 +2539,7 @@ g_fieldsInfo = {
     Fields.getUrlEbookBrowse        : (InfoManProtocol.handleEBookBrowse, True, None),
     Fields.getUrlEbookHome        : (InfoManProtocol.handleEBookBrowse, True, None),
     Fields.ebookVersion               : (InfoManProtocol.handleEBookVersion, True, None),
-    
+
     # we provide handler for flickrPicturesUploaded so that it could be logged without making special cases in fields handling
     Fields.flickrPicturesUploaded   : (InfoManProtocol.handleFlickrPicturesUploaded, True, None),
 }

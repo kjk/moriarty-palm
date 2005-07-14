@@ -759,10 +759,12 @@ DictionaryPreferences::DictionaryPreferences():
     fUpdated(false)
 {
     std::strcpy(dictionaryCode, _T("wn "));
+    std::strcpy(dictionaryName, _T("WordNet"));
 }
 
 void DictionaryPreferences::serialize(Serializer& serialize)
 {
+    serialize(dictionaryName, maxDictionaryNameLen + 1);
     serialize(dictionaryCode, maxDictionaryCodeLen + 1);
     serialize(wordsCount);
 }

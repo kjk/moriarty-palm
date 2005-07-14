@@ -9,6 +9,7 @@
 #include "DictMainForm.hpp"
 #include "DictSearchForm.hpp"
 #include <TextElement.hpp>
+#include <LineBreakElement.hpp>
 
 static PopupMenuModel* BuildSelectionMenuModel(const String& text)
 {
@@ -154,129 +155,32 @@ void DictMainForm::showMain()
     TextElement*  text;
 
     elems.push_back(text=new TextElement("Welcome to Dictionary."));
-/*    text->setJustification(DefinitionElement::justifyCenter);
+    text->setJustification(DefinitionElement::justifyCenter);
     text->setStyle(StyleGetStaticStyle(styleNameHeader));
 
-    elems.push_back(new LineBreakElement(1, 2));
-    elems.push_back(new LineBreakElement(1, 2));
+    elems.push_back(new LineBreakElement(3, 2));
 
-    CDynStr str;
-    const char_t* lang = GetLangNameByLangCode(prefs.languageCode, tstrlen(prefs.languageCode));
-    if (NULL == str.AppendCharP3("You're using ", lang, " encyclopedia"))
-        goto NoMemory;
-
-    bool noStats = false;
-    if (8 == tstrlen(prefs.dbDate))
-    {
-        if (NULL == str.AppendCharP(" last updated on "))
-            goto NoMemory;
-        if (NULL == str.AppendCharPBuf(prefs.dbDate, 4))
-            goto NoMemory;
-        if (NULL == str.AppendCharP("-"))
-            goto NoMemory;
-        if (NULL == str.AppendCharPBuf(&prefs.dbDate[4], 2))
-            goto NoMemory;
-        if (NULL == str.AppendCharP("-"))
-            goto NoMemory;
-        if (NULL == str.AppendCharPBuf(&prefs.dbDate[6], 2))
-            goto NoMemory;
-    }
-    else
-        noStats = true;
-
-    if (prefs.articleCountNotChecked != prefs.articleCount)
-    {
-        char_t buffer[24];
-        int len = formatNumber(prefs.articleCount, buffer, sizeof(buffer));
-        if (NULL == str.AppendCharP(" with "))
-            goto NoMemory;
-        if (NULL == str.AppendCharPBuf(buffer, len))
-            goto NoMemory;
-        if (NULL == str.AppendCharP(" articles"))
-            goto NoMemory;
-    }
-    else
-        noStats = true;
-
-//    if (noStats)
-//        fetchStats();
-
-    if (NULL == str.AppendCharP("."))
-        goto NoMemory;
-
-    elems.push_back(text = new TextElement(str.GetCStr()));
-    text->setJustification(DefinitionElement::justifyLeft);
-
-    uint_t l = 0;
-    elems.push_back(text = new TextElement(" You can change encyclopedia to "));
-    elems.back()->setJustification(DefinitionElement::justifyLeft);
-    for (ulong_t i = 0; i < availLangCodesCount_; ++i)
-    {
-        const char_t* code = availLangCodes_[i];
-        if (0 == tstrcmp(code, prefs.languageCode))
-            continue;
-
-        const char_t* name = GetLangNameByLangCode(code, tstrlen(code));
-        assert(NULL != name);
-        if (NULL == name)
-            continue;
-
-        text = new_nt TextElement(name);
-        if (NULL == text)
-            goto NoMemory;
-        elems.push_back(text);
-        elems.back()->setJustification(DefinitionElement::justifyLeft);
-
-        if (NULL == str.AssignCharP(urlSchemaEncyclopedia urlSeparatorSchemaStr pediaUrlPartSetLang urlSeparatorSchemaStr))
-            goto NoMemory;
-
-        if (NULL == str.AppendCharP(code))
-            goto NoMemory;
-
-        text->setHyperlink(str.GetCStr(), hyperlinkUrl);
-
-        const char_t* delim = _T(", ");
-        ++l;
-        if (availLangCodesCount_ - 2 == l)
-            delim = _T(" or ");                        
-        else if (availLangCodesCount_ - 1 == l)
-            delim = NULL;
-
-        if (NULL != delim)
-        {
-            text = new_nt TextElement(delim);
-            if (NULL == text)
-                goto NoMemory;
-            elems.push_back(text);
-            elems.back()->setJustification(DefinitionElement::justifyLeft);
-        }    
-    }
-
-    elems.push_back(new LineBreakElement(1, 2));
-    elems.push_back(new LineBreakElement(1, 2));
-    //elems.back()->setJustification(DefinitionElement::justifyLeft);
-
-    elems.push_back(new TextElement("Press \"Search\" button to "));
-    elems.back()->setJustification(DefinitionElement::justifyLeft);
-
-    elems.push_back(text = new TextElement("find"));
-    elems.back()->setJustification(DefinitionElement::justifyLeft);
-
-    text->setHyperlink(urlSchemaEncyclopedia urlSeparatorSchemaStr pediaUrlPartSearchDialog, hyperlinkUrl);
-    elems.push_back(new TextElement(" an article you want or use menu item \"Main/Random article\" to get a "));
-    elems.back()->setJustification(DefinitionElement::justifyLeft);
-
-    elems.push_back(text = new TextElement("random"));
-    if (NULL == str.AssignCharP(urlSchemaEncyclopediaRandom urlSeparatorSchemaStr))
-        goto NoMemory;
-    if (NULL == str.AppendCharP(prefs.languageCode))
-        goto NoMemory;
-    text->setHyperlink(str.GetCStr(), hyperlinkUrl);
-    elems.back()->setJustification(DefinitionElement::justifyLeft);
-    elems.push_back(new TextElement(" article."));
-    elems.back()->setJustification(DefinitionElement::justifyLeft);
-    */
+    elems.push_back(text=new TextElement("You are using "));
+    elems.push_back(text=new TextElement(prefs.dictionaryName));
+    elems.push_back(text=new TextElement(" dictionary."));
     
+    if (prefs.wordsCountNotChecked != prefs.wordsCount)
+    {
+        elems.push_back(new LineBreakElement());
+        elems.push_back(text=new TextElement("It contains "));
+        char_t buffer[24];
+        int len = formatNumber(prefs.wordsCount, buffer, sizeof(buffer));
+        elems.push_back(text=new TextElement(buffer));
+        elems.push_back(text=new TextElement(" definitions."));
+    }
+
+    elems.push_back(new LineBreakElement(3, 2));
+    elems.push_back(text=new TextElement("Press 'search' button to "));
+    elems.push_back(text=new TextElement("search"));
+    text->setHyperlink(_T("dictform:search") , hyperlinkUrl);
+
+    elems.push_back(text=new TextElement(" for words definitions."));
+
     textRenderer_.setModel(model, Definition::ownModel);
     update();
     return;

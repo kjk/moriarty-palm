@@ -166,7 +166,8 @@ static void replaceCommas(String& str)
 
 #define getUrl _T("Get-Url")
 
-#define dictionaryDefField _T("Dict-Def")
+#define dictionaryDefField    _T("Dict-Def")
+#define dictionaryStatsField  _T("Dict-Stats")
 
 #define pediaArticle _T("Pedia-Article")
 #define pediaArticleCount _T("Pedia-Article-Count")
@@ -209,6 +210,7 @@ const MoriartyConnection::FieldDescriptor MoriartyConnection::fields_[] = {
     FIELD_UDF_RESULT(currencyConversionField, &LookupManager::currencyData, currencyDataStream, lookupResultCurrency, false),
     FIELD_UDF_RESULT(currentBoxOfficeField, &LookupManager::boxOfficeData, boxOfficeDataStream, lookupResultBoxOfficeData, false),
     FIELD_UDF_RESULT(dictionaryDefField, &LookupManager::dictData, dictHistoryCacheName, lookupResultDictDef,true),
+    FIELD_UDF(dictionaryStatsField, &MoriartyConnection::completeDictStatsField, &LookupManager::tempUDF, NULL, false),
     FIELD_PAYLOAD(disabledModulesField, &MoriartyConnection::handleDisabledModulesField, NULL, NULL, false),
     FIELD_UDF_RESULT(dreamField, &LookupManager::dream, dreamsDataStream, lookupResultDreamData, false),
     FIELD_UDF_RESULT(eBayField, &LookupManager::eBayData, eBayHistoryCacheName, lookupResultEBay, true),
@@ -620,15 +622,29 @@ status_t MoriartyConnection::prepareRequest()
             PediaPreferences& prefs = MoriartyApplication::instance().preferences().pediaPrefs;
             if (8 != tstrlen(prefs.dbDate) || prefs.articleCountNotChecked == prefs.articleCount)
             {
-                const MoriartyApplication& app = MoriartyApplication::instance();
                 CDynStr str;
-                if (NULL == str.AppendCharP3(urlSchemaEncyclopediaStats, urlSeparatorSchemaStr, app.preferences().pediaPrefs.languageCode))
+                if (NULL == str.AppendCharP3(urlSchemaEncyclopediaStats, urlSeparatorSchemaStr, prefs.languageCode))
                     goto Error;
                 if (NULL == DynStrAddField(request, getUrl, str.GetCStr()))
                     goto Error;
             }
         }
         // EOP(edia)
+        // dict - first request will download stats
+        if (StrStartsWith(url_, urlSchemaDictTerm) ||
+            StrStartsWith(url_, urlSchemaDictRandom))
+        {
+            DictionaryPreferences& prefs = MoriartyApplication::instance().preferences().dictionaryPreferences;
+            if (prefs.wordsCountNotChecked == prefs.wordsCount || !prefs.fUpdated)
+            {
+                CDynStr str;
+                if (NULL == str.AppendCharP3(urlSchemaDictStats, urlSeparatorSchemaStr, prefs.dictionaryCode))
+                    goto Error;
+                if (NULL == DynStrAddField(request, getUrl, str.GetCStr()))
+                    goto Error;
+            }
+        }
+        // EOD(ict)
     }
 
     if (requestNot411 != m411RequestType_)
@@ -1389,5 +1405,26 @@ status_t MoriartyConnection::completeEBookDownloadField(FieldPayloadProtocolConn
     return errNone;
 }
 
+status_t MoriartyConnection::completeDictStatsField(FieldPayloadProtocolConnection::PayloadHandler& handler)
+{
+    assert(!lookupManager_.tempUDF.empty());
+    DictionaryPreferences* prefs = &MoriartyApplication::instance().preferences().dictionaryPreferences;
+    UniversalDataFormat* udf = &lookupManager_.tempUDF;
+    prefs->fUpdated = true;
+    for (int i = 0; i < udf->getItemsCount(); i++)
+    {
+        switch(udf->getItemText(i,0)[0])        {
+            case 'N':
+                std::strcpy(prefs->dictionaryName, udf->getItemText(i,1));
+                break;
+            case 'S':
+                std::strcpy(prefs->dictionaryCode, udf->getItemText(i,1));
+                break;
+            case 'C':
+                prefs->wordsCount = udf->getItemTextAsLong(i,1);                 break;
+        }
+    }
+    return errNone;
+}
 
 
