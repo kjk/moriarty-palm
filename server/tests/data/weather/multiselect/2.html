@@ -1,0 +1,701 @@
+
+
+
+
+
+<HTML>
+<HEAD>
+
+<TITLE>weather.com - Search Results</TITLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+OAS_MJX_on = false; // when true, this allows the MJX ad request to be made
+OAS_spoof = 'null';
+OAS_listpos = 'null';
+OAS_query = 'null';
+CM_tag = 'null';
+// -->
+</SCRIPT>
+
+<!-- externals version 2004.07.27 @ 11:39 AM modified by Wendy Frazier -->
+<LINK REL="stylesheet" TYPE="text/css" HREF="http://ima.weather.com/web/common/header/stylesheet/style_sheet.css">
+<META HTTP-EQUIV="MSThemeCompatible" Content="Yes">
+<meta http-equiv="imagetoolbar" content="no">
+<SCRIPT LANGUAGE="JavaScript1.2">
+<!-- 
+isMinNS4 = (document.layers) ? 1 : 0;
+isMinIE4 = (document.all) ? 1 : 0;
+isMinIE5 = (document.getElementById&&document.all) ? 1 : 0;
+isNS6 = (document.getElementById&&!document.all) ? 1 : 0;
+var popup;
+var dateNow=new Date();
+var haton=0;
+function initialize_ad_array(adS)
+{
+  adS['uk.weather.com']=new Array('uk.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['br.weather.com']=new Array('br.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['fr.weather.com']=new Array('fr.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['de.weather.com']=new Array('de.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['espanol.weather.com']=new Array('espanol.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['desktop3.weather.com']=new Array('desktop3.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['desktop.weather.com']=new Array('desktop.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['adstest.weather.com']=new Array('adstest.weather.com','http://adstest.weather.com/RealMedia/ads/');
+  adS['beta.weather.com']=new Array('www.weather.com','http://beta.weather.com/RealMedia/ads/');
+  adS['photo.weather.com']=new Array('www.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['www.w3.weather.com']=new Array('www.weather.com','http://www.w3.weather.com/RealMedia/ads/');
+  adS['beta.w3.weather.com']=new Array('beta.weather.com','http://beta.w3.weather.com/RealMedia/ads/');
+  adS['registration.weather.com']=new Array('registration.weather.com','http://www.weather.com/RealMedia/ads/');
+
+
+}
+// -->
+</script>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/ext.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/triggerParams.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/stdLauncher.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/divtools.js" ></SCRIPT><SCRIPT LANGUAGE="JavaScript1.2">
+<!--
+
+// <!--#if expr="" -->
+var remoteAddr="172.16.66.23";
+// <!--#endif -->
+// 
+
+
+var adTest=GetCookie("oas_host_cookie");
+
+function regenerate2() {
+	return;
+}
+
+function initialize_dom_severe_scroll() {
+	return;
+}
+
+function onPageStart() {
+    regenerate2();
+    if (isMinNS4 && document.images["holdspace"]) {
+	    thisX = document.images["holdspace"].x;
+	    thisY = document.images["holdspace"].y;
+	    thisElement = makeObjectNS4();
+    }
+    if (document.getElementById) initialize_dom_severe_scroll();
+}
+
+window.onload = onPageStart;
+
+var adS=new Array();
+initialize_ad_array(adS);
+
+OAS_url ='http://www.weather.com/RealMedia/ads/';
+OAS_host = window.location.hostname;
+
+if (OAS_host.indexOf('w3')>0)
+{
+	OAS_host = 'www.weather.com';
+	OAS_url='http://www.w3.weather.com/RealMedia/ads/';   
+}else if (adS[OAS_host]){
+     OAS_url=adS[OAS_host][1];
+     OAS_host = adS[OAS_host][0];
+}else{
+   OAS_host='www.weather.com'; 
+}
+
+// special ads test code
+if (adTest)
+{
+    if ((remoteAddr.indexOf("10.") == 0)||
+        (remoteAddr.indexOf("169.254.") == 0)||
+        (remoteAddr.indexOf("192.168.") == 0)||
+        (remoteAddr.indexOf("216.133.140.1") == 0)||
+		(remoteAddr.indexOf("216.133.140.2") == 0))
+       {
+	 OAS_host=adTest;
+       }
+  }
+
+OAS_target = "_top"; 
+OAS_version = 10; 
+OAS_rn = '001234567890'; 
+OAS_rns = '1234567890'; 
+OAS_rn = new String (Math.random()); OAS_rns = OAS_rn.substring(2,11); 
+function OAS_NORMAL(pos) {
+if (OAS_MJX_on){
+  document.write('<A HREF="' + OAS_url + 'click_nx.ads/' + OAS_host + OAS_spoof + '/1' + OAS_rns + '@' + OAS_listpos + '!' + pos + '?' + OAS_query + '" TARGET=' + OAS_target + '>');
+  document.write('<IMG SRC="' + OAS_url + 'adstream_nx.ads/' + OAS_host + OAS_spoof + '/1' + OAS_rns + '@' + OAS_listpos + '!' + pos + '?' + OAS_query + '" BORDER=0></A>');
+  }
+}
+
+// this'll get overwritten later on the page render, 
+// but if it doesn't, we're still OK 
+
+function OAS_RICH(pos) {
+  OAS_NORMAL(pos);
+}
+
+//This was added to "touch" the UserPreferences and RMID cookies with every 
+//page view so that their expiration date changes.  If the cookie exists....
+	var queryString = new Object;
+	function parseParameter() {
+	var temp_query = new RegExp ('^[^\\?]+\\?(.*)$');
+	if ( ! temp_query.test(location) ) return false;
+	var array = temp_query.exec(location);
+	queryString.QUERY_STRING = array[1];
+	var params = queryString.QUERY_STRING.split(/&/);
+	for ( var i = 0; i < params.length; i++ ) {
+		var keys = params[i].split(/=/);
+		queryString[ keys[0] ] = unescape(keys[1]);
+		}
+	}
+	function paramValue(key) {
+	if ( key == null ) {
+		alert("param() function has been used incorrectly.\nUSAGE: param(key)");
+		return false;
+	}
+		return queryString[key];
+	}
+	parseParameter();	
+	
+	var vsearch = paramValue('search'); 
+	var upcookie = GetCookie("UserPreferences");
+	if(upcookie > 0 && vsearch != "search"){
+		updateCookieExpDate("UserPreferences");
+		updateCookieExpDate("RMID");
+	}
+
+var customization_pathname = (window.location.pathname.indexOf("/weather/my")>=0)?1:0;
+
+//The below logic should only process on non-Customization pages.
+if (customization_pathname == 0){	
+	var myPrefsCookie = GetCookie("MyPrefs");
+	if(myPrefsCookie.length > 1){
+		updateCookieUnescape("MyPrefs");
+	}
+}	
+//-->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.1">
+<!-- 
+OAS_version = 11; 
+if (!isMinIE4 && !isMinIE5 && !isNS6 && !isMinNS4) OAS_version = 10;
+if (OAS_MJX_on){
+if (OAS_version >= 11) document.write('<SCR' + 'IPT LANGUAGE=JavaScript1.1 SRC="' + OAS_url + 'adstream_mjx.ads/' + OAS_host + OAS_spoof + '/1' + OAS_rns + '@' + OAS_listpos + '?' + OAS_query + '"><\/SCRIPT>');
+}
+//-->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- 
+function OAS_AD(pos) { 
+		(OAS_version >= 11) ? OAS_RICH(pos) : OAS_NORMAL(pos);
+}
+//-->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/eluminate.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/techprops.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/cmtagging.js" ></SCRIPT>
+  <STYLE>
+  BODY {margin:0px;padding:0px;}
+  #body_container {width:768px;margin-right:auto;margin-left:auto;margin-top:10px;padding:0px;text-align:left;}
+/*
+  #contentleft {width:453px;padding:0px;float:left;background:#fff;   margin:0px 15px 0px 0px;}
+  #contentright {width:300px;padding:0px;float:right;background:#fff;}
+*/
+ A:link, A:visited { color: #3333FF;text-decoration:none; } 
+ A:hover { color:#000000;} 
+ .moduleBlock {text-align:left;padding:0px;margin: 0px 5px 10px 0px;overflow : hidden;clear:all;}
+.Spacing{margin:0px 0px 11px 0px;}
+.PageSpacing{margin:0px 0px 15px 0px;}
+
+  .Basic{background-color:#ffffff;font-family: Verdana,Arial,Sans Serif;font-size:11px;color:black;border:#EAECE2 solid;border-width:1px 1px 1px 1px;width:98%;margin:0px 0px 10px 0px;}
+  .moduleTitleBarc {width:100%;clear:both;}
+  .moduleTitleBar {background-color:#FFFFFF;font-family: Verdana,Arial, Sans Serif;font-size: 14px;color: #465F73;font-weight:bold;margin:5px;padding:5px;height:20px;vertical-align:middle;}
+  .modulec {width:100%;}
+  .module {background-color: #FFFFFF;vertical-align:top;width:100%;border:#F0EEC3 solid;border-width: 1px 1px 1px 1px;}
+  .moduleb {background-color: #f4f5ef;vertical-align:top;width:100%;border:#f4f5ef solid;border-width: 1px 1px 1px 1px;}
+
+/*
+  .moduleTitleBarc {width:100%;clear:both;}
+  .moduleTitleBar {background-color:#1B2F8A;margin:0px;padding: 4px 0px 0px 11px;font-size: 11px;color: #FFFFFF;height:20px;text-align:left;}
+  .modulec {width:100%;}
+  .module {background-color: white;border: 1px solid #A7C9E0;margin: 0px;padding: 1px 1px 1px 1px;clear:all;}
+*/
+  
+  .contentTitleBar {margin:0px;font-weight:normal;font-size:11px;padding:2px 0px 0px 11px;background-color:#EEF5FD;height:20px;text-align:left;}
+  .moduleContentBlock {width:100%;padding:0px;}
+  .moduleContentNews {padding:0px;float:right;background-color:#EEF5FD;}
+  .moduleNews {background-color:#EEF5FD;border: 1px solid #A7C9E0;margin: 0px;padding: 1px 1px 1px 1px;clear:all;}
+  .moduleContentTools {width:100%;border:solid #A7C9E0;border-width:0px 0px 0px 1px;}
+  .moduleContentFeature {width:50%;padding:0px;float:right;font-size:11px;}
+  DIV.moduleContentTools UL {margin:0px 0px 0px 20px;padding:0px 0px 0px 0px;}
+  DIV.moduleContentTools LI {font-family:verdana,arial,sans-serif;font-size:11px;}  
+  DIV.moduleContentBlock UL {margin:0px 0px 0px 25px;padding:0px 0px 10px 0px;}
+  DIV.moduleContentBlock LI {font-family:verdana,arial,sans-serif;font-size:11px;line-height:16px;}
+  </STYLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINHEIGHT="0" MARGINWIDTH="0" LINK="#004371" VLINK="#004371">
+<!-- Begin Header Module Last Modified on 08/04/04 by TLA -->
+
+
+
+
+
+
+
+<SCRIPT LANGUAGE="JavaScript1.2">
+var storedId = getUserPreferences("11");
+if ("" != ""){
+	if ("" == getUserPreferences("11")){
+			setUserPreferences("10","");}}
+</SCRIPT>
+<center><SCRIPT LANGUAGE="JavaScript1.2">cmCreatePageviewTag(CM_page_id, CM_cat_id, CM_rmid, CM_urs_id, CM_where_search, CM_partner, CM_dma, CM_country, CM_state, CM_topProdID, CM_detailProdID, CM_prodViewTag, CM_shop5Tag, CM_shop9Tag);</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2">
+<!--
+if (document.referrer) {
+	thisDF = document.referrer;
+} else {
+	thisDF = "";
+}
+if (thisDF.search(/usatoday.com/) != -1) {
+	midstring = " contains ";
+	document.write ('<MAP NAME="weather_nav_Map"><AREA SHAPE="rect" ALT="" COORDS="657,0,768,27" HREF="http://asp.usatoday.com/weather/weatherfront.aspx"><AREA SHAPE="rect" ALT="" COORDS="536,0,652,27" HREF="http://www.usatoday.com/tech/front.htm"><AREA SHAPE="rect" ALT="" COORDS="418,0,534,27" HREF="http://www.usatoday.com/life/front.htm"><AREA SHAPE="rect" ALT="" COORDS="300,0,414,27" HREF="http://www.usatoday.com/sports/front.htm"><AREA SHAPE="rect" ALT="" COORDS="184,0,296,27" HREF="http://www.usatoday.com/money/front.htm"><AREA SHAPE="rect" ALT="" COORDS="67,0,180,27" HREF="http://www.usatoday.com/news/front.htm"><AREA SHAPE="rect" ALT="" COORDS="0,0,65,27" HREF="http://www.usatoday.com/usafront.htm"></MAP><IMG SRC="http://image.weather.com/web/common/logos/usatodayback.gif" WIDTH=774 HEIGHT=28 BORDER=0 USEMAP="#weather_nav_Map">');
+}
+//-->
+</SCRIPT>
+
+
+
+
+
+<!-- severe mode CSS changes here, if any -->
+
+<!-- normal.css -->
+<IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=2 alt="" border=0><br>
+<script src="http://ima.weather.com/common/header/javascript/hat.js"></script><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=1 alt="" border=0><br><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=768><TR><TD WIDTH=768 CLASS="globalNavTD" ALIGN="LEFT" VALIGN="MIDDLE" NOWRAP><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=11 HEIGHT=1 alt="" border=0><A HREF="/?from=globalnav" onClick="return smartTrack('/','globalnav')" CLASS="globalNavA">Home</A> <IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0><IMG SRC="http://image.weather.com/web/common/pixel/ffffff.gif" WIDTH=2 HEIGHT=20 BORDER=0 ALIGN="ABSMIDDLE"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0>
+<A CLASS="globalNavA" HREF="/weather/my/?from=globalnav" onClick="return smartTrack('/weather/my/','globalnav')">My Page</A> | <A CLASS="globalNavA" HREF="/activities/health?from=globalnav" onClick="return smartTrack('/activities/health','globalnav')">Health</A> | <A CLASS="globalNavA" HREF="/activities/travel/?from=globalnav" onClick="return smartTrack('/activities/travel/','globalnav')">Travel</A> | <A CLASS="globalNavA" HREF="/activities/driving/?from=globalnav" onClick="return smartTrack('/activities/driving/','globalnav')">Driving</A> | <A CLASS="globalNavA" HREF="/activities/events/?from=globalnav" onClick="return smartTrack('/activities/events/','globalnav')">Events</A> | <A CLASS="globalNavA" HREF="/activities/recreation/?from=globalnav" onClick="return smartTrack('/activities/recreation/','globalnav')">Recreation</A> | <A CLASS="globalNavA" HREF="/activities/homeandgarden/?from=globalnav" onClick="return smartTrack('/activities/homeandgarden/','globalnav')">Home &amp; Garden</A>
+<IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0><IMG SRC="http://image.weather.com/web/common/pixel/ffffff.gif" WIDTH=2 HEIGHT=20 BORDER=0 ALIGN="ABSMIDDLE"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0>
+<A CLASS="globalNavA" HREF="/common/welcomepage/world.html?from=globalnav" onClick="return smartTrack('/common/welcomepage/world.html','globalnav')">World</A> | <A CLASS="globalNavA" HREF="/newscenter/?from=globalnav" onClick="return smartTrack('/newscenter/','globalnav')">News</A> | <A CLASS="globalNavA" HREF="/maps/garden.html?from=globalnav" onClick="return smartTrack('/maps/garden.html','globalnav')">Maps</A> | <A CLASS="globalNavA" HREF="/services/?from=globalnav" onClick="return smartTrack('/services/','globalnav')">Weather Tools</A> | <A CLASS="globalNavA" HREF="http://store.weather.com/?from=globalnav" onClick="return smartTrack('http://store.weather.com/','globalnav')">Store</A>
+</TD>
+</TR><TR> 
+<TD BGCOLOR="#FFFFFF" NOWRAP><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=650 BORDER=0 HEIGHT=1 name="gnanchor" id="gnanchor" alt=""><DIV class="hatnav" NAME="gnsign" id="gnsign" STYLE="border: 1px solid #A7C9E0;visibility:hidden; position:absolute; left:650"><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=116><TR><TD CLASS="inDentA" ALIGN="LEFT"><BR><A HREF="javascript:smartTrack('http://notify.weather.com/weather/notify','hat');"><B>Notify!</B></A><BR><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=5 alt="" border=0><BR><A HREF="javascript:smartTrack('http://gold.weather.com/weather/wxgold/login','hat')"><B>weather.com&reg; Gold</B></A><BR><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=5 alt="" border=0><BR><A HREF="javascript:smartTrack('http://www.weather.com/weather/my','hat')"><B>My Page</B></A><BR><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=5 alt="" border=0><BR><A HREF="javascript:smartTrack("http://registration.weather.com/registration/myprofile/step1","hat")"><B>My Profile</B></A><BR><BR></TD></TR><TR><TD ALIGN="CENTER"><A HREF="javascript:hideDiv('gnsign')">Close Window</A><BR><BR></TD></TR></TABLE></DIV>
+</TD>
+</TR>
+</TABLE>
+ 
+ 
+
+
+
+
+
+
+<!-- tabs version 08.03.04.b last modified by Wendy Frazier -->
+
+<A NAME="atabs">
+	<!-- banner version 07.16.04 last modified by Tina Allen-->
+<table border="0" cellpadding="0" width="768" cellspacing="0" background="http://image.weather.com/web/common/banners/summer/homepage.jpg"><tr><td valign="top" align="right"><a onclick="smartTrack('/','banner');return false;" href="http://www.weather.com/"><img src="http://image.weather.com/web/blank.gif" border="0" width="458" height="56" alt="Click to return to home page." align="top"></a><!-- AdList:  null ad for position 'HeaderSpon'--></td></tr></table><img alt="" SRC="/opol.gif?cb=1093347900615&wxr=http://www.weather.com/search/enhanced?where=dupa+blada&what=WeatherLocalUndeclared&lswe=dupa+blada&lswa=WeatherLocalUndeclared&search=search&whatprefs=&wxm=GET&wxp=HTTP/1.1" width="1" height="1"><script language="JavaScript1.2">if ((GetCookie('RMID') && GetCookie('RMID').length>=5)&&document.cookie.indexOf("TData")<0) {document.write('<im'+'g src="http://cte.weather.com/web/blank.gif" alt="" border=0 width=1 height=1>');}</script><BR>
+
+	<A NAME="awhatwhere">
+<!-- version 8/05/04 modified by Tina Allen  -->
+<TABLE WIDTH="768" BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="zipSearch">
+<FORM ACTION="http://www.weather.com/search/enhanced" METHOD="get" NAME="whatwhere" onSubmit="return checkForm();">
+<TR>
+<TD WIDTH="610" BACKGROUND="http://image.weather.com/web/common/banners/summer/local_forecast.jpg" HEIGHT="47">
+		<DIV STYLE="position:relative;top:0px; left:230px;width:380px;">
+		<TABLE  BORDER="0" CELLPADDING="0" CELLSPACING="0">
+			<TR>
+				<TD VALIGN="MIDDLE" ALIGN="LEFT">
+		<INPUT TYPE="TEXT" SIZE="20" NAME="where" VALUE="Enter city or US zip" STYLE="font-size:10px;" onfocus="this.value='';" >
+		<INPUT TYPE="hidden" NAME="what" VALUE="WeatherLocalUndeclared">
+		<input type="hidden" name="lswe">
+		<input type="hidden" name="lswa">
+		<input type="hidden" name="search" value="search">
+		</TD>
+		<TD WIDTH="12">&nbsp;</TD>
+		<TD VALIGN="MIDDLE" ALIGN="LEFT">
+			<SELECT NAME="whatprefs" STYLE="font-size:10px;margin:0px;padding:0px;">
+			<OPTION VALUE="">See weather related to ...
+			<OPTION VALUE="WeatherLocalTravel">Travel
+			<OPTION VALUE="WeatherLocalLawn">Lawn &amp; Garden
+			<OPTION VALUE="WeatherLocalHealth">Health
+			<OPTION VALUE="WeatherLocalDriving">Driving
+			<OPTION VALUE="WeatherLocalGolf">Golf
+			<OPTION VALUE="WeatherLocalHome">Home
+			<OPTION VALUE="WeatherLocalRecreation">Recreation
+			<OPTION VALUE="WeatherLocalSportingEvents">Events
+			<OPTION VALUE="WeatherLocalSki">Ski
+			</SELECT> 
+			<INPUT TYPE="IMAGE" SRC="http://image.weather.com/web/common/buttons/go_search.gif" WIDTH="26" HEIGHT="18" border="0" ALIGN="ABSMIDDLE" ALT="GO">
+		</TD>
+	</TR>
+	</TABLE>
+		</DIV>
+	
+</TD>
+<TD WIDTH="11" VALIGN="MIDDLE">&nbsp;</TD>
+<TD WIDTH="145" VALIGN="MIDDLE">
+<script language="JavaScript1.2">
+	hugMe();
+</script></TD>
+</TR>
+</FORM>
+</TABLE>
+
+<IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=1 BORDER=0 ALT=""><br>
+<a name="abanner">
+<a name="bbanner">
+
+
+<DIV ID="body_container">
+<!-- Syb's new module -->
+<TABLE WIDTH="768" BORDER="0" CELLPADDING="5" CELLSPACING="0">
+      
+ <TR>
+  <TD CLASS="module"><DIV CLASS="moduleTitleBarc">
+   <H2 CLASS="moduleTitleBar"><FONT CLASS="inDentA">Your Search: nic fajnego</H2></FONT></DIV>
+    <DIV CLASS="modulec"><DIV ALIGN="CENTER">
+     <TABLE BORDER="0" WIDTH="100%" CELLPADDING="5" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER">
+
+        
+        
+
+
+<TR>
+<TD VALIGN="top" CLASS="blkVerdanaText10" COLSPAN="2">No items found. Please check your spelling or try another term.
+
+<SCRIPT Language="JavaScript1.2">
+var column1 = new Array();
+var column2 = new Array();
+var column3 = new Array();
+var column4 = new Array();
+var column5 = new Array();
+var column6 = new Array();		column1[1] = new Array();
+		column1[1]["city"] = "Anaheim";		column2[1] = new Array();
+		column2[1]["city"] = "Antarctica";		column3[1] = new Array();
+		column3[1]["city"] = "Asheville";		column4[1] = new Array();
+		column4[1]["city"] = "Atlanta";		column5[1] = new Array();
+		column5[1]["city"] = "Bangkok";		column6[1] = new Array();
+		column6[1]["city"] = "Bismarck";		column1[2] = new Array();
+		column1[2]["city"] = "Breckenridge";		column2[2] = new Array();
+		column2[2]["city"] = "Cape Town";		column3[3] = new Array();
+		column3[3]["city"] = "Caracas";		column4[2] = new Array();
+		column4[2]["city"] = "Caribbean";		column5[2] = new Array();
+		column5[2]["city"] = "Chicago";		column6[2] = new Array();
+		column6[2]["city"] = "Cincinnati";		column1[3] = new Array();
+		column1[3]["city"] = "Des Moines";		column2[3] = new Array();
+		column2[3]["city"] = "Detroit";		column3[4] = new Array();
+		column3[4]["city"] = "Fort Myers";		column4[3] = new Array();
+		column4[3]["city"] = "Fredericksburg";		column5[3] = new Array();
+		column5[3]["city"] = "Gainesville";		column6[3] = new Array();
+		column6[3]["city"] = "Gatlinburg";		column1[4] = new Array();
+		column1[4]["city"] = "Grand Cayman";		column2[4] = new Array();
+		column2[4]["city"] = "Green Bay";		column3[5] = new Array();
+		column3[5]["city"] = "Hatteras";		column4[4] = new Array();
+		column4[4]["city"] = "Honolulu";		column5[4] = new Array();
+		column5[4]["city"] = "Indianapolis";		column6[4] = new Array();
+		column6[4]["city"] = "Jamaica";		column1[5] = new Array();
+		column1[5]["city"] = "Kansas City";		column2[5] = new Array();
+		column2[5]["city"] = "Las Vegas";		column3[6] = new Array();
+		column3[6]["city"] = "Los Angeles";		column4[5] = new Array();
+		column4[5]["city"] = "Manhattan";		column5[5] = new Array();
+		column5[5]["city"] = "Miami";		column6[5] = new Array();
+		column6[5]["city"] = "Milwaukee";		column1[6] = new Array();
+		column1[6]["city"] = "Minneapolis";		column2[6] = new Array();
+		column2[6]["city"] = "Montreal";		column3[7] = new Array();
+		column3[7]["city"] = "Myrtle Beach";		column4[6] = new Array();
+		column4[6]["city"] = "Nassau";		column5[6] = new Array();
+		column5[6]["city"] = "New York";		column6[6] = new Array();
+		column6[6]["city"] = "Niagara Falls";		column1[7] = new Array();
+		column1[7]["city"] = "O'Hare";		column2[7] = new Array();
+		column2[7]["city"] = "Pensacola";		column3[8] = new Array();
+		column3[8]["city"] = "Philadelphia";		column4[7] = new Array();
+		column4[7]["city"] = "Phoenix";		column5[7] = new Array();
+		column5[7]["city"] = "Puerto Vallarta";		column6[7] = new Array();
+		column6[7]["city"] = "Raleigh";		column1[8] = new Array();
+		column1[8]["city"] = "San Diego";		column2[8] = new Array();
+		column2[8]["city"] = "San Francisco";		column3[9] = new Array();
+		column3[9]["city"] = "Savannah";		column4[8] = new Array();
+		column4[8]["city"] = "Seattle";		column5[8] = new Array();
+		column5[8]["city"] = "Seville";		column6[8] = new Array();
+		column6[8]["city"] = "Tallahassee";		column1[9] = new Array();
+		column1[9]["city"] = "Tennessee";		column2[9] = new Array();
+		column2[9]["city"] = "Toronto";		column3[10] = new Array();
+		column3[10]["city"] = "Tucson";		column4[9] = new Array();
+		column4[9]["city"] = "Washington DC";document.writeln("</TD>");
+</SCRIPT>
+
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="5" CELLSPACING="0"><TR><TD>
+	<DIV ALIGN="CENTER">
+		<TABLE BORDER="0" WIDTH="100%" CELLPADDING="5" CELLSPACING="5" ALIGN="CENTER" BGCOLOR="#ECF0FC">
+			<TR><TD COLSPAN="6" CLASS="blkVerdanaText10">Commonly misspelled locations.</td></tr>
+			<TR>
+				<TD WIDTH="17%" VALIGN="top" CLASS="blkVerdanaText10">
+<SCRIPT Language="JavaScript1.2">
+	for (var vIndex in column1){
+		document.writeln("<A HREF=\"/search/enhanced?where="+column1[vIndex]["city"]+"&from=spelling\">"+column1[vIndex]["city"]+"</A><br>");
+	}
+</SCRIPT>
+				</TD>
+				<TD WIDTH="17%" VALIGN="top" CLASS="blkVerdanaText10">
+<SCRIPT Language="JavaScript1.2">
+	for (var vIndex in column2){
+		document.writeln("<A HREF=\"/search/enhanced?where="+column2[vIndex]["city"]+"&from=spelling\">"+column2[vIndex]["city"]+"</A><br>");
+	}
+</SCRIPT>
+				</TD>
+				<TD WIDTH="17%" VALIGN="top" CLASS="blkVerdanaText10">
+<SCRIPT Language="JavaScript1.2">
+	for (var vIndex in column3){
+		document.writeln("<A HREF=\"/search/enhanced?where="+column3[vIndex]["city"]+"&from=spelling\">"+column3[vIndex]["city"]+"</A><br>");
+	}
+</SCRIPT>
+				</TD>
+				<TD WIDTH="17%" VALIGN="top" CLASS="blkVerdanaText10">
+<SCRIPT Language="JavaScript1.2">
+	for (var vIndex in column4){
+		document.writeln("<A HREF=\"/search/enhanced?where="+column4[vIndex]["city"]+"&from=spelling\">"+column4[vIndex]["city"]+"</A><br>");
+	}
+</SCRIPT>
+				</TD>
+				<TD WIDTH="17%" VALIGN="top" CLASS="blkVerdanaText10">
+<SCRIPT Language="JavaScript1.2">
+	for (var vIndex in column5){
+		document.writeln("<A HREF=\"/search/enhanced?where="+column5[vIndex]["city"]+"&from=spelling\">"+column5[vIndex]["city"]+"</A><br>");
+	}
+</SCRIPT>
+				</TD>
+				<TD WIDTH="15%" VALIGN="top" CLASS="blkVerdanaText10">
+<SCRIPT Language="JavaScript1.2">
+	for (var vIndex in column6){
+		document.writeln("<A HREF=\"/search/enhanced?where="+column6[vIndex]["city"]+"&from=spelling\">"+column6[vIndex]["city"]+"</A><br>");
+	}
+</SCRIPT>
+				</TD>
+			</TR>
+		</TABLE>
+	</DIV>
+	<H2 CLASS="moduleTitleBar"><FONT CLASS="inDentA"><B>Search Tips</b></H2></FONT>
+	<DIV ALIGN="CENTER">
+		<TABLE BORDER="0" WIDTH="100%" CELLPADDING="5" CELLSPACING="0" ALIGN="CENTER">
+			<TR><TD class="blkVerdanaText10">Based on user feedback, we have compiled the following tips.</td></tr>
+			<TR><TD class="blkVerdanaText10"><DIV CLASS="modBody"><UL><LI>Check the spelling of the city name.</UL></DIV></TD></tr>
+			<TR><TD class="blkVerdanaText10">If you are not sure of the spelling of the city, use the state (OH or Ohio) or country name (Mexico) and drill down to the city.</td></tr>
+			<TR><TD class="blkVerdanaText10"><DIV CLASS="modBody"><UL>
+				<LI>When you use two letter state codes, do not add periods to the code.<BR>
+				<DIV STYLE="margin:0px 0px 0px 60px;"><B>Works</b> - Lexington NC</DIV>
+				<DIV STYLE="margin:0px 0px 0px 18px;"><B>Doesn't Work</b> - Lexington N.C.</DIV>
+			</UL></DIV></TD></tr>
+			<TR><TD class="blkVerdanaText10"><DIV CLASS="modBody"><UL>
+				<LI>Do not search using the city and the zip code.<BR>
+				<DIV STYLE="margin:0px 0px 0px 60px;"><B>Works</b> - Atlanta or 30346</DIV>
+				<DIV STYLE="margin:0px 0px 0px 18px;"><B>Doesn't Work</b> - Atlanta 30346</DIV>
+			</UL></DIV></TD></tr>
+			<TR><TD class="blkVerdanaText10"><DIV CLASS="modBody"><UL>
+				<LI>Do not use 4 letter state codes. Use 2 letter codes.<BR>
+				<DIV STYLE="margin:0px 0px 0px 60px;"><B>Works</b> - Cedar Hill TN</DIV>
+				<DIV STYLE="margin:0px 0px 0px 18px;"><B>Doesn't Work</b> - Cedar Hill TENN</DIV>
+			</UL></DIV></TD></tr>
+			<TR><TD class="blkVerdanaText10"><DIV CLASS="modBody"><UL>
+				<LI>Do not use the country England. weather.com list cities in England under United Kingdom.<BR>
+				<DIV STYLE="margin:0px 0px 0px 60px;"><B>Works</b> - London or London, United Kingdom</DIV>
+				<DIV STYLE="margin:0px 0px 0px 18px;"><B>Doesn't Work</b> - London England</DIV>
+			</UL></DIV></TD></tr>
+			<TR><TD class="blkVerdanaText10"><DIV CLASS="modBody"><UL>
+				<LI>Do not use ISO country codes. These are not supported.<BR>
+				<DIV STYLE="margin:0px 0px 0px 60px;"><B>Works</b> - Sydney or Sydney Australia</DIV>
+				<DIV STYLE="margin:0px 0px 0px 18px;"><B>Doesn't Work</b> - Sydney AU</DIV>
+			</UL></DIV></TD></tr>
+		</TABLE>
+	</DIV>
+</TD></TR></TABLE>	 
+</TD>
+</TR>
+
+
+
+        
+        
+        
+
+
+
+
+        
+        
+        
+
+
+
+        
+        
+        
+
+
+
+
+        
+        
+        
+
+
+
+
+        
+        
+        
+
+
+
+
+        
+
+        
+        
+
+
+
+        
+        
+        
+
+
+
+
+        
+        
+
+         </TD>
+     </TR>
+    </TABLE>
+    </DIV></DIV>
+<P CLASS="Spacing"></P>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL" />
+   
+<!-- begin footer last modified on 4.15.04 by Wendy Frazier -->
+
+<!-- not in severe weather mode -->
+<table width=768 cellspacing=0 cellpadding=0 border=0>
+	<tr><td width=768><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=768 HEIGHT=5 BORDER=0></td></tr>
+	<tr>
+		<td align="center" class="normalText">
+		<a  href="http://www.weather.com/common/survey/feedback.html?from=footer" class="11pxLink" target="_blank">Tell Us What You Think</a>
+			<script language="javascript1.2">
+			<!--
+			if (isMinIE4) {
+				document.write("| <a href=\"?\" onClick=\"window.external");
+				document.write(".AddFavorite (location.");
+				document.write("href,document.");
+				document.write("title);return false;\" class=\"11pxLink\">Add This Page To Your Favorites</a> | ");
+				document.write("<a href=\"mailto:Type your friend's email address here?subject=");
+				document.write(escape(location.href));
+				document.write("\" class=\"11pxLink\">E-mail This Page To A Friend</a>");
+			}
+			var isMinIE5 = (document.getElementById&&document.all) ? 1 : 0;
+			if (isMinIE5) {
+				document.write(" | <a href=\"#\" class=\"11pxLink\" onClick=\"this.style.behavior='url(#default#homepage)';this.setHomePage('");
+				document.write(location.href);
+				document.write("');return false;\">Make This Page Your Home Page</a>");
+			}
+			// -->
+			</script>
+		</td>
+	</tr>
+	<tr><td><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=768 HEIGHT=20 BORDER=0></td></tr>
+</table>
+<script LANGUAGE="JavaScript1.2">
+	var query = new Object;
+	function parse() {
+		var pat_query = new RegExp ('^[^\\?]+\\?(.*)$');
+		if ( ! pat_query.test(location) ) return false;
+		var array = pat_query.exec(location);
+		query.QUERY_STRING = array[1];
+		var params = query.QUERY_STRING.split(/&/);
+		for ( var i = 0; i < params.length; i++ ) {
+			var keys = params[i].split(/=/);
+			query[ keys[0] ] = unescape(keys[1]);
+		}
+	}
+	function param(key) {
+		if ( key == null ) {
+			alert("param() function has been used incorrectly.\nUSAGE: param(key)");
+			return false;
+		}
+		return query[key];
+	}
+	parse();
+	
+    function checkGoogle() 
+    {
+	var WWW_host = window.location.hostname;
+	if (WWW_host != 'delta.weather.com' && WWW_host.indexOf('w3.')<0 && WWW_host != 'beta.weather.com') WWW_host = 'www.weather.com';
+	WWW_host = 'http://' + WWW_host;
+	document.googleSearch.action=WWW_host+"/search/partner";
+	// document.location=WWW_host+"/search/partner?q="+document.googleSearch.q.value;
+	return true;
+    }
+</script>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="768">
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+		<TR><TD><H2 CLASS="moduleTitleBar">Search the web</H2></TD></TR>
+		</TABLE>
+		<DIV ALIGN="CENTER">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%"><TR><TD>
+				<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" HEIGHT="64" WIDTH="100%" CLASS="gbckgn">
+				<form action="http://www.weather.com/search/partner" name="googleSearch" onSubmit="return checkGoogle();">
+					<TR>
+						<TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=78 HEIGHT=1 BORDER=0></TD>
+						<TD VALIGN="middle" align="right" CLASS="blkVerdanaText11"><INPUT  name="q" TYPE="Text" SIZE="50"> <INPUT TYPE="submit" Name="Search" VALUE="Search"></TD>
+						<TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=15 HEIGHT=1 BORDER=0></TD>
+						<TD VALIGN="middle" align="right" CLASS="blkVerdanaText11">Powered by&nbsp;</TD>
+						<TD VALIGN="middle"><IMG SRC="http://image.weather.com/web/common/logos/googlelogo.gif" WIDTH="71" HEIGHT="35" ALT="GOOGLE" align="middle"></TD>
+						<TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=61 HEIGHT=1 BORDER=0></TD>
+					</TR>
+				</form>
+				</TABLE>
+		</TD></TR></TABLE>
+		</DIV>
+	</TD></TR>
+</TABLE>
+<script LANGUAGE="JavaScript1.2">
+if (param('q') && param('q').length > 0)
+document.googleSearch.q.value = param('q');
+</script>
+<P CLASS="Spacing"></P>
+
+<script LANGUAGE="JavaScript" src="http://ima.weather.com/common/footer/javascript/footerdata.js"></script>
+<script LANGUAGE="JavaScript" src="http://ima.weather.com/common/footer/javascript/footerbottomlinks.js"></script>
+<SCRIPT LANGUAGE="JavaScript" SRC="http://ima.weather.com/common/footer/javascript/footer.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">printFooter();</script>
+
+
+<!-- copyright - legal restrictions and terms of use - privacy statement -->
+<script LANGUAGE="JavaScript" src="http://ima.weather.com/common/footer/javascript/footerlegal.js"></script>
+<SCRIPT LANGUAGE="JavaScript">printLegal();</script>
+<!-- end footer -->
+<!-- AdList:  null ad for position 'Hidden1'-->
+
+<SCRIPT LANGUAGE="JavaScript1.2">
+<!--
+if (document.referrer) {
+	thisDF = document.referrer;
+} else {
+	thisDF = "";
+}
+if (thisDF.search(/yahoo.com/) != -1) {
+	document.write ('<A HREF="'+thisDF+'"><IMG SRC="http://image.weather.com/web/common/logos/yahooback.gif" WIDTH=88 HEIGHT=31 BORDER=0 ALT="Back to Yahoo! Weather" ALIGN="RIGHT"></A>');
+}
+//-->
+</SCRIPT>
+
+
+
+<SCRIPT LANGUAGE="JavaScript">if ((popup == undefined) || !popup) {Poll();}</script>
+</center>
+     </BODY>
+</HTML>

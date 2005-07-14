@@ -1,0 +1,29 @@
+test
+Partly Cloudy
+Few Showers
+Cloudy
+Mostly Sunny
+Mostly Cloudy
+Showers
+Isolated T-Storms
+Scattered T-Storms
+Rain / Thunder
+Scattered Showers
+AM Showers
+Sunny
+PM T-Storms
+T-Storms
+AM Clouds / PM Sun
+Rain
+Light Rain
+Showers / Wind
+PM Showers
+Light Rain / Wind
+Cloudy / Wind
+Rain / Wind
+Mostly Clear
+AM T-Storms
+Strong Storms
+Mostly Cloudy / Wind
+Rain / Snow Showers
+Scattered Strong Storms

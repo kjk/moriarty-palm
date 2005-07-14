@@ -1,0 +1,1542 @@
+
+
+
+
+
+
+
+
+<HTML>
+<HEAD>
+
+<TITLE>weather.com - Local Travel Page</TITLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+OAS_MJX_on = true; // when true, this allows the MJX ad request to be made
+OAS_spoof = '/5day/us/wa/819/seattle/98101.';
+OAS_listpos = 'HeaderSpon,PageSpon,PageSpon2,LocalAd,Explore1,Explore2,Explore3,Explore4,Explore5,Explore6,SpotLight1,SpotLight2,SpotLight3,SpotLight4,SpotLight5,SpotLight6,PageSpon3,Sweeps,PollSpon,Hidden1';
+OAS_query = 'family=travel&context=forecast&temp=58&uv=0&humid=72&dew=49&wind=6&cond=cloud_partly&temph1=73&templ1=55&fcond1=clear_mostly_sunny&temph2=75&templ2=58&fcond2=clear_mostly_sunny&temph3=74&templ3=58&fcond3=cloud_mostly&pollen=2';
+CM_tag = 'trvl_fam_city';
+// -->
+</SCRIPT>
+
+
+<!-- externals version 2004.07.27 @ 11:39 AM modified by Wendy Frazier -->
+<LINK REL="stylesheet" TYPE="text/css" HREF="http://ima.weather.com/web/common/header/stylesheet/style_sheet.css">
+<META HTTP-EQUIV="MSThemeCompatible" Content="Yes">
+<meta http-equiv="imagetoolbar" content="no">
+<SCRIPT LANGUAGE="JavaScript1.2">
+<!-- 
+isMinNS4 = (document.layers) ? 1 : 0;
+isMinIE4 = (document.all) ? 1 : 0;
+isMinIE5 = (document.getElementById&&document.all) ? 1 : 0;
+isNS6 = (document.getElementById&&!document.all) ? 1 : 0;
+var popup;
+var dateNow=new Date();
+var haton=0;
+function initialize_ad_array(adS)
+{
+  adS['uk.weather.com']=new Array('uk.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['br.weather.com']=new Array('br.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['fr.weather.com']=new Array('fr.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['de.weather.com']=new Array('de.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['espanol.weather.com']=new Array('espanol.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['desktop3.weather.com']=new Array('desktop3.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['desktop.weather.com']=new Array('desktop.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['adstest.weather.com']=new Array('adstest.weather.com','http://adstest.weather.com/RealMedia/ads/');
+  adS['beta.weather.com']=new Array('www.weather.com','http://beta.weather.com/RealMedia/ads/');
+  adS['photo.weather.com']=new Array('www.weather.com','http://www.weather.com/RealMedia/ads/');
+  adS['www.w3.weather.com']=new Array('www.weather.com','http://www.w3.weather.com/RealMedia/ads/');
+  adS['beta.w3.weather.com']=new Array('beta.weather.com','http://beta.w3.weather.com/RealMedia/ads/');
+  adS['registration.weather.com']=new Array('registration.weather.com','http://www.weather.com/RealMedia/ads/');
+
+
+}
+// -->
+</script>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/ext.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/triggerParams.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/stdLauncher.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/divtools.js" ></SCRIPT><SCRIPT LANGUAGE="JavaScript1.2">
+<!--
+
+// <!--#if expr="" -->
+var remoteAddr="172.16.24.25";
+// <!--#endif -->
+// 
+
+
+var adTest=GetCookie("oas_host_cookie");
+
+function regenerate2() {
+	return;
+}
+
+function initialize_dom_severe_scroll() {
+	return;
+}
+
+function onPageStart() {
+    regenerate2();
+    if (isMinNS4 && document.images["holdspace"]) {
+	    thisX = document.images["holdspace"].x;
+	    thisY = document.images["holdspace"].y;
+	    thisElement = makeObjectNS4();
+    }
+    if (document.getElementById) initialize_dom_severe_scroll();
+}
+
+window.onload = onPageStart;
+
+var adS=new Array();
+initialize_ad_array(adS);
+
+OAS_url ='http://www.weather.com/RealMedia/ads/';
+OAS_host = window.location.hostname;
+
+if (OAS_host.indexOf('w3')>0)
+{
+	OAS_host = 'www.weather.com';
+	OAS_url='http://www.w3.weather.com/RealMedia/ads/';   
+}else if (adS[OAS_host]){
+     OAS_url=adS[OAS_host][1];
+     OAS_host = adS[OAS_host][0];
+}else{
+   OAS_host='www.weather.com'; 
+}
+
+// special ads test code
+if (adTest)
+{
+    if ((remoteAddr.indexOf("10.") == 0)||
+        (remoteAddr.indexOf("169.254.") == 0)||
+        (remoteAddr.indexOf("192.168.") == 0)||
+        (remoteAddr.indexOf("216.133.140.1") == 0)||
+		(remoteAddr.indexOf("216.133.140.2") == 0))
+       {
+	 OAS_host=adTest;
+       }
+  }
+
+OAS_target = "_top"; 
+OAS_version = 10; 
+OAS_rn = '001234567890'; 
+OAS_rns = '1234567890'; 
+OAS_rn = new String (Math.random()); OAS_rns = OAS_rn.substring(2,11); 
+function OAS_NORMAL(pos) {
+if (OAS_MJX_on){
+  document.write('<A HREF="' + OAS_url + 'click_nx.ads/' + OAS_host + OAS_spoof + '/1' + OAS_rns + '@' + OAS_listpos + '!' + pos + '?' + OAS_query + '" TARGET=' + OAS_target + '>');
+  document.write('<IMG SRC="' + OAS_url + 'adstream_nx.ads/' + OAS_host + OAS_spoof + '/1' + OAS_rns + '@' + OAS_listpos + '!' + pos + '?' + OAS_query + '" BORDER=0></A>');
+  }
+}
+
+// this'll get overwritten later on the page render, 
+// but if it doesn't, we're still OK 
+
+function OAS_RICH(pos) {
+  OAS_NORMAL(pos);
+}
+
+//This was added to "touch" the UserPreferences and RMID cookies with every 
+//page view so that their expiration date changes.  If the cookie exists....
+	var queryString = new Object;
+	function parseParameter() {
+	var temp_query = new RegExp ('^[^\\?]+\\?(.*)$');
+	if ( ! temp_query.test(location) ) return false;
+	var array = temp_query.exec(location);
+	queryString.QUERY_STRING = array[1];
+	var params = queryString.QUERY_STRING.split(/&/);
+	for ( var i = 0; i < params.length; i++ ) {
+		var keys = params[i].split(/=/);
+		queryString[ keys[0] ] = unescape(keys[1]);
+		}
+	}
+	function paramValue(key) {
+	if ( key == null ) {
+		alert("param() function has been used incorrectly.\nUSAGE: param(key)");
+		return false;
+	}
+		return queryString[key];
+	}
+	parseParameter();	
+	
+	var vsearch = paramValue('search'); 
+	var upcookie = GetCookie("UserPreferences");
+	if(upcookie > 0 && vsearch != "search"){
+		updateCookieExpDate("UserPreferences");
+		updateCookieExpDate("RMID");
+	}
+
+var customization_pathname = (window.location.pathname.indexOf("/weather/my")>=0)?1:0;
+
+//The below logic should only process on non-Customization pages.
+if (customization_pathname == 0){	
+	var myPrefsCookie = GetCookie("MyPrefs");
+	if(myPrefsCookie.length > 1){
+		updateCookieUnescape("MyPrefs");
+	}
+}	
+//-->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.1">
+<!-- 
+OAS_version = 11; 
+if (!isMinIE4 && !isMinIE5 && !isNS6 && !isMinNS4) OAS_version = 10;
+if (OAS_MJX_on){
+if (OAS_version >= 11) document.write('<SCR' + 'IPT LANGUAGE=JavaScript1.1 SRC="' + OAS_url + 'adstream_mjx.ads/' + OAS_host + OAS_spoof + '/1' + OAS_rns + '@' + OAS_listpos + '?' + OAS_query + '"><\/SCRIPT>');
+}
+//-->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- 
+function OAS_AD(pos) { 
+		(OAS_version >= 11) ? OAS_RICH(pos) : OAS_NORMAL(pos);
+}
+//-->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/eluminate.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/techprops.js" ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" SRC="http://ima.weather.com/common/header/javascript/cmtagging.js" ></SCRIPT>
+
+
+
+
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINHEIGHT="0" MARGINWIDTH="0" LINK="#004371" VLINK="#004371">
+<!-- Begin Header Module Last Modified on 08/04/04 by TLA -->
+
+
+
+
+
+
+
+<SCRIPT LANGUAGE="JavaScript1.2">
+var storedId = getUserPreferences("11");
+if ("98101" != ""){
+	if ("98101" == getUserPreferences("11")){
+			setUserPreferences("10","Seattle, WA (98101)");}}
+</SCRIPT>
+<center><SCRIPT LANGUAGE="JavaScript1.2">cmCreatePageviewTag(CM_page_id, CM_cat_id, CM_rmid, CM_urs_id, CM_where_search, CM_partner, CM_dma, CM_country, CM_state, CM_topProdID, CM_detailProdID, CM_prodViewTag, CM_shop5Tag, CM_shop9Tag);</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2">
+<!--
+if (document.referrer) {
+	thisDF = document.referrer;
+} else {
+	thisDF = "";
+}
+if (thisDF.search(/usatoday.com/) != -1) {
+	midstring = " contains ";
+	document.write ('<MAP NAME="weather_nav_Map"><AREA SHAPE="rect" ALT="" COORDS="657,0,768,27" HREF="http://asp.usatoday.com/weather/weatherfront.aspx"><AREA SHAPE="rect" ALT="" COORDS="536,0,652,27" HREF="http://www.usatoday.com/tech/front.htm"><AREA SHAPE="rect" ALT="" COORDS="418,0,534,27" HREF="http://www.usatoday.com/life/front.htm"><AREA SHAPE="rect" ALT="" COORDS="300,0,414,27" HREF="http://www.usatoday.com/sports/front.htm"><AREA SHAPE="rect" ALT="" COORDS="184,0,296,27" HREF="http://www.usatoday.com/money/front.htm"><AREA SHAPE="rect" ALT="" COORDS="67,0,180,27" HREF="http://www.usatoday.com/news/front.htm"><AREA SHAPE="rect" ALT="" COORDS="0,0,65,27" HREF="http://www.usatoday.com/usafront.htm"></MAP><IMG SRC="http://image.weather.com/web/common/logos/usatodayback.gif" WIDTH=774 HEIGHT=28 BORDER=0 USEMAP="#weather_nav_Map">');
+}
+//-->
+</SCRIPT>
+
+
+
+
+
+<!-- severe mode CSS changes here, if any -->
+
+<!-- normal.css -->
+<IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=2 alt="" border=0><br>
+<script src="http://ima.weather.com/common/header/javascript/hat.js"></script><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=1 alt="" border=0><br><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=768><TR><TD WIDTH=768 CLASS="globalNavTD" ALIGN="LEFT" VALIGN="MIDDLE" NOWRAP><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=11 HEIGHT=1 alt="" border=0><A HREF="/?from=globalnav" onClick="return smartTrack('/','globalnav')" CLASS="globalNavA">Home</A> <IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0><IMG SRC="http://image.weather.com/web/common/pixel/ffffff.gif" WIDTH=2 HEIGHT=20 BORDER=0 ALIGN="ABSMIDDLE"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0>
+<A CLASS="globalNavA" HREF="/weather/my/?from=globalnav" onClick="return smartTrack('/weather/my/','globalnav')">My Page</A> | <A CLASS="globalNavA" HREF="/activities/health?from=globalnav" onClick="return smartTrack('/activities/health','globalnav')">Health</A> | <A CLASS="globalNavA" HREF="/activities/travel/?from=globalnav" onClick="return smartTrack('/activities/travel/','globalnav')">Travel</A> | <A CLASS="globalNavA" HREF="/activities/driving/?from=globalnav" onClick="return smartTrack('/activities/driving/','globalnav')">Driving</A> | <A CLASS="globalNavA" HREF="/activities/events/?from=globalnav" onClick="return smartTrack('/activities/events/','globalnav')">Events</A> | <A CLASS="globalNavA" HREF="/activities/recreation/?from=globalnav" onClick="return smartTrack('/activities/recreation/','globalnav')">Recreation</A> | <A CLASS="globalNavA" HREF="/activities/homeandgarden/?from=globalnav" onClick="return smartTrack('/activities/homeandgarden/','globalnav')">Home &amp; Garden</A>
+<IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0><IMG SRC="http://image.weather.com/web/common/pixel/ffffff.gif" WIDTH=2 HEIGHT=20 BORDER=0 ALIGN="ABSMIDDLE"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=2 HEIGHT=1 BORDER=0>
+<A CLASS="globalNavA" HREF="/common/welcomepage/world.html?from=globalnav" onClick="return smartTrack('/common/welcomepage/world.html','globalnav')">World</A> | <A CLASS="globalNavA" HREF="/newscenter/?from=globalnav" onClick="return smartTrack('/newscenter/','globalnav')">News</A> | <A CLASS="globalNavA" HREF="/maps/garden.html?from=globalnav" onClick="return smartTrack('/maps/garden.html','globalnav')">Maps</A> | <A CLASS="globalNavA" HREF="/services/?from=globalnav" onClick="return smartTrack('/services/','globalnav')">Weather Tools</A> | <A CLASS="globalNavA" HREF="http://store.weather.com/?from=globalnav" onClick="return smartTrack('http://store.weather.com/','globalnav')">Store</A>
+</TD>
+</TR><TR> 
+<TD BGCOLOR="#FFFFFF" NOWRAP><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=650 BORDER=0 HEIGHT=1 name="gnanchor" id="gnanchor" alt=""><DIV class="hatnav" NAME="gnsign" id="gnsign" STYLE="border: 1px solid #A7C9E0;visibility:hidden; position:absolute; left:650"><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=116><TR><TD CLASS="inDentA" ALIGN="LEFT"><BR><A HREF="javascript:smartTrack('http://notify.weather.com/weather/notify','hat');"><B>Notify!</B></A><BR><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=5 alt="" border=0><BR><A HREF="javascript:smartTrack('http://gold.weather.com/weather/wxgold/login','hat')"><B>weather.com&reg; Gold</B></A><BR><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=5 alt="" border=0><BR><A HREF="javascript:smartTrack('http://www.weather.com/weather/my','hat')"><B>My Page</B></A><BR><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=5 alt="" border=0><BR><A HREF="javascript:smartTrack("http://registration.weather.com/registration/myprofile/step1","hat")"><B>My Profile</B></A><BR><BR></TD></TR><TR><TD ALIGN="CENTER"><A HREF="javascript:hideDiv('gnsign')">Close Window</A><BR><BR></TD></TR></TABLE></DIV>
+</TD>
+</TR>
+</TABLE>
+ 
+ 
+
+<DIV ID="bodyContainer">
+
+
+
+
+
+<!-- tabs version 08.03.04.b last modified by Wendy Frazier -->
+
+<A NAME="atabs"><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=768>
+	<TR HEIGHT=20><TD WIDTH=100% CLASS="tabNav"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=11 HEIGHT=1 ALT="">
+		<A HREF="javascript:void(0);" onClick="return smartTrack('/activities/travel/businesstraveler/','tabset');" CLASS="tabNavA">Business Traveler</A>
+		 | <A HREF="javascript:void(0);" onClick="return smartTrack('/activities/travel/vacationplanner/','tabset');" CLASS="tabNavA">Vacation Planner</A> | <A HREF="javascript:void(0);" onClick="return smartTrack('/activities/aviation/','tabset');" CLASS="tabNavA">Aviation</A>		</TD>
+	</TR>
+</TABLE>
+	<!-- banner version 07.16.04 last modified by Tina Allen-->
+<table border="0" cellpadding="0" width="768" cellspacing="0" background="http://image.weather.com/web/common/banners/summer/travel.jpg"><tr><td valign="top" align="right"><a onclick="smartTrack('/','banner');return false;" href="http://www.weather.com/"><img src="http://image.weather.com/web/blank.gif" border="0" width="458" height="56" alt="Click to return to home page." align="top"></a>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('HeaderSpon');
+//-->
+</SCRIPT>
+</td></tr></table><img alt="" SRC="/opol.gif?cb=1094464627806&wxr=null&wxm=GET&wxp=HTTP/1.1" width="1" height="1"><script language="JavaScript1.2">if ((GetCookie('RMID') && GetCookie('RMID').length>=5)&&document.cookie.indexOf("TData")<0) {document.write('<im'+'g src="http://cte.weather.com/web/blank.gif" alt="" border=0 width=1 height=1>');}</script><BR>
+
+
+	<A NAME="awhatwhere">
+<!-- version 8/05/04 modified by Tina Allen  -->
+<TABLE WIDTH="768" BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="zipSearch">
+<FORM ACTION="http://www.weather.com/search/enhanced" METHOD="get" NAME="whatwhere" onSubmit="return checkForm();">
+<TR>
+<TD WIDTH="610" BACKGROUND="http://image.weather.com/web/common/banners/summer/local_forecast.jpg" HEIGHT="47">
+		<DIV STYLE="position:relative;top:0px; left:230px;width:380px;">
+		<TABLE  BORDER="0" CELLPADDING="0" CELLSPACING="0">
+			<TR>
+				<TD VALIGN="MIDDLE" ALIGN="LEFT">
+		<INPUT TYPE="TEXT" SIZE="20" NAME="where" VALUE="Enter city or US zip" STYLE="font-size:10px;" onfocus="this.value='';" >
+		<INPUT TYPE="hidden" NAME="what" VALUE="WeatherLocalUndeclared">
+		<input type="hidden" name="lswe">
+		<input type="hidden" name="lswa">
+		<input type="hidden" name="search" value="search">
+		</TD>
+		<TD WIDTH="12">&nbsp;</TD>
+		<TD VALIGN="MIDDLE" ALIGN="LEFT">
+			<SELECT NAME="whatprefs" STYLE="font-size:10px;margin:0px;padding:0px;">
+			<OPTION VALUE="">See weather related to ...
+			<OPTION VALUE="WeatherLocalTravel">Travel
+			<OPTION VALUE="WeatherLocalLawn">Lawn &amp; Garden
+			<OPTION VALUE="WeatherLocalHealth">Health
+			<OPTION VALUE="WeatherLocalDriving">Driving
+			<OPTION VALUE="WeatherLocalGolf">Golf
+			<OPTION VALUE="WeatherLocalHome">Home
+			<OPTION VALUE="WeatherLocalRecreation">Recreation
+			<OPTION VALUE="WeatherLocalSportingEvents">Events
+			<OPTION VALUE="WeatherLocalSki">Ski
+			</SELECT> 
+			<INPUT TYPE="IMAGE" SRC="http://image.weather.com/web/common/buttons/go_search.gif" WIDTH="26" HEIGHT="18" border="0" ALIGN="ABSMIDDLE" ALT="GO">
+		</TD>
+	</TR>
+	</TABLE>
+		</DIV>
+	
+</TD>
+<TD WIDTH="11" VALIGN="MIDDLE">&nbsp;</TD>
+<TD WIDTH="145" VALIGN="MIDDLE">
+<script language="JavaScript1.2">
+	hugMe();
+</script></TD>
+</TR>
+</FORM>
+</TABLE>
+
+<IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=1 HEIGHT=1 BORDER=0 ALT=""><br>
+<a name="abanner">
+<a name="bbanner">
+
+
+
+<TABLE WIDTH="768" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR>
+      <TD WIDTH="453" VALIGN="top"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="453" HEIGHT="1" ALT="" BORDER="0"></TD>
+      <TD WIDTH="15" VALIGN="top"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="15" HEIGHT="1" ALT="" BORDER="0"></TD>
+      <TD WIDTH="300" VALIGN="top"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="300" HEIGHT="1" ALT="" BORDER="0"></TD>
+    </TR>
+    <TR>
+      <TD COLSPAN="3" VALIGN="TOP" ALIGN="LEFT">
+      
+            
+
+
+
+<TABLE WIDTH=768 CELLPADDING=0 CELLSPACING=0 BORDER=0>
+	<TR>
+		<TD VALIGN="MIDDLE" CLASS="breadCrumbBar" WIDTH=768>
+<A HREF="/" CLASS="breadCrumb">Home</A>
+
+
+
+
+	>
+	
+		<A HREF="/activities/travel/" CLASS="breadCrumb">Travel</A>
+	
+
+
+
+
+	>
+	
+		<B>Travel Forecast for Seattle, WA (98101)</B>
+	
+
+		</TD>
+	</TR>
+	<TR><TD WIDTH=768 COLSPAN=2><img src="http://image.weather.com/web/blank.gif" width=1 height=1 alt="" border=0></TD></TR>
+</TABLE>
+        
+      </TD>
+    </TR>
+
+    <TR>
+        <TD COLSPAN="3" ALIGN="LEFT">
+        <!-- if svr ex alerts, use code below -->
+
+
+
+<!-- end svr wx alert -->
+        </TD>
+    </TR>
+
+	<TR>
+		<TD COLSPAN="3" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="5" ALT=""></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="453" VALIGN="TOP" ALIGN="LEFT">
+        
+            
+
+
+
+
+
+<TABLE width="448" border="0" cellpadding="0" cellspacing="0">
+    <TR>
+        
+        <TD STYLE="background-image:url(http://image.weather.com/web/common/buttons/top_nav_off_sm.gif); background-repeat:no-repeat;" WIDTH="87" HEIGHT="22" ALIGN="CENTER" CLASS="blueFont10" VALIGN="MIDDLE"><A HREF="/activities/travel/dailytraveler/weather/yesterday.html?locid=98101">Yesterday</A></TD>
+        <TD STYLE="background-image:url(http://image.weather.com/web/common/buttons/top_nav_on_sm.gif); background-repeat:no-repeat;" WIDTH="87" HEIGHT="22" ALIGN="CENTER" CLASS="whtVerdanaText11" VALIGN="MIDDLE"><B>Current</B></TD>
+        <TD STYLE="background-image:url(http://image.weather.com/web/common/buttons/top_nav_off_sm.gif); background-repeat:no-repeat;" WIDTH="87" HEIGHT="22" ALIGN="CENTER" CLASS="blueFont10" VALIGN="MIDDLE"><A HREF="/activities/travel/dailytraveler/weather/weekend.html?locid=98101">Weekend</A></TD>
+        <TD STYLE="background-image:url(http://image.weather.com/web/common/buttons/top_nav_off_sm.gif); background-repeat:no-repeat;" WIDTH="87" HEIGHT="22" ALIGN="CENTER" CLASS="blueFont10" VALIGN="MIDDLE"><A HREF="/activities/travel/dailytraveler/weather/tenday.html?locid=98101">10-Day</A></TD>
+        <TD STYLE="background-image:url(http://image.weather.com/web/common/buttons/top_nav_off_sm.gif); background-repeat:no-repeat;" WIDTH="87" HEIGHT="22" ALIGN="CENTER" CLASS="blueFont10" VALIGN="MIDDLE"><A HREF="/outlook/travel/dailytraveler/monthly/98101">Month</A></TD>
+	</TD>
+        
+	</TR>
+	<TR>
+	    <TD colspan="5" valign="top"><IMG src="http://image.weather.com/web/blank.gif" width="1" height="15" border="0" alt="">
+		</TD>
+	</TR>
+</TABLE>
+        
+        
+        
+
+
+
+
+
+ <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+ 	<TR>
+		<TD VALIGN="TOP" CLASS="currentObsTitle">
+				 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+				 	<TR><TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="14" BORDER="0" ALT=""></TD></TR>
+                    <TR><TD WIDTH="400" VALIGN="MIDDLE" CLASS="inDentA"><B STYLE="color:#3A5B29;">Current Conditions for Seattle, WA (98101)</B></TD></TR>
+				 	<TR><TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="14" BORDER="0" ALT=""></TD></TR>
+                  </TABLE>
+			</TD>
+			<TD VALIGN="MIDDLE" CLASS="currentObsTitle">
+			
+<!-- Current Conditions -->
+<STYLE>
+.promoLinkA,.promoLinkA:link,.promoLinkA:active,.promoLinkA:visited{font-size:11px;color:#ffffff;text-decoration:none;}
+</STYLE>
+<script language='javascript'><!--
+var promos = new Array();
+  
+      promos[promos.length?promos.length:0] = '<a href="http://www.weather.com/services/weathergold.html?from=wxcc2&refer=wxcc2">Track Storms: 3x Faster Radar Maps & No Ads - Click Here</a>';
+  
+  var _t = promos[parseInt(Math.random()*promos.length)];
+  document.write(_t);
+// -->
+</script>
+&nbsp;&nbsp;
+			</TD>
+		</TR>
+	</TABLE>
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR>
+        <TD WIDTH="50%" BGCOLOR="#F1F4E9"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="221" HEIGHT="1" BORDER="0" ALT=""></TD>
+        <TD WIDTH="50%" BGCOLOR="#FFFFFF"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="221" HEIGHT="1" BORDER="0" ALT=""></TD>
+    </TR>
+
+           <TR>
+             <TD COLSPAN="2" VALIGN="TOP" ALIGN="LEFT">
+
+
+              <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+                <TR>
+                  <TD WIDTH="1" CLASS="cntBorder"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="250" BORDER="0" ALT=""></TD>
+                  <TD WIDTH="50%" VALIGN="TOP" ALIGN="CENTER" CLASS=obsInfo1>
+
+
+
+
+<!--
+Want The Weather Channel data? Sign up for the Weather XML Data Feed online at <A HREF="http://www.weather.com/services/xmloap.html">http://www.weather.com/services/xmloap.html</A>, GA (30339)</B>
+-->
+
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TR><TD CLASS=obsInfo1 VALIGN=TOP ALIGN=CENTER WIDTH=50%>
+
+<IMG SRC=http://image.weather.com/web/common/wxicons/52/29.gif WIDTH=52 HEIGHT=52 BORDER=0 ALT=></TD>
+<TD VALIGN=MIDDLE ALIGN=CENTER CLASS=obsInfo2 WIDTH=50%><B CLASS=obsTempTextA>58&deg;F</B></TD></TR>
+<TR><TD VALIGN=TOP ALIGN=CENTER CLASS=obsInfo2><B CLASS=obsTextA>Partly Cloudy</B></TD>
+<TD VALIGN=TOP ALIGN=CENTER CLASS=obsInfo2> <B CLASS=obsTextA>Feels Like<BR>58&deg;F</B></TD></TR>
+</TABLE>
+<BR>
+<TABLE BORDER=0 CELLPADDING=0 WIDTH=100% CELLSPACING=0>
+<TR><TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo1 WIDTH=40%>UV Index:</TD>
+<TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo2>0&nbsp;Low</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo1>Dew Point:</TD>
+<TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo2>49&deg;F</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo1>Humidity:</TD>
+<TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo2>72%</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo1>Visibility:</TD>
+<TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo2>10.0 miles</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo1>Pressure:</TD>
+<TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo2>30.20 inches and steady</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo1>Wind:</TD>
+<TD ALIGN=LEFT VALIGN=TOP CLASS=obsInfo2>Variable at 6&nbsp;mph</TD></TR>
+
+<TR><TD COLSPAN=2 ALIGN="center" VALIGN=TOP CLASS="outModCont"><BR><A HREF="/outlook/travel/pastweather/98101" >Yesterday's Weather</A></TD></TR>
+
+<TR><TD COLSPAN=2 ALIGN=LEFT VALIGN=TOP CLASS=obsReported><BR><A HREF="#" onClick="return mapWindowOpen('/common/help/reportingstation.html','Help','width=466,height=450,resizable,scrollbars,nostatus')">As reported at</A> Boeing Field, WA,&nbsp;September 6 01:53 AM PDT.</TD></TR>
+</TABLE></TD>
+                  <TD WIDTH="1" CLASS="cntBorder"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="250" BORDER="0" ALT=""></TD>
+                  <TD WIDTH="50%" VALIGN="TOP" ALIGN="CENTER" BGCOLOR="#FFFFFF">
+
+                  <!-- vertical outlet #1 -->
+        
+        
+
+
+
+		<TABLE WIDTH="90%" BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="outModCont">
+    
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP"  CLASS="outModCont"><DIV CLASS="obsTextBlue"><B>Airport delays for:</B></DIV></TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="TOP"  CLASS="outModCont">
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0"CLASS="outModLine">
+<TR>
+<TD VALIGN="MIDDLE" ALIGN="LEFT" CLASS="blueVerdana10" HEIGHT="20">Seattle-Tacoma International:</TD>
+<TD VALIGN="MIDDLE" ALIGN="CENTER" CLASS="blueVerdana10"><B>0:00</B></TD>
+</TR>
+ </TABLE>
+</TD>
+</TR>
+ <TR>
+ <TD ALIGN="LEFT" VALIGN="TOP"  CLASS="outModCont"><DIV CLASS="captionText"><A HREF="/outlook/travel/preference/airport/98101">change airport</A></DIV></TD>
+</TR>
+
+<TR>
+<TD  CLASS="outModCont"><DIV CLASS="blueVerdana10">
+<IMG SRC="http://image.weather.com/web/common/icons/aviation_orange_19x18.gif" BORDER="0" ALT="" ALIGN="ABSMIDDLE">&nbsp;
+<A HREF="/outlook/travel/flights/citysearch?from=LAPoutlet">Check your flight status</A></DIV>
+</TD>
+</TR>
+</TABLE>
+
+         
+
+
+
+              <!-- vertical outlet #2 -->
+        
+            <DIV CLASS="cntBorder"><IMG SRC="http://image.weather.com/web/common/blank.gif" WIDTH="225" HEIGHT="1" BORDER="0" ALT=""></DIV>
+            
+
+
+
+
+<TABLE WIDTH="90%" BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="outModCont">
+	<TR><TD ALIGN="LEFT" VALIGN="TOP"  CLASS="outModCont"><DIV CLASS="obsTextBlue"><B>Today's sunrise/sunset times for:</B></DIV></TD></TR>
+	<TR>
+		<TD ALIGN="CENTER" VALIGN="TOP"  CLASS="outModCont">
+			<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0"  CLASS="outModLine">
+				<TR>
+					<TD VALIGN="MIDDLE" ALIGN="LEFT" CLASS="blueVerdana10" HEIGHT="20">Seattle</TD>
+					<TD VALIGN="MIDDLE" ALIGN="CENTER" CLASS="blueVerdana10"><B>6:35 AM/7:39 PM</B></TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR><TD  CLASS="outModCont"><DIV CLASS="blueVerdana10"><IMG SRC="http://image.weather.com/web/common/icons/aviation_orange_19x18.gif" BORDER="0" ALT="" ALIGN="ABSMIDDLE">&nbsp;<A HREF="/activities/travel/vacationplanner/welcome.html?from=lapoutlet&from=LAPoutlet">Find vacation destinations</A></DIV></TD></TR>
+</TABLE>
+           <DIV CLASS="cntBorder"><IMG SRC="http://image.weather.com/web/common/blank.gif" WIDTH="225" HEIGHT="1" BORDER="0" ALT=""></DIV>
+            
+         <!-- marketing outlet -->
+        
+                    <TABLE WIDTH="90%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+
+<TR><TD COLSPAN="2" CLASS="outModCont" ALIGN="LEFT">
+<FONT CLASS="blueVerdana10">
+		<IMG SRC="http://image.weather.com/web/common/icons/driving_orange_19x18.gif" BORDER="0" ALT="" ALIGN="ABSMIDDLE"> 
+	<A HREF="/activities/driving/autoadvisor/?from=LAPOutlet">Weatherize your car</A></FONT></TD></TR>
+
+</TABLE>
+                
+		 <!-- another promo position -->
+         
+            
+
+           </TD>
+		   <TD WIDTH="1" CLASS="cntBorder"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="250" BORDER="0" ALT=""></TD>
+       </TR>
+	   <TR>
+	   	<TD COLSPAN="5"  CLASS="cntBorder"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="1" BORDER="0" ALT=""></TD>
+	   </TR>
+ </TABLE>
+          </TD>
+       </TR>
+ </TABLE>
+
+
+
+
+<P CLASS="Spacing"></P>
+
+        
+        
+        
+
+
+<!-- Begin Local Linker -->		
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+			<TR><TD><H2 CLASS="moduleTitleBar">Your Seattle, WA (98101) ...</H2></TD></TR>
+		</TABLE>
+		<DIV ALIGN="CENTER">
+		<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+			<TR><TD VALIGN="TOP" ALIGN="CENTER">
+			
+				<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 STYLE="background-image:url(http://image.weather.com/web/common/banners/summer/locallinker.jpg);background-repeat:no-repeat;">
+												
+					<TR><TD VALIGN="TOP"><DIV CLASS="modBody">
+						<UL>
+							<LI><A HREF="javascript:void(0)" ONCLICK="return smartTrack('/outlook/health/allergies/weather/tenday/%locid%?from=locallinker','LAPlocalinker')">Pollen counts & forecast</A>
+<LI><A HREF="javascript:void(0)" ONCLICK="return smartTrack('/outlook/homeandgarden/home/weather/tenday/%locid%?from=locallinker','LAPlocalinker')">Summer home care tips</A>
+<LI><A HREF="javascript:void(0)" ONCLICK="return smartTrack('/outlook/health/allergies/meter/%locid%?from=locallinker','LAPlocalinker')">Indoor air quality reports</A>
+<LI><A HREF="javascript:void(0)" ONCLICK="return smartTrack('/outlook/travel/flights/citywx/%locid%?from=locallinker','LAPlocalinker')">Flight delays & airport conditions</A>
+<LI><A HREF="javascript:void(0)" ONCLICK="return smartTrack('/outlook/events/sports/result/%locid%?when=thisweek&attrib=WXSP&y=7&from=locallinker','LAPlocalinker')">Sporting events calendar & forecasts</A>																																													
+						</UL>
+					</DIV></TD></TR>
+				 </TABLE>
+			</TD></TR>
+		</TABLE>
+	</TD></TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+<!-- End Local Linker Module -->
+        
+        
+        
+
+
+
+  
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD CLASS="module" VALIGN="TOP">
+					<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TR>
+							<TD STYLE="padding:10px;">
+<!-- LAP Map -->
+<STYLE>
+.promoLinkA,.promoLinkA:link,.promoLinkA:active,.promoLinkA:visited{font-size:11px;color:#ffffff;text-decoration:none;}
+</STYLE>
+<script language='javascript'><!--
+var promos = new Array();
+  
+      promos[promos.length?promos.length:0] = '<a href="http://www.weather.com/services/weathergold.html?refer=wxlapmap8&from=wxlapmap8"><b>Track Storms With Your Location on This Map!</a>';
+  
+      promos[promos.length?promos.length:0] = '<a href="http://www.weather.com/services/weathergold.html?refer=wxlapmap8c&from=wxlapmap8c"><b>Track Storms With Your Location on This Map - Click Here!</a>';
+  
+  var _t = promos[parseInt(Math.random()*promos.length)];
+  document.write(_t);
+// -->
+</script>
+</TD>
+							<TD ALIGN="RIGHT" VALIGN="MIDDLE">
+</TD>
+						</TR>
+					</TABLE>
+					
+						<DIV ALIGN="CENTER">
+							<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+								<TR>
+									<TD VALIGN="TOP">
+										<DIV CLASS="Content">
+										<!-- content -->
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+   
+
+    <TR>
+      <TD COLSPAN="3" VALIGN="MIDDLE" ALIGN="CENTER">
+      <A HREF="/outlook/travel/map/98101?from=LAPmaps"><IMG SRC="http://image.weather.com/web/radar/us_sea_closeradar_medium_usen.jpg" WIDTH="440" HEIGHT="297" BORDER="0" ALT=""></A>
+      </TD>
+    </TR>
+    <TR  BGCOLOR="#FFFFFF">
+      <TD COLSPAN="3"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="5" BORDER="0" ALT=""></TD>
+    </TR>
+<TR>
+      <TD CLASS="mapTableText"><A HREF="/outlook/travel/map/98101?from=LAPmaps&name=index_large_animated&day=1">Map in Motion</A></TD>
+      <TD CLASS="mapTableText">
+<A HREF="/maps/garden.html?from=LAPmaps">Map Room</A></TD>
+      <TD CLASS="mapTableText"><A HREF="/outlook/travel/map/98101?from=LAPmaps">More Local Maps</A></TD>
+    </TR>
+    <TR>
+      <TD CLASS="mapTableText" BGCOLOR="#EEF5FD">
+<A HREF="/activities/verticalvideo/newscentervideo.html?from=LAP">Top Story</A>&nbsp;<IMG SRC="http://image.weather.com/web/common/icons/video_icon_s.gif" WIDTH="13" HEIGHT="9" BORDER="0" ALT="" ALIGN="MIDDLE">
+</TD>
+      <TD CLASS="mapTableText" BGCOLOR="#EEF5FD">
+
+	
+			
+
+
+
+<a href="http://www.weather.com/multimedia/index.html?clip=364">National Forecast<!--Seattle Forecast--></A>&nbsp;<IMG SRC="http://image.weather.com/web/common/icons/video_icon_s.gif" BORDER="0" ALT="Free Content" ALIGN="MIDDLE">
+	
+
+
+      </TD>
+      <TD CLASS="mapTableText" BGCOLOR="#EEF5FD">
+			
+
+
+
+<a href="http://www.weather.com/multimedia/index.html?clip=365">Severe Weather Outlook<!--Northwest Forecast--></A> <IMG SRC="http://image.weather.com/web/common/icons/video_icon_s.gif" BORDER="0" ALT="Free Content" ALIGN="MIDDLE">
+
+
+      </TD>  
+    </TR>
+  </TABLE> 
+
+
+									
+									</TD>
+								</TR>
+							</TABLE>
+					</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+        
+        
+        
+
+
+
+
+
+<A NAME="tenday">
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD CLASS="module" VALIGN="TOP">
+					<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TR>
+							<TD><H2 CLASS="moduleTitleBar">10-Day Forecast</H2></TD>
+							<TD ALIGN="RIGHT" VALIGN="MIDDLE">
+<!-- Ten Day Forecast -->
+<STYLE>
+.promoLinkA,.promoLinkA:link,.promoLinkA:active,.promoLinkA:visited{font-size:11px;color:#ffffff;text-decoration:none;}
+</STYLE>
+<script language='javascript'><!--
+var promos = new Array();
+  
+      promos[promos.length?promos.length:0] = '<a href="http://www.weather.com/services/weathergold.html?from=wx10daysvr2&refer=wx10daysvr2">3x Faster Radar Maps & No Ads - Click Here</a>   ';
+  
+  var _t = promos[parseInt(Math.random()*promos.length)];
+  document.write(_t);
+// -->
+</script>
+</TD>
+						</TR>
+					</TABLE>
+
+						<DIV ALIGN="CENTER">
+							<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+								<TR>
+									<TD VALIGN="TOP">
+										
+										<!-- content -->
+
+  <!-- if page is not printable, use code below -->
+ 
+									<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+										<TR><TD STYLE="font-size:11px; height:24px;" ALIGN="CENTER" VALIGN="MIDDLE"><A HREF=/outlook/travel/hourbyhour/98101><IMG SRC="http://image.weather.com/web/common/buttons/hourly_green_button.gif" WIDTH="88" HEIGHT="22" BORDER="0" ALT="Hourly Forecast"></A>  <A HREF=/outlook/travel/narrative/98101><IMG SRC="http://image.weather.com/web/common/buttons/details_green-button.gif" WIDTH="87" HEIGHT="22" BORDER="0" ALT="Detailed Forecast"></A> <A HREF=/outlook/travel/climatology/monthly/98101><IMG SRC="http://image.weather.com/web/common/buttons/averages_green_button.gif" WIDTH="124" HEIGHT="22" BORDER="0" ALT="Averages and Records"></A></TD></TR>
+									</TABLE>
+									<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0  ID=f2>
+										<TR>
+											<TD CLASS="f2a" WIDTH="270"><FONT CLASS="blkVerdanaText11"><IMG SRC=http://image.weather.com/web/common/icons/printable_icon.gif WIDTH=13 HEIGHT=18 BORDER=0 ALT= ALIGN=ABSMIDDLE> <A HREF=/outlook/travel/print/98101>Printable Forecast</A></FONT></TD>
+											<TD ALIGN=CENTER WIDTH="125" VALIGN=MIDDLE CLASS="f2a">Daytime High /<BR> Overnight Low (&deg;F)</TD>
+											<TD ALIGN=CENTER WIDTH="55" VALIGN=MIDDLE CLASS="f2a">Precip.</TD>
+										</TR>
+									</TABLE>
+									<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0" ID=f2>
+  
+      <!-- endif -->
+
+
+<!-- begin loop -->
+
+      
+<TR>
+<TD WIDTH="15%"><A HREF=/outlook/travel/detail/98101>Today</A><BR> Sep 06</TD>
+<TD WIDTH="10%"><IMG SRC="http://image.weather.com/web/common/wxicons/31/34.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD WIDTH="35%">Mostly Sunny</TD>
+<TD WIDTH="25%" ALIGN="CENTER"><B>73&deg;/55&deg;</B></TD>
+<TD WIDTH="15%" ALIGN="CENTER">0 %</TD>
+</TR>
+      
+<TR>
+<TD CLASS=f2a><A HREF=/outlook/travel/detail/98101?dayNum=1>Tue</A><BR> Sep 07</FONT></TD>
+<TD CLASS=f2a><IMG SRC="http://image.weather.com/web/common/wxicons/31/34.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD CLASS=f2a>Mostly Sunny</TD>
+<TD CLASS=f2a ALIGN="CENTER"><B>75&deg;/58&deg;</B></TD>
+<TD CLASS=f2a ALIGN="CENTER">10 %</TD>
+</TR>
+      
+<TR>
+<TD ><A HREF=/outlook/travel/detail/98101?dayNum=2>Wed</A><BR> Sep 08</FONT></TD>
+<TD ><IMG SRC="http://image.weather.com/web/common/wxicons/31/30.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD >Partly Cloudy</TD>
+<TD  ALIGN="CENTER"><B>74&deg;/58&deg;</B></TD>
+<TD  ALIGN="CENTER">10 %</TD>
+</TR>
+      
+<TR>
+<TD CLASS=f2a><A HREF=/outlook/travel/detail/98101?dayNum=3>Thu</A><BR> Sep 09</FONT></TD>
+<TD CLASS=f2a><IMG SRC="http://image.weather.com/web/common/wxicons/31/11.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD CLASS=f2a>Showers</TD>
+<TD CLASS=f2a ALIGN="CENTER"><B>66&deg;/53&deg;</B></TD>
+<TD CLASS=f2a ALIGN="CENTER">40 %</TD>
+</TR>
+      
+<TR>
+<TD ><A HREF=/outlook/travel/detail/98101?dayNum=4>Fri</A><BR> Sep 10</FONT></TD>
+<TD ><IMG SRC="http://image.weather.com/web/common/wxicons/31/34.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD >Mostly Sunny</TD>
+<TD  ALIGN="CENTER"><B>69&deg;/56&deg;</B></TD>
+<TD  ALIGN="CENTER">10 %</TD>
+</TR>
+      
+<TR>
+<TD CLASS=f2a><A HREF=/outlook/travel/detail/98101?dayNum=5>Sat</A><BR> Sep 11</FONT></TD>
+<TD CLASS=f2a><IMG SRC="http://image.weather.com/web/common/wxicons/31/11.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD CLASS=f2a>Few Showers</TD>
+<TD CLASS=f2a ALIGN="CENTER"><B>69&deg;/58&deg;</B></TD>
+<TD CLASS=f2a ALIGN="CENTER">30 %</TD>
+</TR>
+      
+<TR>
+<TD ><A HREF=/outlook/travel/detail/98101?dayNum=6>Sun</A><BR> Sep 12</FONT></TD>
+<TD ><IMG SRC="http://image.weather.com/web/common/wxicons/31/11.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD >Showers</TD>
+<TD  ALIGN="CENTER"><B>70&deg;/56&deg;</B></TD>
+<TD  ALIGN="CENTER">30 %</TD>
+</TR>
+      
+<TR>
+<TD CLASS=f2a><A HREF=/outlook/travel/detail/98101?dayNum=7>Mon</A><BR> Sep 13</FONT></TD>
+<TD CLASS=f2a><IMG SRC="http://image.weather.com/web/common/wxicons/31/30.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD CLASS=f2a>Partly Cloudy</TD>
+<TD CLASS=f2a ALIGN="CENTER"><B>69&deg;/55&deg;</B></TD>
+<TD CLASS=f2a ALIGN="CENTER">10 %</TD>
+</TR>
+      
+<TR>
+<TD ><A HREF=/outlook/travel/detail/98101?dayNum=8>Tue</A><BR> Sep 14</FONT></TD>
+<TD ><IMG SRC="http://image.weather.com/web/common/wxicons/31/34.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD >Mostly Sunny</TD>
+<TD  ALIGN="CENTER"><B>68&deg;/55&deg;</B></TD>
+<TD  ALIGN="CENTER">0 %</TD>
+</TR>
+      
+<TR>
+<TD CLASS=f2a><A HREF=/outlook/travel/detail/98101?dayNum=9>Wed</A><BR> Sep 15</FONT></TD>
+<TD CLASS=f2a><IMG SRC="http://image.weather.com/web/common/wxicons/31/39.gif" WIDTH=31 HEIGHT=31 BORDER=0></TD>
+<TD CLASS=f2a>Scattered Showers</TD>
+<TD CLASS=f2a ALIGN="CENTER"><B>65&deg;/55&deg;</B></TD>
+<TD CLASS=f2a ALIGN="CENTER">30 %</TD>
+</TR>
+      
+
+<!-- end loop -->
+												<TR><TD COLSPAN="5" CLASS="inDentA"><FONT CLASS="blkVerdanaText10">Last Updated September 6 01:55 AM PDT </TD></TR>
+											 </TABLE>
+
+
+									
+									</TD>
+								</TR>
+							</TABLE>
+					</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+
+        
+        
+        
+ <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+ <FORM NAME="" ACTION="" METHOD="POST">
+ <TR>
+  <TD ALIGN="CENTER" VALIGN="MIDDLE" WIDTH="35"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="35" HEIGHT="25" ALT="" BORDER="0"></TD>
+  <TD ALIGN="LEFT" VALIGN="MIDDLE" WIDTH="100%" CLASS="blkVerdanaText11">
+  <SCRIPT LANGUAGE="JavaScript1.2">
+  <!--
+   document.write("<B>Show this page in:</B> &nbsp; ");
+   document.write("<INPUT TYPE=\"RADIO\" NAME=\"\" VALUE=\"\" ");
+   document.write("onClick=\"setUserPreferences(5,0);setUserPreferences(6,0);setUserPreferences(7,0);setUserPreferences(8,0);setUserPreferences(15,0);window.location.reload(forceGet=true);return false;\" ");
+   if (getUserPreferences("5") && getUserPreferences("5")<1) {
+    document.write("CHECKED> ");
+   } else {
+    document.write("> ");
+   }
+   document.write("English Units &nbsp;&nbsp;&nbsp; ");
+   document.write("<INPUT TYPE=\"RADIO\" NAME=\"\" VALUE=\"\" ");
+   document.write("onClick=\"setUserPreferences(5,1);setUserPreferences(6,1);setUserPreferences(7,1);setUserPreferences(8,1);setUserPreferences(15,1);window.location.reload(forceGet=true);return false;\" ");
+   if (getUserPreferences("5") && getUserPreferences("5")==1) {
+    document.write("CHECKED> ");
+   } else {
+    document.write("> ");
+   }
+   document.write("Metric Units");
+  //-->
+  </SCRIPT><NOSCRIPT>
+  Please enable JavaScript in your browser to switch the measurements on this page from English to Metric Units.
+  </NOSCRIPT>
+  </TD>
+ </TR>
+ </FORM>
+ </TABLE>
+<P CLASS="Spacing"></P>
+
+
+        
+        
+        
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<H2 CLASS="moduleTitleBar">This Week's Features</H2>
+		<DIV ALIGN="CENTER">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic2" ALIGN="CENTER" WIDTH="100%">
+			<TR><TD VALIGN="TOP" ALIGN="CENTER"><DIV CLASS="Content">
+				<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+					<TR>
+	
+						<TD VALIGN="TOP" WIDTH="33%">
+							<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+								<TR><TD STYLE="padding:11px 0px 5px 11px;"><a href=http://www.weather.com/RealMedia/ads/click_lx.ads/www.weather.com/no_display/0000/Hidden1/6168_SCOTTS_2003_Part_0001/TWFT_wx_042304.html/000000?www.weather.com/activities/homeandgarden/garden/scotts/?from=thisweek>Lawn & Garden Help</a></TD></TR>
+								<TR><TD CLASS="blkVerdanaText11" STYLE="padding:0px 0px 0px 11px;">
+<A HREF="http://www.weather.com/RealMedia/ads/click_lx.ads/www.weather.com/no_display/0000/Hidden1/6168_SCOTTS_2003_Part_0001/TWFT_wx_042304.html/000000?www.weather.com/activities/homeandgarden/garden/scotts/?from=thisweek">[AD]<AD- "http://image.weather.com/web/activities/features/twf_lawn_garden.gif" BORDER="0" ALT=""></A>
+								</TD></TR>
+								<TR><TD CLASS="blkVerdanaText11" STYLE="padding:11px 0px 0px 11px;">Make your <a href= http://www.weather.com/RealMedia/ads/click_lx.ads/www.weather.com/no_display/0000/Hidden1/6168_SCOTTS_2003_Part_0001/TWFT_wx_042304.html/000000?www.weather.com/activities/homeandgarden/garden/scotts/?from=thisweek>lawn</a> or <a href=http://www.weather.com/RealMedia/ads/click_lx.ads/www.weather.com/no_display/0000/Hidden1/6168_SCOTTS_2003_Part_0001/TWFT_wx_042304.html/000000?www.weather.com/activities/homeandgarden/garden/scotts/?from=thisweek>garden</a> the envy of the neighborhood.</TD></TR>
+							</TABLE>
+						</TD>
+	
+						<TD VALIGN="TOP" WIDTH="33%">
+							<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+								<TR><TD STYLE="padding:11px 0px 5px 11px;"><a href=http://www.weather.com/activities/travel/vacationplanner/?from=thisweeklap>Summer Travel Tips</a></TD></TR>
+								<TR><TD CLASS="blkVerdanaText11" STYLE="padding:0px 0px 0px 11px;">
+<A HREF="http://www.weather.com/activities/travel/vacationplanner/?from=thisweeklap"><IMG SRC="http://image.weather.com/web/activities/features/twf_vacation_planner.gif" BORDER="0" ALT=""></A>
+								</TD></TR>
+								<TR><TD CLASS="blkVerdanaText11" STYLE="padding:11px 0px 0px 11px;"><a href=http://www.weather.com/activities/travel/vacationplanner/?from=thisweeklap>Vacation destinations</a> & find the <a href=http://www.weather.com/activities/driving/autoadvisor/?from=thisweeklap>best car</a> for your trip.</TD></TR>
+							</TABLE>
+						</TD>
+	
+						<TD VALIGN="TOP" WIDTH="33%">
+							<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+								<TR><TD STYLE="padding:11px 0px 5px 11px;"><a href=http://www.weather.com/services/desktop.html?from=thisweeklap&refer=thisweeklap>Desktop Weather</a></TD></TR>
+								<TR><TD CLASS="blkVerdanaText11" STYLE="padding:0px 0px 0px 11px;">
+<A HREF="http://www.weather.com/services/desktop.html?from=thisweeklap&refer=thisweeklap"><IMG SRC="http://image.weather.com/web/activities/features/twf_dewy.gif" BORDER="0" ALT=""></A>
+								</TD></TR>
+								<TR><TD CLASS="blkVerdanaText11" STYLE="padding:11px 0px 0px 11px;"><a href=http://www.weather.com/services/desktop.html?from=thisweeklap&refer=thisweeklap>FREE local weather</a> & alerts always on your desktop.</TD></TR>
+							</TABLE>
+						</TD>
+										
+					</TR>
+				</TABLE>
+			&nbsp;</DIV></TD></TR>
+		</TABLE>
+		</DIV>
+	</TD></TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+        
+
+        
+        
+         
+<!-- Begin the Tune In to The Weather Channel Module -->
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD CLASS="module" VALIGN="TOP">
+					<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TR>
+							<TD><H2 CLASS="moduleTitleBar">What's on The Weather Channel</H2></TD>
+							<TD ALIGN="RIGHT" VALIGN="MIDDLE">&nbsp;</TD>
+						</TR>
+					</TABLE>
+					
+						<DIV ALIGN="CENTER">
+						<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+							<TR>
+								<TD VALIGN="TOP" ALIGN="CENTER">
+									<!-- content -->
+									<DIV CLASS="Content">
+										<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0">
+												<TR>
+													<TD VALIGN="TOP">
+													<DIV CLASS="modBody">
+														<UL>
+															
+															<LI><A HREF="/newscenter/stormstories/?from=LAPtwc">Watch Storm Stories Tonight (8pm et/pt)</A>
+															
+															
+															<LI><A HREF="/aboutus/television/ocms/index.html?from=LAPtwc">Find Out About Your Favorite Weathercaster</A>
+															
+															
+															<LI><A HREF="/newscenter/roadcrew/?from=LAPtwc">See where The Road Crew will be next</A>
+															
+															
+															<LI><A HREF="http://twc.store.fanbuzz.com/?from=LAPtwc">Cool gear from The Weather Channel Store - check it out.</A>
+															
+															
+															<LI><A HREF="/newscenter/stormstories/stormquest/winner.html/?from=LAPtwc">READ the winning StormQuest essay </A>
+															
+															
+
+														</UL>
+													</DIV>
+													</TD>
+											 </TR>
+											 </TABLE>
+											</TD>
+
+											</TR>
+										</TABLE>
+						</DIV>
+				</TD>
+		</TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+<!-- End the Tune In to The Weather Channel Module -->
+        
+        
+      </TD>
+      <TD WIDTH="15" VALIGN="top"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="1" ALT="" BORDER="0"></TD>
+      <TD WIDTH="300" VALIGN="TOP" ALIGN="CENTER">
+
+        
+        
+
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('PageSpon');
+//-->
+</SCRIPT>
+
+<P CLASS="AdSpacing"></P>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('PageSpon2');
+//-->
+</SCRIPT>
+
+<P CLASS="AdSpacing"></P>
+
+
+        
+        
+        
+
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('LocalAd');
+//-->
+</SCRIPT>
+
+
+        
+        
+        
+
+
+<!-- Begin Recommended Links Module -->
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<H2 CLASS="moduleTitleBar">Recommended Travel Links</H2>
+		<DIV ALIGN="CENTER">
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+				<TR><TD VALIGN="TOP"><DIV CLASS="Content">
+					<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TR><TD STYLE="padding:5px 5px 5px 11px;">
+							
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Explore1');
+//-->
+</SCRIPT>
+
+					         
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Explore2');
+//-->
+</SCRIPT>
+
+					         
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Explore3');
+//-->
+</SCRIPT>
+
+					         
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Explore4');
+//-->
+</SCRIPT>
+
+					         
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Explore5');
+//-->
+</SCRIPT>
+
+					         
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Explore6');
+//-->
+</SCRIPT>
+		                                              
+						</TD></TR>
+					</TABLE>
+				</DIV></TD></TR>
+			</TABLE>
+		</DIV>
+	</TD></TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+<!-- End Recommended Links Sites Module -->	
+	
+        
+        
+        
+        
+
+<!-- Begin In The Spotlight Module -->
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<H2 CLASS="moduleTitleBar">In The Spotlight</H2>
+		<DIV ALIGN="CENTER">
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+				<TR><TD VALIGN="TOP"><DIV CLASS="Content">
+					<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TR><TD STYLE="padding:5px 5px 5px 11px;">
+						    
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('SpotLight1');
+//-->
+</SCRIPT>
+
+				            
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('SpotLight2');
+//-->
+</SCRIPT>
+
+				            
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('SpotLight3');
+//-->
+</SCRIPT>
+
+				            
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('SpotLight4');
+//-->
+</SCRIPT>
+
+				            
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('SpotLight5');
+//-->
+</SCRIPT>
+
+				            
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('SpotLight6');
+//-->
+</SCRIPT>
+
+						</TD></TR>
+					</TABLE>
+				</DIV></TD></TR>
+			</TABLE>
+		</DIV>
+	</TD></TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+<!-- End In The Spotlight Module Here-->
+	
+        
+        
+        
+        
+
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('PageSpon3');
+//-->
+</SCRIPT>
+
+<P CLASS="AdSpacing"></P>
+
+
+        
+        
+        
+
+
+
+<!-- Used both on Local Activity Pages and Large Map Pages  -->
+<!-- Begin Google Module Here -->
+<!-- Travel LAP -->
+
+
+
+
+
+
+
+<STYLE>
+	.googlelink A:LINK {font-size: 10px; color: #000000; text-decoration: none;}
+	.googlelink A:VISITED {font-size: 10px; text-decoration: none;}
+	.googlelink A:HOVER {font-size: 10px; text-decoration: none;}
+	.googlelink A:ACTIVE {font-size: 10px; text-decoration: none;}
+</STYLE>
+
+<script language="JavaScript1.2" src="http://www.weather.com/common/ads/google/adblock.js"></script>
+
+
+<script language="JavaScript">
+function google_ad_request_done( ads)
+{
+var beginlink = "";
+var endlink = "</a>";
+var oktocontinue = true;
+
+	if( ads.length > 0)
+		{
+		document.write( " <TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH='100%'>");
+		document.write( " <TR><TD CLASS='module' VALIGN='TOP'>");
+		document.write( " <TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH='100%'>");
+
+		document.write( " <TR><TD CLASS='blkVerdanaText11' WIDTH='100%'><H2 CLASS='moduleTitleBar'>Special Travel Offers<BR><FONT STYLE='font-size:11px;'>in Seattle, WA (98101)</FONT></H2></TD>");
+
+		document.write( " <TD ALIGN='RIGHT' VALIGN='MIDDLE'> </TD></TR>");
+		document.write( " </TABLE>");
+							
+		document.write( " <DIV ALIGN='CENTER'>");
+		document.write( " <TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 CLASS='Basic' ALIGN='CENTER' WIDTH='100%'>");
+		document.write( " <TR><TD VALIGN='TOP'><DIV CLASS='Content'>");
+		document.write( " <TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH='100%' CLASS='gbckgn'>");
+		document.write( " <TR><TD STYLE='padding:10px 5px 5px 11px;'>");
+	        for( i = 0; i < ads.length; ++i)
+			{
+			oktocontinue = true;
+			for( j = 0; ((j < blocklist.length) && (oktocontinue)); j++)
+				{
+				if( ads[i].visible_url == blocklist[j])
+					oktocontinue = false;
+				}
+
+			if( oktocontinue)
+				{
+				beginlink = "<a href='" + ads[i].url + "' onMouseOver=\"(window.status='" + ads[i].visible_url + "');return true\">";
+	
+				document.write( "		" + beginlink + ads[i].line1 + endlink + "<br>");
+				document.write( "		<FONT CLASS='googlelink'>" + beginlink + ads[i].line2 + " " + ads[i].line3 + endlink + "</font><BR><BR>");
+
+				}
+	        	}	
+
+				document.write( " </TD></TR>");
+				document.write( " </TABLE>");
+				document.write( "</DIV></TD></TR></TABLE>");
+				document.write( "</DIV>");
+				document.write( "</TD></TR>");
+				document.write( "</TABLE>");
+				document.write( "<P CLASS='Spacing'></P>");
+		}
+}
+
+google_ad_client = 'weather_citytravel';
+google_ad_output = 'js';
+google_safe = 'high';
+google_max_num_ads = 3;
+google_contents = escape("Seattle+WA+travel");	//'atlanta+GA+hotel';
+google_page_url = document.location;
+
+var google_ad_url = "http://pagead2.googlesyndication.com/pagead/ads?";
+google_ad_url = google_ad_url + "client=ca-" + escape( google_ad_client.toLowerCase());
+google_ad_url = google_ad_url + "&random=" + (new Date()).getTime();
+google_ad_url = google_ad_url + "&hl=en";
+google_ad_url = google_ad_url + "&safe=" + google_safe;
+google_ad_url = google_ad_url + "&num=" + google_max_num_ads;
+google_ad_url = google_ad_url + "&output=" + google_ad_output;
+google_ad_url = google_ad_url + "&contents=" + google_contents;
+google_ad_url = google_ad_url + "&url=" + escape( google_page_url);
+google_ad_url = google_ad_url.substring( 0, 1000);
+google_ad_url = google_ad_url.replace(/%\w?$/, '');
+
+document.write('<scr' + 'ipt language=JavaScript1.1' + ' src=' + google_ad_url + '></scr' + 'ipt>');
+</script>
+
+
+
+<!-- End Google Module Here-->
+
+        
+        
+        
+
+<!-- Begin Sweepstakes Module -->
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Sweeps');
+//-->
+</SCRIPT>
+
+<P CLASS="Spacing"></P>
+<!-- End Sweepstakes Module -->
+
+        
+        
+        
+
+
+
+
+
+
+
+
+
+    
+  
+      
+      
+  
+        
+      
+  
+      
+  
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<H2 CLASS="moduleTitleBar">weather.com&reg; Travel Poll</H2>
+						<DIV ALIGN="CENTER">
+							<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%">
+								<TR>
+									<TD VALIGN="TOP">
+
+										<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" ALIGN="CENTER" WIDTH="100%">
+		<TR>
+												<TD><IMG SRC="http://image.weather.com/web/activities/polling/travel_banner.jpg" WIDTH="288" HEIGHT="67" BORDER="0" ALT="" style="background-repeat: repeat-y"></TD>
+											</TR>
+											<TR>
+											<FORM TARGET="_pollresults" ACTION="http://fcgi.weather.com/fcgi-bin/poll/poll.cgi" METHOD="POST" NAME="pollmodule" id="pollmodule">
+												<TD BACKGROUND="http://image.weather.com/web/activities/polling/travel_ques.gif" WIDTH="100%" STYLE="padding:10px 10px 10px 10px;background-repeat: repeat-y">
+												<B>How do you get around when you travel internationally?</B>
+												</TD>
+											</TR>
+											<TR>
+												<TD BACKGROUND="http://image.weather.com/web/activities/polling/travel_body_strip.gif" HEIGHT="1" BORDER="0" ALT="" VALIGN="TOP" STYLE="padding:10px;background-repeat: repeat-y" >     <input type="radio" name="answer_id" id="a1" value="1" > <label for="a1">We rent a car.</label><br>
+       <input type="radio" name="answer_id" id="a2" value="2" > <label for="a2">We use public transportation.</label><br>
+       <input type="radio" name="answer_id" id="a3" value="3" > <label for="a3">We use a taxi or limo.</label><br>
+       <input type="radio" name="answer_id" id="a4" value="4" > <label for="a4">We have friends who help us out.</label><br>
+       <input type="radio" name="answer_id" id="a5" value="5" > <label for="a5">We rent a motorcycle, scooter, or bicycle.</label><br>
+       <input type="radio" name="answer_id" id="a6" value="6" > <label for="a6">We walk.</label><br>
+       <input type="radio" name="answer_id" id="a7" value="7" > <label for="a7">We charter a boat.</label><br>
+       <input type="radio" name="answer_id" id="a8" value="8" > <label for="a8">Other.</label><br>
+  												<BR><INPUT type="hidden" value="travel_poll14" name="poll_id"><INPUT TYPE="hidden" name="rmid" value=""><script language="JavaScript1.2">var rmidcookie = GetCookie("RMID");document.forms.pollmodule.rmid.value = rmidcookie;</script><input type="hidden" name="destination" value="travel">
+												<DIV ALIGN="CENTER"><INPUT TYPE="IMAGE" SRC="http://image.weather.com/web/activities/polling/vote_but.gif" WIDTH="44" HEIGHT="19" BORDER="0" ALT="">&nbsp;&nbsp;&nbsp;<a href="http://www.weather.com/common/onlinepoll/results/travel.html?travel_poll14" TARGET="_pollresults">View Results</a></DIV>
+												</TD></FORM>
+											</TR>
+											<TR>
+												<TD VALIGN="TOP" STYLE="padding:10px;" ALIGN="CENTER">
+												<SCRIPT>OAS_AD('PollSpon')</SCRIPT>
+
+												</TD>
+											</TR>
+										</TABLE>
+									</DIV>
+									</TD>
+								</TR>
+							</TABLE>
+					</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="Spacing"></P>
+
+
+
+        
+        
+        </TD>
+    </TR>
+		<TR>
+			<TD COLSPAN="3" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH="1" HEIGHT="10" ALT=""></TD>
+		</TR>
+  </TABLE>
+    </DIV>
+    
+<!-- begin footer last modified on 4.15.04 by Wendy Frazier -->
+
+<!-- not in severe weather mode -->
+<table width=768 cellspacing=0 cellpadding=0 border=0>
+	<tr><td width=768><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=768 HEIGHT=5 BORDER=0></td></tr>
+	<tr>
+		<td align="center" class="normalText">
+		<a  href="http://www.weather.com/common/survey/feedback.html?from=footer" class="11pxLink" target="_blank">Tell Us What You Think</a>
+			<script language="javascript1.2">
+			<!--
+			if (isMinIE4) {
+				document.write("| <a href=\"?\" onClick=\"window.external");
+				document.write(".AddFavorite (location.");
+				document.write("href,document.");
+				document.write("title);return false;\" class=\"11pxLink\">Add This Page To Your Favorites</a> | ");
+				document.write("<a href=\"mailto:Type your friend's email address here?subject=");
+				document.write(escape(location.href));
+				document.write("\" class=\"11pxLink\">E-mail This Page To A Friend</a>");
+			}
+			var isMinIE5 = (document.getElementById&&document.all) ? 1 : 0;
+			if (isMinIE5) {
+				document.write(" | <a href=\"#\" class=\"11pxLink\" onClick=\"this.style.behavior='url(#default#homepage)';this.setHomePage('");
+				document.write(location.href);
+				document.write("');return false;\">Make This Page Your Home Page</a>");
+			}
+			// -->
+			</script>
+		</td>
+	</tr>
+	<tr><td><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=768 HEIGHT=20 BORDER=0></td></tr>
+</table>
+<script LANGUAGE="JavaScript1.2">
+	var query = new Object;
+	function parse() {
+		var pat_query = new RegExp ('^[^\\?]+\\?(.*)$');
+		if ( ! pat_query.test(location) ) return false;
+		var array = pat_query.exec(location);
+		query.QUERY_STRING = array[1];
+		var params = query.QUERY_STRING.split(/&/);
+		for ( var i = 0; i < params.length; i++ ) {
+			var keys = params[i].split(/=/);
+			query[ keys[0] ] = unescape(keys[1]);
+		}
+	}
+	function param(key) {
+		if ( key == null ) {
+			alert("param() function has been used incorrectly.\nUSAGE: param(key)");
+			return false;
+		}
+		return query[key];
+	}
+	parse();
+	
+    function checkGoogle() 
+    {
+	var WWW_host = window.location.hostname;
+	if (WWW_host != 'delta.weather.com' && WWW_host.indexOf('w3.')<0 && WWW_host != 'beta.weather.com') WWW_host = 'www.weather.com';
+	WWW_host = 'http://' + WWW_host;
+	document.googleSearch.action=WWW_host+"/search/partner";
+	// document.location=WWW_host+"/search/partner?q="+document.googleSearch.q.value;
+	return true;
+    }
+</script>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="768">
+	<TR><TD CLASS="module" VALIGN="TOP">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+		<TR><TD><H2 CLASS="moduleTitleBar">Search the web</H2></TD></TR>
+		</TABLE>
+		<DIV ALIGN="CENTER">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="Basic" ALIGN="CENTER" WIDTH="100%"><TR><TD>
+				<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" HEIGHT="64" WIDTH="100%" CLASS="gbckgn">
+				<form action="http://www.weather.com/search/partner" name="googleSearch" onSubmit="return checkGoogle();">
+					<TR>
+						<TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=78 HEIGHT=1 BORDER=0></TD>
+						<TD VALIGN="middle" align="right" CLASS="blkVerdanaText11"><INPUT  name="q" TYPE="Text" SIZE="50"> <INPUT TYPE="submit" Name="Search" VALUE="Search"></TD>
+						<TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=15 HEIGHT=1 BORDER=0></TD>
+						<TD VALIGN="middle" align="right" CLASS="blkVerdanaText11">Powered by&nbsp;</TD>
+						<TD VALIGN="middle"><IMG SRC="http://image.weather.com/web/common/logos/googlelogo.gif" WIDTH="71" HEIGHT="35" ALT="GOOGLE" align="middle"></TD>
+						<TD><IMG SRC="http://image.weather.com/web/blank.gif" WIDTH=61 HEIGHT=1 BORDER=0></TD>
+					</TR>
+				</form>
+				</TABLE>
+		</TD></TR></TABLE>
+		</DIV>
+	</TD></TR>
+</TABLE>
+<script LANGUAGE="JavaScript1.2">
+if (param('q') && param('q').length > 0)
+document.googleSearch.q.value = param('q');
+</script>
+<P CLASS="Spacing"></P>
+
+<script LANGUAGE="JavaScript" src="http://ima.weather.com/common/footer/javascript/footerdata.js"></script>
+<script LANGUAGE="JavaScript" src="http://ima.weather.com/common/footer/javascript/footerbottomlinks.js"></script>
+<SCRIPT LANGUAGE="JavaScript" SRC="http://ima.weather.com/common/footer/javascript/footer.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">printFooter();</script>
+
+
+<!-- copyright - legal restrictions and terms of use - privacy statement -->
+<script LANGUAGE="JavaScript" src="http://ima.weather.com/common/footer/javascript/footerlegal.js"></script>
+<SCRIPT LANGUAGE="JavaScript">printLegal();</script>
+<!-- end footer -->
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+      OAS_AD('Hidden1');
+//-->
+</SCRIPT>
+
+
+<SCRIPT LANGUAGE="JavaScript1.2">
+<!--
+if (document.referrer) {
+	thisDF = document.referrer;
+} else {
+	thisDF = "";
+}
+if (thisDF.search(/yahoo.com/) != -1) {
+	document.write ('<A HREF="'+thisDF+'"><IMG SRC="http://image.weather.com/web/common/logos/yahooback.gif" WIDTH=88 HEIGHT=31 BORDER=0 ALT="Back to Yahoo! Weather" ALIGN="RIGHT"></A>');
+}
+//-->
+</SCRIPT>
+
+
+
+<SCRIPT LANGUAGE="JavaScript">if ((popup == undefined) || !popup) {Poll();}</script>
+</center>
+     </BODY>
+</HTML>
+  <!-- insert footer --->

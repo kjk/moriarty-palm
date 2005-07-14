@@ -1,0 +1,513 @@
+
+<SCRIPT LANGUAGE=javascript>
+<!--
+rnd.today=new Date();
+rnd.seed=rnd.today.getTime();
+function rnd() {
+    rnd.seed = (rnd.seed*9301+49297) % 233280;
+    return rnd.seed/(233280.0);
+}
+function rand(number) {
+    return Math.ceil(rnd()*number);
+}
+
+function getRandomJoke()
+{
+	var minID;
+	var maxID;
+	minID=1;
+	maxID=10970;
+	var s = maxID.toString();
+	var maxLen = s.length;
+	do
+	{
+		var randNum=Math.random();
+		var randID=Math.ceil(randNum*Math.pow(10,maxLen));
+	}
+	while (randID > maxID || randID < minID);
+
+	var url="/results/detail.asp?sql=12&rand_id="+randID;
+	document.location=url;
+}
+//-->
+</SCRIPT>
+	
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+<title>Joke Results -- WWW.JOKES.COM</title>
+<script LANGUAGE="JAVASCRIPT" SRC="/includes/jokes.js"></script>
+<script LANGUAGE="JAVASCRIPT" SRC="/includes/jokes.if.js"></script>
+<meta NAME="description" CONTENT="The Web's biggest joke site - 1000's of searchable, rated, and categorized jokes.  Plus: Video jokes and weekly joke contests!">
+<meta NAME="keywords" CONTENT="jokes, clean jokes, racy jokes, kids jokes, dirty jokes, gross, gross jokes, dirty, filthy, nasty, sex, sexual, jokes, blonde, blond, yo mama, lawyer, redneck, sports, sprots">
+
+<link REL="stylesheet" TYPE="text/css" HREF="/includes/jokes.css" TITLE="jokes_css">
+
+<map name="jokes">
+   <area shape="rect" coords="0,0,84,77" href="http://www.comedycentral.com">
+   <area shape="rect" coords="85,0,481,77" href="/">
+</map>
+
+<SCRIPT LANGUAGE=javascript>
+<!--
+rnd.today=new Date();
+rnd.seed=rnd.today.getTime();
+function rnd() {
+    rnd.seed = (rnd.seed*9301+49297) % 233280;
+    return rnd.seed/(233280.0);
+}
+function rand(number) {
+    return Math.ceil(rnd()*number);
+}
+
+function getRandomJoke()
+{
+	var minID;
+	var maxID;
+	minID=1;
+	maxID=9979;
+	var s = maxID.toString();
+	var maxLen = s.length;
+	do
+	{
+		var randNum=Math.random();
+		var randID=Math.ceil(randNum*Math.pow(10,maxLen));
+	}
+	while (randID > maxID || randID < minID);
+
+	var url="/results/detail.asp?sql=12&rand_id="+randID;
+	document.location=url;
+}
+
+
+	function SelectAllCat()
+	{
+		for(i=0;i<document.form1.c.length;i++)
+		{
+			document.form1.c[i].checked = true;
+		}
+	}
+	function ClearAllCat()
+	{
+		for(i=0;i<document.form1.c.length;i++)
+		{
+			document.form1.c[i].checked = false;
+		}
+	}
+	function SelectAllExp()
+	{
+		for(i=0;i<document.form1.e.length;i++)
+		{
+			document.form1.e[i].checked = true;
+		}
+	}
+	function ClearAllExp()
+	{
+		for(i=0;i<document.form1.e.length;i++)
+		{
+			document.form1.e[i].checked = false;
+		}
+	}
+	function SelectAllType()
+	{
+		for(i=0;i<document.form1.t.length;i++)
+		{
+			document.form1.t[i].checked = true;
+		}
+	}
+	function ClearAllType()
+	{
+		for(i=0;i<document.form1.t.length;i++)
+		{
+			document.form1.t[i].checked = false;
+		}
+	}	
+//-->
+
+
+</SCRIPT>
+
+</head>
+<body leftmargin="0" topmargin="0" marginwidth=0 marginheight=0 class="bodystyle">
+<div ALIGN="center">
+
+<iframe marginwidth=0 marginheight=0 scrolling="no" frameborder=0 src="http://comedycentral.com/ads/jokes/728subswitcher.php" width="728" height="90">
+ <ilayer src="http://comedycentral.com/ads/jokes/728subswitcher.php">
+ </ilayer>
+ </iframe>
+
+
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="760" ID="Table4">
+	<TR>
+    	<TD COLSPAN="21"><IMG SRC="/images/lines/line_top.gif" WIDTH="760" HEIGHT="14" ALT="" BORDER="0"></TD>
+  	</TR>
+	<TR>
+    	<TD COLSPAN="21" CLASS="lightblue"><IMG SRC="/images/pixels/pix_clear.gif" WIDTH="1" HEIGHT="2" BORDER="0"></TD>
+  	</TR>
+</TABLE>
+
+
+<!-- menubar -->
+			<TABLE CELLPADDING="0" CELLSPACING="4" BORDER="0" WIDTH="760" BACKGROUND="/images/pixels/pix_clear.gif" CLASS="lightblue" ID="Table6">
+  				<TR>
+					<TD ONMOUSEOVER="changeto('#000968')" ONMOUSEOUT="changeback('#3b499d')" ONCLICK="window.self.location='/'" ALIGN="center" VALIGN="middle" CLASS="medblue" HEIGHT="18"><A CLASS="navigation" HREF="/" TARGET="_top">&nbsp;&nbsp;HOME&nbsp;&nbsp;</A></TD>
+               <TD ONMOUSEOVER="changeto('#000968')" ONMOUSEOUT="changeback('#3b499d')" ONCLICK="window.self.location='/search/search.asp'" ALIGN="center" VALIGN="middle" CLASS="medblue"><A CLASS="navigation" HREF="/search/search.asp" TARGET="_top">&nbsp;SEARCH&nbsp;</A></TD>
+					<TD ONMOUSEOVER="changeto('#000968')" ONMOUSEOUT="changeback('#3b499d')" ONCLICK="javascript:getRandomJoke();" ALIGN="center" VALIGN="middle" CLASS="medblue"><A CLASS="navigation" HREF="javascript:getRandomJoke();" TARGET="_top"><NOBR>RANDOM&nbsp;JOKES</NOBR></A></TD>
+					<TD ONMOUSEOVER="changeto('#000968')" ONMOUSEOUT="changeback('#3b499d')" ONCLICK="window.self.location='/submit/'" ALIGN="center" VALIGN="middle" CLASS="medblue"><A CLASS="navigation" HREF="/submit/" TARGET="_top"><NOBR>SUBMIT&nbsp;JOKES</NOBR></A></TD>
+					<TD ONMOUSEOVER="changeto('#000968')" ONMOUSEOUT="changeback('#3b499d')" ALIGN="center" VALIGN="middle" CLASS="medblue"><A CLASS="navigation" HREF="javascript:sub_drive()" TARGET="_top"><NOBR>JOKES&nbsp;BY&nbsp;MAIL</NOBR></A></TD>
+					<!--TD ONMOUSEOVER="changeto('#000968')" ONMOUSEOUT="changeback('#3b499d')" ONCLICK="window.self.location='/joketv/'" ALIGN="center" VALIGN="middle" CLASS="medblue"><A CLASS="navigation" HREF="/joketv/" TARGET="_top">&nbsp;JOKE-TV&nbsp;</A></TD-->					
+				</TR>
+			</TABLE>
+
+
+			<table WIDTH="760" CELLSPACING="0" CELLPADDING="0" BORDER="0" CLASS="cream">
+				<tr>
+			    	<td CLASS="lightblue"><img SRC="/images/pixels/pix_clear.gif" WIDTH="4" HEIGHT="1" BORDER="0"></td>
+               <td colspan=3 valign=top><img SRC="/images/detail/logo-med.gif" width="420" height="67" alt border="0" usemap="#jokes"><br>
+									<table cellpadding="0" cellspacing="0" style="border: 2px solid #000968" border="0" width="420" CLASS="babyblue">
+										<tr>
+											<td width="232"><img SRC="/images/headers/header_search_1000s.gif" width="225" height="27" alt border="0" hspace="2"></td>
+											<form ACTION="/functions/dispatch.asp" METHOD="post">
+											<td width="135"><span class="courier">
+											<select NAME="ct">
+											<option VALUE="All">All Categories. . . .</option>
+											<option VALUE="Blonde">Blonde</option>
+											<option VALUE="Entertainment">Entertainment</option>
+											<option VALUE="MenWomen">Men/Women</option>
+											<option VALUE="Insults">Insults</option>
+											<option VALUE="YoMama">Yo Mama</option>
+											<option VALUE="Lawyer">Lawyer</option>
+											<option VALUE="NewsPolitics">News/Politics</option>
+											<option VALUE="Redneck">Redneck</option>
+											<option VALUE="BarDrunk">Barroom</option>
+											<option VALUE="Gross">Gross</option>
+											<option VALUE="Sports">Sports</option>
+											<option VALUE="Foreign">Foreign</option>
+											<option VALUE="Whatever">Whatever</option>
+											<option VALUE="Medical">Medical</option>
+											<option VALUE="Sexuality">Sexuality</option>
+											<option VALUE="Animals">Animals</option>
+											<option VALUE="Children">Children</option>
+											<option VALUE="Anti-Joke">Anti-Joke</option>
+											</select></span>
+											</td>
+											<td><input TYPE="image" SRC="/images/buttons/btn_yellow_go.gif" BORDER="0" WIDTH="29" HEIGHT="18"></td>
+											<td align="CENTER"><!--img SRC="/images/pixels/pix_clear.gif" width="15" height="1" border="0"--></td>
+											<!--td align="right"><a href="http://www.thecomedylab.com/dirtyjokes/" target="_blank"><img SRC="/images/headers/header_want_dirty_jokes.gif" width="158" height="27" alt border="0" hspace="10"></a></td-->
+											</form>
+										</tr>	
+									</table>	
+
+               
+               
+               </td>
+               <!--<td colspan=2 valign=top><img SRC="/images/headers/jokes_header.gif" width="481" height="77" alt border="0" usemap="#jokes"></td> -->
+               <td>
+
+               </td>
+
+               <!-- <td valign=top rowspan="3" width="336" height="600"> -->
+<td align=center VALIGN="top" rowspan=3 BACKGROUND="/images/backgrounds/bg_rightcolumn.gif">
+
+
+   <iframe marginwidth=0 marginheight=0 scrolling="no" frameborder=0 src="http://comedycentral.com/ads/jokes/250subswitcher.php" width="300" height="250">
+    <ilayer src="http://comedycentral.com/ads/jokes/250subswitcher.php">
+    </ilayer>
+   </iframe>
+                  
+   <p>
+
+   <!-- subscribe -->
+
+<table WIDTH="332" CELLSPACING="0" CELLPADDING="0" BORDER="0" BACKGROUND="/images/pixels/pix_clear.gif" CLASS="medblue">
+	<tr>
+		<td ALIGN="center" WIDTH="252"><img SRC="/images/headers/animated_get.gif" WIDTH="166" HEIGHT="43" BORDER="0"></td>
+	</tr>
+</table>
+
+
+<table WIDTH="252" CELLSPACING="0" CELLPADDING="0" BORDER="0" ID="Table2">
+
+
+<form NAME="frmJokes" ONSUBMIT="javascript:EmailSignUp('true');return false;" ID="Form2">
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td HEIGHT="40" WIDTH="306"><input TYPE="text" NAME="email" VALUE="your@address.com" SIZE="36" ID="Text2"></td>
+		
+		<td WIDTH="52"><input TYPE="image" NAME="go" SRC="/images/buttons/btn_yellow_go.gif" BORDER="0" ID="Image2"></td>
+	</tr>
+</form>	
+		
+	<tr>
+		<td COLSPAN="3"><img SRC="/images/pixels/pix_clear.gif" WIDTH="1" HEIGHT="6" BORDER="0"></td>
+	</tr>	
+	<tr>
+		<td CLASS="darkblue" COLSPAN="3"><img SRC="/images/pixels/pix_clear.gif" WIDTH="316" HEIGHT="1" BORDER="0"></td>
+	</tr>	
+</table>
+
+
+<!-- end subscribe -->
+
+
+
+                  
+
+					</td>
+					<td rowspan=3 CLASS="lightblue"><img SRC="/images/pixels/pix_clear.gif" WIDTH="4" HEIGHT="1" BORDER="0"></td>
+				</tr>
+
+            <tr>
+					<td CLASS="lightblue"><img SRC="/images/pixels/pix_clear.gif" WIDTH="4" HEIGHT="1" BORDER="0"></td>
+
+
+
+
+                  <!-- blue left tiny column -->
+               
+               
+               </td>
+               <td>
+
+
+
+                  <!-- main content area -->
+
+<table CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="104">
+	<tr>
+		<td>
+			<img SRC="/images/pixels/pix_clear.gif" WIDTH="12" HEIGHT="1" BORDER="0">
+		</td>
+
+		<td VALIGN="top" WIDTH="10">
+		
+<div ALIGN="center">
+
+
+<table CELLPADDING="0" CELLSPACING="1" BORDER="0">
+	<tr>
+		<td><img SRC="/images/pixels/pix_clear.gif" WIDTH="15" HEIGHT="15" BORDER="0"></td>
+	</tr>
+</table>		
+
+<table CELLPADDING="0" CELLSPACING="0" BORDER="0">
+	<tr>
+		<td VALIGN="bottom" ALIGN="center">
+      <!--
+		<a HREF="/results/detail.asp?sql=12">
+		<img SRC="/images/250/btn_randomjokes.gif" BORDER="0"></a> -->
+		</td>
+
+	</tr>	
+</table>
+
+<table CELLPADDING="0" CELLSPACING="1" BORDER="0">
+	<tr>
+		<td><img SRC="/images/pixels/pix_clear.gif" WIDTH="15" HEIGHT="15" BORDER="0"></td>
+	</tr>
+</table>
+
+<!--
+<table CELLPADDING="0" CELLSPACING="1" BORDER="0" CLASS="darkblue" WIDTH="100">
+	<tr>
+		<td WIDTH="98">
+			<table CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="98" CLASS="cream">
+				<tr>
+					<td HEIGHT="36" ALIGN="center"><a HREF="/results/index.asp?cat=35"><img SRC="/images/250/header_officejokes.gif" BORDER="0"></a></td>
+				</tr>
+				<tr>
+					<td ALIGN="center" VALIGN="top" HEIGHT="50"><a HREF="/results/index.asp?cat=35"><img SRC="/images/250/fea_office.gif" BORDER="0"></a></td>
+				</tr>
+			</table>
+		</td>
+	</tr>												
+</table>
+-->
+<table CELLPADDING="0" CELLSPACING="1" BORDER="0">
+	<tr>
+		<td><img SRC="/images/pixels/pix_clear.gif" WIDTH="15" HEIGHT="15" BORDER="0"></td>
+	</tr>
+</table>
+
+
+<!--table CELLPADDING="0" CELLSPACING="1" BORDER="0" CLASS="darkblue" WIDTH="100">	<tr>		<td WIDTH="98">			<table CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="98" CLASS="cream">				<tr>					<td HEIGHT="36" ALIGN="center"><a HREF="/joketv/"><img SRC="/images/250/header_joketv.gif" BORDER="0"></a></td>				</tr>				<tr>					<td ALIGN="center" VALIGN="top" HEIGHT="50"><a HREF="/joketv/"><img SRC="/images/250/fea_joketv.gif" BORDER="0"></a></td>				</tr>			</table>		</td>	</tr>												</table-->
+
+
+
+</div>
+		
+
+		</td>
+		<td>
+			<img SRC="/images/pixels/pix_clear.gif" WIDTH="12" HEIGHT="1" ALT BORDER="0">
+		</td>
+		<td VALIGN="top">
+
+			<table cellpadding="0" cellspacing="0" border="0" width="320" class="lightblue" id="Table1">
+				<tr>
+					<td colspan="3" class="cream"><img src="/images/pixels/pix_clear.gif" width="1" height="15" border="0"></td>
+				</tr>
+				<tr>
+					<td colspan="3" class="cream" align="center"></td>
+				</tr>				
+				<TR>
+<TD VALIGN="middle" HEIGHT="25"><IMG SRC="/images/pixels/pix_clear.gif" WIDTH="8" HEIGHT="1" ALT BORDER="0"></TD>
+<TD VALIGN="middle" HEIGHT="25" ALIGN="right"><IMG SRC="/images/pixels/pix_clear.gif" WIDTH="8" HEIGHT="1" ALT BORDER="0"></TD>
+</TR>
+			</table>
+			<table cellpadding="0" cellspacing="0" border="0" width="328" id="Table2">
+				<tr>
+					<td colspan="3" valign="top" class="body">
+						<br>
+						<b>3 men standing in front of God</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" valign="top" class="body">
+						<br>
+						God: Men, what car you get in Heaven will depend on how faithful you were to your wives on Earth.
+<p>
+Man 1: Please God, I can't count how many times I cheated on my wife. There were just too many beautiful women on Earth, and I had to have them all.
+<p>
+God: I am ashamed of you, my man, For that, I give you a run-down truck that barely moves.
+<p>
+Man 2: Dear God, please forgive me! I cheated on my wife once, just once! We were going through problems and I took the wrong turn. Please forgive me!
+<p>
+God: My man, I am ashmed of you too. But I will be kinder to you. For that, I give you a convertible BMW.
+<p>
+Man 3: Dear God, you will be so proud of me. I loved and worshipped my wife. I brought her roses everyday after work, I brought her gifts every aniversary, and we went travelling, and had dinner out 3 times a week, and...
+<p>
+God: Okay, my man, enough! I get the point. I am very proud of you! For that, I give you any car you desire!
+<p>
+Two weeks later Man 1 and 2 are driving on the freeway when they see Man 3 ahead of them, stopped in the middle of the road in his Black Jaguar.
+<p>
+Man 1 and 2: Hey Man! Why are you sitting in your car and crying your eyes out? You're acting like some ungrateful bugger! Look at your car, man! What is your problem?!
+<p>
+Man 3: "I just saw my wife on rollerskates!"
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" valign="top" class="body">
+						<br>
+						
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" border="0" width="320" class="lightblue" id="Table3">
+				<TR>
+<TD VALIGN="middle" HEIGHT="25"><IMG SRC="/images/pixels/pix_clear.gif" WIDTH="8" HEIGHT="1" ALT BORDER="0"></TD>
+<TD VALIGN="middle" HEIGHT="25" ALIGN="right"><IMG SRC="/images/pixels/pix_clear.gif" WIDTH="8" HEIGHT="1" ALT BORDER="0"></TD>
+</TR>
+				<tr>
+					<td valign="middle" height="10" colspan="3" class="cream">
+					<img src="/images/pixels/pix_clear.gif" width="1" height="1" alt="top liner" border="0">
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" border="0" width="320" id="Table4">
+				<tr>
+					<td colspan="6" class="lightblue"><img src="/images/pixels/pix_clear.gif" width="2" height="2" alt="topline" border="0"></td>
+				</tr>
+				<tr>
+					<td rowspan="2" class="lightblue"><img src="/images/pixels/pix_clear.gif" width="2" height="2" alt="left line" border="0"></td>
+					<td align="center"><a href="javascript:popEmail(10022)"><img src="/images/buttons/btn_email.gif" alt border="0" vspace="8"></a></td>
+					<td align="center"><a href="javascript:popPrint(10022)"><img src="/images/buttons/btn_print.gif" alt border="0" vspace="8"></a></td>
+					<td align="center"><a href="javascript:popSave(10022)"><img src="/images/buttons/btn_save.gif" alt border="0" vspace="8"></a></td>
+					<td align="center"><a href="javascript:popPopular()"><img src="/images/buttons/btn_popular.gif" width="20" height="24" alt border="0" vspace="8"></a></td>
+					<td rowspan="2" class="lightblue"><img src="/images/pixels/pix_clear.gif" width="2" height="2" alt="right line" border="0"></td>
+				</tr>
+				<tr>
+					<td align="center" valign="top"><a class="blue-linkfine" href="javascript:popEmail(10022)">E-MAIL THIS</a></td>
+					<td align="center" valign="top"><a class="blue-linkfine" href="javascript:popPrint(10022)">PRINT THIS</a></td>
+					<td align="center" valign="top" height="20"><a class="blue-linkfine" href="javascript:popSave(10022)">SAVE THIS</a></td>
+					<td align="center" valign="top"><a class="blue-linkfine" href="javascript:popPopular()">MOST POPULAR</a></td>
+				</tr>
+				<tr>
+					<td colspan="6" class="lightblue"><img src="/images/pixels/pix_clear.gif" width="2" height="2" alt="bottom line" border="0"></td>
+				</tr>
+			</table>
+
+			<form action="/results/detail.asp?id=10022&amp;cat=-1" method="post" id="form1" name="form1">
+			<table cellpadding="0" cellspacing="0" border="0" width="328" id="Table5">
+				<tr>
+					<td colspan="3" valign="middle"><span class="body">CURRENT RATING:&nbsp;<img src="/images/icons/iconrate_four.gif"></span></td>
+				</tr>
+				<tr>
+					<td colspan="3" valign="middle" class="bodyred">
+					
+					<p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" valign="middle" class="body">
+					RATE IT!&nbsp;&nbsp;<select name="selRate" id="selRate">
+					<option value="5" selected>5
+					<option value="4">4
+					<option value="3">3
+					<option value="2">2
+					<option value="1">1</select>&nbsp;&nbsp;<input type="image" src="/images/buttons/btn_blue_go2.gif" border="0" name="Image1" id="Image1">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" height="20" class="body">(5 = Hysterical&nbsp;&nbsp;1 = Blows)</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+		<td>
+			<img SRC="/images/pixels/pix_clear.gif" WIDTH="4" HEIGHT="1" ALT BORDER="0">
+		</td>
+	</tr> 
+</table> 
+
+
+
+
+								
+
+
+         <!-- end main content area -->
+
+                  
+               
+               
+               </td>
+               <td class="lightblue" width=2><!-- divider between content and right column--></td>
+               <td> <!-- ad --></td>
+
+			</table>		
+
+
+<script LANGUAGE="JAVASCRIPT">
+function openpopWindow(theURL,winName,features){window.open(theURL,winName,features);}
+</script>
+
+
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="760">
+<TR>
+	<TD WIDTH="10" ALIGN="center" CLASS="lightblue">&nbsp;</TD>
+	<TD WIDTH="740" ALIGN="center" CLASS="lightblue" ROWSPAN="2" VALIGN="CENTER">
+	<span class="fineprint" STYLE="line-height:13px;"><a href="http://www.comedycentral.com/index.jhtml" class="nav">Comedy Central Home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:openpopWindow('http://www.comedycentral.com/help/help.html','help','width=444,height=400,scrollbars=yes,resizable=yes')" class="nav">Help/FAQ</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.comedycentral.com/help/privacy.jhtml" class="nav">Privacy Policy</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.comedycentral.com/help/terms.jhtml" class="nav">Terms &amp; Conditions</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.comedycentral.com/jobs/" class="nav">Job Postings</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.comedycentral.com/mediakit/" class="nav">Advertising</a><BR>
+<a href="Javascript:openpopWindow('http://www.comedycentral.com/g2b/intro.html','g2bwin','width=600,height=468,scrollbars=yes')" class="nav">Get Broadband</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Copyright &copy; 1995&#150;2003 Comedy Central. All rights reserved.
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:openpopWindow('http://www.comedycentral.com/registration/index_expanded.jhtml?getcc=yes&destination=%2Findex.jhtml','reg','width=444,height=400,scrollbars=yes')" class="nav">Get Comedy Central</a></span></TD>
+	<TD WIDTH="10" ALIGN="center" CLASS="lightblue">&nbsp;</TD>
+</TR>
+
+
+<TR>
+	<TD VALIGN="BOTTOM"><IMG SRC="/images/corners/corner_bottom_left.gif" WIDTH="10" HEIGHT="21" ALT="" BORDER="0"></TD>
+	<!--TD WIDTH="740" ALIGN="center" CLASS="lightblue"><SPAN CLASS="fineprint"><A CLASS="nav" HREF="/contact/" target="_top">Advertise</A><SPAN CLASS="fineprint"> | </SPAN><A CLASS="nav" HREF="/masthead/" target="_top">Masthead</A><SPAN CLASS="fineprint"> | </SPAN>&nbsp;&nbsp;&copy;2001-2002 ComedyLab Productions, Inc. | All Rights Reserved<SPAN CLASS="fineprint"> | </SPAN><A CLASS="nav" HREF="/contact/" target="_top">Contact</A><SPAN CLASS="fineprint"> | </SPAN><A CLASS="nav" HREF="/policies/" target="_top">Policies</A></SPAN></TD-->
+
+	  
+	<TD VALIGN="BOTTOM" ALIGN="right"><IMG SRC="/images/corners/corner_bottom_right.gif" WIDTH="10" HEIGHT="21" ALT="" BORDER="0"></TD>
+</TR>
+
+</TABLE>
+
+
+
+
+</div>
+</body>
+</html>

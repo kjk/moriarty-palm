@@ -1,0 +1,94 @@
+###### http://www.netflix.com/Login?hnjr=3
+URL:	http://www.netflix.com/Login?hnjr=3
+HTTP Status:	200
+Start Time:	Fri, 31 Dec 2004 03:07:10 PST
+End Time:	Fri, 31 Dec 2004 03:07:10 PST
+Remote Address:	www.netflix.com/216.35.131.200
+Request Size:	
+Response Size:	8.63 KB (8840 bytes)
+Time Taken:	344 ms
+Download Speed:	26.96 KB/s
+Mime-type:	text/html; charset=ISO-8859-1
+Compression:	
+Status:	Complete
+Exception:	
+
+GET /Login?hnjr=3 HTTP/1.0Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*Referer: http://www.netflix.com/DefaultAccept-Language: en-usUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)Host: www.netflix.comCookie: country=1; custTrans=(P1616895325872002727227571411704145); dma=807; fvinc=(P1616895325872002727227571411704145); NetflixSpeed=700; validReEntryCookie=Y; validReEntryConfirmed=Y; vstCnt=4~2~1104462410676; NetflixShopperId=P8728724908025172752801981050909810; nflxsid=107; ARPT=KYVIMIS10.1.121.37CKKUK; JSESSIONID=44FA47D80DA14EBE934CBDC5F5551347
+HTTP/1.1 200 OK
+Date: Fri, 31 Dec 2004 11:07:09 GMT
+Server: Apache Coyote/1.0
+P3P: CP="CAO DSP COR DEVa TAIa OUR BUS UNI STA"
+Cache-Control: no-cache, must-revalidate
+Pragma: no-cache
+Expires: Thu, 30 Dec 2004 11:07:09 GMT
+Content-Type: text/html; charset=ISO-8859-1
+Content-Length: 8840
+Set-Cookie: ARPT=; Domain=.netflix.com; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/
+Set-Cookie: country=1; Domain=.netflix.com; Expires=Sat, 31-Dec-2005 11:07:09 GMT; Path=/
+Set-Cookie: nflxsid=107; Domain=.netflix.com; Path=/
+Set-Cookie: vstCnt=5~2~1104462429829; Domain=.netflix.com; Expires=Sat, 31-Dec-2005 11:07:09 GMT; Path=/
+Connection: close
++html body with form
+
+###### https://www.netflix.com/Login
+URL:	https://www.netflix.com/Login
+HTTP Status:	302
+Start Time:	Fri, 31 Dec 2004 03:07:25 PST
+End Time:	Fri, 31 Dec 2004 03:07:26 PST
+Remote Address:	
+Request Size:	162 bytes
+Response Size:	
+Time Taken:	781 ms
+Download Speed:	
+Mime-type:	text/plain
+Compression:	
+Status:	Complete
+Exception:	
+
+POST /Login HTTP/1.0Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*Referer: http://www.netflix.com/Login?hnjr=3Accept-Language: en-usContent-Type: application/x-www-form-urlencodedConnection: Keep-AliveUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)Host: www.netflix.comContent-Length: 162Cache-Control: no-cacheCookie: country=1; custTrans=(P1616895325872002727227571411704145); dma=807; fvinc=(P1616895325872002727227571411704145); NetflixSpeed=700; validReEntryCookie=Y; validReEntryConfirmed=Y; vstCnt=5~2~1104462429829; NetflixShopperId=P8728724908025172752801981050909810; nflxsid=107; ARPT=KYVIMIS10.1.121.37CKKUK; JSESSIONID=44FA47D80DA14EBE934CBDC5F5551347
+HTTP/1.0 302 Moved TemporarilySet-Cookie: ARPT=KYVIMIS10.1.121.37T0x0000000e_0xbb493e72CMUWJ; expires=Sat, 31-Dec-2005 03:07:30 GMT; path=/Date: Fri, 31 Dec 2004 11:07:25 GMTServer: Apache Coyote/1.0P3P: CP="CAO DSP COR DEVa TAIa OUR BUS UNI STA"Location: https://www.netflix.com/redirect.jsp?target=http%3A%2F%2Fwww.netflix.com%2FDefaultContent-Type: text/plainContent-Length: 0Set-Cookie: ARPT=; Domain=.netflix.com; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/Set-Cookie: country=1; Domain=.netflix.com; Expires=Sat, 31-Dec-2005 11:07:25 GMT; Path=/Set-Cookie: nflxsid=107; Domain=.netflix.com; Path=/Set-Cookie: fvp=; Domain=.netflix.com; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/Set-Cookie: vstCnt=-4~-4~1104462445751; Domain=.netflix.com; Expires=Sat, 31-Dec-2005 11:07:25 GMT; Path=/Set-Cookie: custTrans=P8728724908025172752801981050909810; Domain=.netflix.com; Expires=Sat, 31-Dec-2005 11:07:25 GMT; Path=/Set-Cookie: fvinc=P8728724908025172752801981050909810; Domain=.netflix.com; Expires=Sat, 01-Jan-2005 07:59:59 GMT; Path=/Connection: close
++empty hmlt body
+
+############
+URL:	https://www.netflix.com/redirect.jsp?target=http%3A%2F%2Fwww.netflix.com%2FDefault
+HTTP Status:	200
+Start Time:	Fri, 31 Dec 2004 03:07:26 PST
+End Time:	Fri, 31 Dec 2004 03:07:27 PST
+Remote Address:	
+Request Size:	
+Response Size:	168 bytes
+Time Taken:	906 ms
+Download Speed:	0.36 KB/s
+Mime-type:	text/html;charset=ISO-8859-1
+Compression:	
+Status:	Complete
+Exception:	
+
+GET /redirect.jsp?target=http%3A%2F%2Fwww.netflix.com%2FDefault HTTP/1.0Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*Referer: http://www.netflix.com/Login?hnjr=3Accept-Language: en-usConnection: Keep-AliveUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)Host: www.netflix.comCache-Control: no-cacheCookie: country=1; custTrans=P8728724908025172752801981050909810; dma=807; fvinc=P8728724908025172752801981050909810; NetflixSpeed=700; validReEntryCookie=Y; validReEntryConfirmed=Y; vstCnt=-4~-4~1104462445751; NetflixShopperId=P8728724908025172752801981050909810; nflxsid=107; ARPT=KYVIMIS10.1.121.37T0x0000000e_0xbb493e72CMUWJ; JSESSIONID=44FA47D80DA14EBE934CBDC5F5551347
+HTTP/1.0 200 OKDate: Fri, 31 Dec 2004 11:07:26 GMTServer: Apache Coyote/1.0Content-Type: text/html;charset=ISO-8859-1Content-Length: 168Connection: close
++ HTML body:
+<html>
+<head>
+<title>Netflix - Rent DVDs Online - Try Free</title>
+<meta http-equiv="refresh" content="0; URL=http://www.netflix.com/Default">
+</head>
+</html>
+##############
+URL:	http://www.netflix.com/Default
+HTTP Status:	200
+Start Time:	Fri, 31 Dec 2004 03:07:27 PST
+End Time:	Fri, 31 Dec 2004 03:07:28 PST
+Remote Address:	www.netflix.com/216.35.131.200
+Request Size:	
+Response Size:	37.45 KB (38350 bytes)
+Time Taken:	718 ms
+Download Speed:	52.98 KB/s
+Mime-type:	text/html; charset=ISO-8859-1
+Compression:	
+Status:	Complete
+Exception:
+
+GET /Default HTTP/1.0Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*Accept-Language: en-usPragma: no-cacheUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)Host: www.netflix.comCookie: country=1; custTrans=P8728724908025172752801981050909810; dma=807; fvinc=P8728724908025172752801981050909810; NetflixSpeed=700; validReEntryCookie=Y; validReEntryConfirmed=Y; vstCnt=-4~-4~1104462445751; NetflixShopperId=P8728724908025172752801981050909810; nflxsid=107; ARPT=KYVIMIS10.1.121.37T0x0000000e_0xbb493e72CMUWJ; JSESSIONID=44FA47D80DA14EBE934CBDC5F5551347
+HTTP/1.1 200 OKSet-Cookie: ARPT=KYVIMIS10.1.121.37CKKUK; path=/Date: Fri, 31 Dec 2004 11:07:27 GMTServer: Apache Coyote/1.0P3P: CP="CAO DSP COR DEVa TAIa OUR BUS UNI STA"Cache-Control: no-cache, must-revalidatePragma: no-cacheExpires: Thu, 30 Dec 2004 11:07:27 GMTContent-Type: text/html; charset=ISO-8859-1Content-Length: 38350Set-Cookie: ARPT=; Domain=.netflix.com; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/Set-Cookie: country=1; Domain=.netflix.com; Expires=Sat, 31-Dec-2005 11:07:27 GMT; Path=/Set-Cookie: nflxsid=107; Domain=.netflix.com; Path=/Connection: close
++ html body: the main page after login
+
