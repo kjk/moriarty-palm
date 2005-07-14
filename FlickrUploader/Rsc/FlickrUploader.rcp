@@ -1,0 +1,100 @@
+GENERATEHEADER "FlickrRsc.h"
+
+#define kFrmNavHeaderFlagsObjectFocusStartState  0x00000001
+#define kFrmNavHeaderFlagsAppFocusStartState     0x00000002
+
+RESETAUTOID 31100
+
+ALERT ID notEnoughMemoryAlert
+    DEFAULTBUTTON 0
+    ERROR
+BEGIN
+    TITLE "Error"
+    MESSAGE "Not enough memory to complete current operation."
+    BUTTONS "OK"
+END
+
+ALERT ID unsupportedFormatAlert
+    DEFAULTBUTTON 0
+    ERROR
+BEGIN
+    TITLE "Unsupported format"
+    MESSAGE "InfoMan Flickr Uploader can't handle this type of data. The only supported formats are JPEG, PNG and GIF images."
+    BUTTONS "OK"
+END
+
+FORM ID userCredentialsForm AT ( 2 76 156 82 )
+MODAL DEFAULTBTNID okButton SAVEBEHIND
+BEGIN
+    TITLE "Enter user credentials"
+    LABEL "flickr.com user's email:" AUTOID AT (4 18)
+    FIELD ID emailField    AT (4 32 148 12) MAXCHARS 255 EDITABLE UNDERLINED    
+    LABEL "Password:" AUTOID AT (4 48)
+    FIELD passwordField AT (46 PREVTOP 106 12) MAXCHARS 31 EDITABLE UNDERLINED 
+    BUTTON "OK" ID okButton    AT (5 PREVBOTTOM + 6 40 AUTO)
+    BUTTON "Cancel" ID cancelButton     AT (PREVRIGHT+4 PREVTOP 40 AUTO)
+    GRAFFITISTATEINDICATOR AT (144 PREVTOP+2)
+END
+
+NAVIGATION ID userCredentialsForm
+INITIALSTATE kFrmNavHeaderFlagsObjectFocusStartState
+INITIALOBJECTID emailField
+NAVIGATIONMAP
+  ROW emailField
+  ROW passwordField
+  ROW okButton cancelButton
+END
+
+
+BITMAPFAMILYEX ID progressBitmap0
+BEGIN
+     BITMAP "progress_0-sm-1.bmp" BPP 1 DENSITY 1 TRANSPARENTINDEX 0
+     BITMAP "progress_0-sm-8.bmp" BPP 8 DENSITY 1 TRANSPARENCY 255 0 255 COMPRESS
+     BITMAP "progress_0-lg-8.bmp" BPP 8 DENSITY 2 TRANSPARENCY 255 0 255 COMPRESS
+END
+
+BITMAPFAMILYEX ID progressBitmap1
+BEGIN
+     BITMAP "progress_1-sm-1.bmp" BPP 1 DENSITY 1 TRANSPARENTINDEX 0
+     BITMAP "progress_1-sm-8.bmp" BPP 8 DENSITY 1 TRANSPARENCY 255 0 255 COMPRESS
+     BITMAP "progress_1-lg-8.bmp" BPP 8 DENSITY 2 TRANSPARENCY 255 0 255 COMPRESS
+END
+
+BITMAPFAMILYEX ID progressBitmap2
+BEGIN
+     BITMAP "progress_2-sm-1.bmp" BPP 1 DENSITY 1 TRANSPARENTINDEX 0
+     BITMAP "progress_2-sm-8.bmp" BPP 8 DENSITY 1 TRANSPARENCY 255 0 255 COMPRESS
+     BITMAP "progress_2-lg-8.bmp" BPP 8 DENSITY 2 TRANSPARENCY 255 0 255 COMPRESS
+END
+
+BITMAPFAMILYEX ID progressBitmap3
+BEGIN
+     BITMAP "progress_3-sm-1.bmp" BPP 1 DENSITY 1 TRANSPARENTINDEX 0
+     BITMAP "progress_3-sm-8.bmp" BPP 8 DENSITY 1 TRANSPARENCY 255 0 255 COMPRESS
+     BITMAP "progress_3-lg-8.bmp" BPP 8 DENSITY 2 TRANSPARENCY 255 0 255 COMPRESS
+END
+
+BITMAPFAMILYEX ID progressBitmap4
+BEGIN
+     BITMAP "progress_4-sm-1.bmp" BPP 1 DENSITY 1 TRANSPARENTINDEX 0
+     BITMAP "progress_4-sm-8.bmp" BPP 8 DENSITY 1 TRANSPARENCY 255 0 255 COMPRESS
+     BITMAP "progress_4-lg-8.bmp" BPP 8 DENSITY 2 TRANSPARENCY 255 0 255 COMPRESS
+END
+
+
+
+FORM ID uploadCompletedForm  AT ( 2 93 156 65 )
+MODAL SAVEBEHIND DEFAULTBTNID okButton
+BEGIN
+    TITLE "Upload completed"
+    LABEL "Picture(s) uploaded successfully." AUTOID AT (2 16)
+    CHECKBOX "Don't show this message again" ID dontShowUploadCompletedFormCheckbox  AT (2 32 AUTO AUTO)
+    BUTTON "OK" ID okButton  AT (58 50 40 AUTO)
+END
+
+NAVIGATION ID uploadCompletedForm
+INITIALSTATE kFrmNavHeaderFlagsObjectFocusStartState
+NAVIGATIONMAP
+  ROW dontShowUploadCompletedFormCheckbox
+  ROW okButton
+END
