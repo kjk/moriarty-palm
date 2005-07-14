@@ -1,0 +1,173 @@
+Author: Krzysztof Kowalczyk
+
+# 1. Error handling on the server
+
+The basic rule for the way we handle errors in the server code: never use 
+exceptions for control transfer or signaling errors.
+
+If an unhandled exception happens, it means that there is a bug in our code 
+that needs to be fixed.
+
+From that follows that we should handle expected exceptions e.g. networking 
+code might throw an exceptions because there's a temporary problem in the 
+network. We have no control over that but we expect that this might happen so 
+we handle the exception ourselves and turn it into an error code.
+
+# 2. Notes on caching
+
+Caching is important for improving performance and scalability of the server. 
+
+Information that changes very frequently (e.g. stocks information) cannot be 
+cached but infrequently changed information (e.g. box office data which changes 
+only once a week) can be cached.
+
+Currently we do very little caching and it's very primitive. Here are possible
+ways of caching data. 
+
+a) On-demand, in-memory cache with expiration. This is how currently we cache 
+box office data. We store cached data in memory. It's filled on-demand (i.e. 
+the first time some user asks for it). Every time someone asks for data, we 
+check if cache has expired. If yes, we re-download the data from the server. If 
+not, we return cached data.
+
+Pros: easy to implement. Works quite well for some kinds of data.
+
+Cons: no server-wide policy for expiring. A good cache balances memory usage 
+vs. cache hit. Due to limits on memory we can't cache everything. Expiration 
+strategy here is very primitive. Ideally, we would like to expire items from 
+the cache based on better criteria e.g. how much memory it takes, how often 
+it's used etc. That requires a global cache management that knows about all 
+cached data.
+
+b) Another way would be to have a cache management backed up by persistent 
+storage e.g. file system or database. That way cached information persists 
+across restarts of the server, we can better control memory usage and our cache 
+can be much bigger (getting data from disk or database will still be much 
+faster than getting it from the network and we're not constrained by memory 
+size).
+
+File system seems a better fit than a database (it's faster and simpler to use) 
+unless we need to cache fine-grained information or retrieve cache entries 
+based on complex criteria). In other words, if what we store are easily 
+identifiable blobs of data, file system is good. If what we store looks more 
+like an SQL table, then database can be better).
+
+c) An improvement to b) could be having a cache running as a separate process 
+from the server. For example, when we have to refresh box office data in the 
+server, the user who asks for this data will have to wait until we get it from 
+the network.
+
+Since our expiration policy is: expire every hour, we could just have an 
+external process that refreshes box office data every hour. That way no-one 
+needs to wait in the server. Problems with this approach is a need for 
+coordination between processes (i.e. so that e.g. we don't update cache file 
+while we're sending it to the client). If we used database, we get that for 
+free. In case of filesystem, that requires careful handling (locking)
+
+# 3. Notes on testing
+
+Testing can be done on many levels.
+
+Most basic is unit testing for single functions, using standard unittest module.
+There are some examples of unit testing for functions in ipedia's 
+\server\testUnitTests.py
+
+Tests for parsing routines using a static html pages, comparing to expected
+output.
+
+Tests for retrieve and parse routines.
+
+Black-box testing of the server, using network protocol.
+
+# 4. Thoughts on scaling the server.
+
+* Basics
+Processing on the server is conceptually simple:
+- wait for connection from a client
+- read request
+- based on request do some computation and prepare response data
+- write response data to the client
+- close connection
+- rinse and repeat
+
+The difficult part is doing it fast and scaling well. Scaling basically means 
+that we can service a lot of simultanous clients at the same time without 
+dropping the connections etc.
+
+* Ways to write network servers
+Read http://www.onlamp.com/lpt/a/4571 for more info
+
+Those are the most popular ways:
+1. one thread per client. Simple to program but doesn't scale (thread 
+management, synchronization etc. takes time and the more threads we have the 
+more time goes into managing threads)
+
+2. Thread pool. As above except we limit number of threads. This way we avoid 
+getting to a point where thread management uses a lot of time but we're limited 
+in number of simultanous clients we can service. We can try to keep new 
+connections open so that they are not dropped while we wait for some thread to 
+become available, but I'm not sure how well it would work in practice.
+
+3. async/event driven programming. The basic idea here is that there's one 
+thread that can issue multiple asynchronous I/O requests to the OS and 
+basically go into sleep until one of them completes. In our case we would wait 
+for data from any client socket, process the data and go back to sleep.
+
+So what should we do?
+
+Important observation: the biggest portion of request processing time goes to
+reading data from other websites. It's not CPU intensive task, we just need to 
+issue the request and sleep patiently waiting for result. What we do is:
+a) read the client request; fast
+b) determine some basic info like user id; quite fast (although does go to 
+database)
+c) issue HTTP requests to retrieve data client is interested in; very slow
+d) parse HTTP request and return data to the client; quite fast
+
+We need to handle part c) in a way that scales. Since this is only network I/O,
+it's ideal for async model. To make things simple we would devote one thread for
+async retrieval of html pages (i.e. issuing HTTP requests). This thread would have 
+simple, high-level interface: "retrive this url", "retrieve this url following 
+redirects" etc.
+
+So would have 2 threads in total:
+
+1. main thread doing async servicing of client requests. It would block on 
+client socket requests and notification from our HTTP retrieval thread.
+It would read data from client sockets, when the request is completely read it 
+would do the little processing we need to establish userid etc. but instead of 
+doing blocking (synchronous) HTTP requests, it would queue the request for our 
+HTTP retrieval thread and go back to main loop.
+When the HTTP request is completed, it would resume processing for a given 
+client and send the response.
+
+2. HTTP retrieval thread would get requests for issuing HTTP requests, it would 
+execute them in async manner and notify the main thread when a given HTTP 
+request is completed.
+
+This should scale very well. It'll make programming a bit more complicated but 
+we should find a way to encapsulate this in a fairly simple interface.
+
+# 5. Thoughts on reliability
+
+Our reliability problems and how to fix them.
+
+The source of our reliability problems is that we use 3rd party web servers
+to get our data from. They might be very slow or temporarily down in which
+case our module depending oon that server is also down.
+
+One way to improve the situation is to retry the request to the same server if
+it rejects our query for temporary reasons (e.g. 'connection reset by peer'
+or 'connection timedout' is a sign of temporary problems). However, that doesn't
+help that much because client also has a timeout so client might cancel the 
+connection before we're able to get a response from a busy server, even if we 
+retry and finally succeed.
+
+Another way is to use redundant service providers. Most popular data (weather, 
+stocks, currency, box office, movie times) is provided by multiple web sites.
+If one is down, we can try to get the data from another site, assuming that we 
+can write our code so that the data returned to the client is in the same 
+format.
+Also, we can time how fast those servers are responding and dynamically select 
+currently the fastest server. It would be nice to have a simple framework for 
+this.

@@ -1,0 +1,49 @@
+Author: Krzysztof Kowalczyk
+
+Universal data format (UDF) description.
+
+We need a data format for transferring data from the server to the client.
+
+Requirements of a good format:
+* human-readable to make debugging by watching logs possible
+* space efficient (uses little space)
+* fast to generate/parse
+* simple - easy to write code for generating and parsing this format
+* generic - usable for many modules
+
+Observation: data for most modules can be thought as list of items. Each
+item in turn is a list (consists of elements). E.g. results for reverse
+zip lookup is a list of items where each item consists of 3 elements:
+city, county, timezone.
+
+Our format is inspired by netstrings: http://cr.yp.to/proto/netstrings.txt
+
+Basic idea: everything is in ascii. We have a header that describes the
+list of lists followed by list data.
+
+First line of the header is a integer (represented in ascii) representing
+the number of items. Then for each item we have a line that describes
+this item i.e. we have a space-separated integers, each integer
+telling the length in bytes of n-th element of this item.
+After that we have payload i.e. elements of all items. We pad each
+element with space which allows very efficient processing on the client
+- we can replace spaces with '\0' (zeros) and use the data directly
+without copying in APIs that expect null-terminated strings.
+
+For example, a list:
+"Seattle", "98101", "Pine St"
+"LA", "98105", "42nd"
+
+Would be sent as:
+
+2
+7 5 7
+2 5 4
+Seattle 98101 Pine St LA 98105 42nd
+
+On the server we have universalDataFormat and 
+universalDataFormatReplaceEntities in parserUtils.py to generate
+this data from list of lists.
+
+On the client we have UniversalDataFormat.* and UniversalDataHandler.*
+for parsing the data.

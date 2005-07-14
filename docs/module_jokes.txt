@@ -1,0 +1,31 @@
+---This document describe only client-server protocol---
+
+we will use this url to fetch jokeList on server:
+http://www.jokes.com/search/results.asp?c=14,15,16&e=0,1&t=4,5&r=2&o=rd&p=1&m=1&k=pink
+
+Parametrs:
+
+r = (0-10)  - get ui gives 0-4 but server multiply it by 2
+o = (rd, rtd) - sort order (by rank, by rating) - by rank only if keyword available) (-a - ascending, -d - descending)
+m = 1 - and it will be 1 - but they count it automatic! (for example 0.48 0.52 or other!)
+    we will use 1... (or 0.50 but constant)
+e = (0,1,2) - (explicitness [Clean,Tame,Racy])
+k = ... - keyword(s) - last part of definition
+p = 1 - results page (1 in our case)
+t = (0,1,2,3,4,5) - type [Articles & Columns, One-Liners, Q and A, Sketches, Stories,  Lists & "Top Ten"]
+    shorter names send by user = [Articles, One-Liners, QandA, Sketches, Stories,  Lists]
+c = <14;37> - categories (send by user) [Blonde, Entertainment, Men/Women, Insults, Yo-Mama, Lawyer, News&Politics, Redneck, Barroom, Gross, Sports, Foreign, Whatever, Medical, Sexuality,  Animals, Children, Anti-Joke, Bush, College, Farm, Business, Religious, Tech]
+
+
+user send tuple:
+(rating;order;explicitnessList;typeList;categoriesList;keyword)
+where List items are separated bu space (' ')
+
+and simple 
+http://www.jokes.com/results/detail.asp?sql=8&id=8282
+to get joke (client send url ("/results/detail.asp?sql=8&id=10960"), so no problems)
+
+random joke:
+"random" instead of url
+we will use sql=12 anf rand_id=(0-12000) - we need handle redirections
+sometimes it gets empty page (len(resultsBody) = 8) so we will repeat it 5 times and after that return ("try again")

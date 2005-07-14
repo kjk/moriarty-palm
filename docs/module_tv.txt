@@ -1,0 +1,47 @@
+TV listings module.
+
+** Overview
+
+TV listings module shows tv listings in US. The main challenge is defining good
+UI for presenting the data (since there's a lot of data).
+
+Possible source of data:
+- tvlistings.zap2it.com, it requires the user to select a zip code and then 
+  cable/satellite tv provider
+- http://tv.yahoo.com/, requires only zip code (?)
+
+Related: http://membled.com/work/apps/xmltv/, provides data for many tv networks
+in xml. Also has a list of similar projects. Using xmltv or xml format might
+not be a good idea but it might have some ideas (e.g. which servers to use
+to download the data) to use.
+
+
+Links:
+* http://radiotimes.tvcompass.com/rt/Home.aspx
+* http://www.doublebit.com/ptvb/
+* http://groups-beta.google.com/group/comp.lang.python/browse_thread/thread/
+225da1d0d24397dc
+
+** UI design:
+
+To be designed. The basic function is to show tv data for a given day (default
+to current day) i.e. which programs are shown at what time on which channel.
+
+Given that there are a lot of channels, we should also provide some functions
+to ease browsing of the data e.g.:
+- a user can select his favourite shows and we somehow show him those shows
+- ability to change the display order of data (e.g. when user prefers some
+  tv stations 
+
+See http://www.palmsource.com/interests/movies/#listings for a list of programs
+that can be used as an inspiration.
+
+** Protocol
+
+To be designed.
+
+** Future
+
+In the future we might add listings for different countries (xmltv supports a
+lot of countries).
+

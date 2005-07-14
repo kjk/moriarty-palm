@@ -1,0 +1,189 @@
+This file lists ideas for future possible modules. It only has a short info, more
+detailed information is in module_*.txt files.
+
+Modules marked as risky are those that I think can get us in legal trouble
+(i.e. the copyright owner of the data might sue us for copyright infringment).
+
+@ Sports
+
+Getting latest sport scores for footbal, baseball, basketball, hockey. Express
+has it, Watson has it and it looks like it would be popular module.
+
+It could be done either as sub-modules of Sport module (like in Phone Book
+module) or as independent modules (in which case we could release them one-by-one).
+
+Links:
+* http://sports.yahoo.com/
+* http://www.cs.ubc.ca/~tennessy/projects/score/
+
+@ quotes of the day
+Ultimately we should have all of this data locally at our server and not use
+their server. We could spider their site once or try to rebuild the data from
+their original sources. But that's for the future.
+
+@ Stocks
+
+We already have it, but it could be improved e.g. adding ability to see stock
+charts (graphics of the price change in the last week/month/half a year/year/
+3 years etc.).
+
+Make it comparable in functionality with other software of this type:
+* http://discuss.treocentral.com/showthread.php?threadid=65316
+* 4stocks (http://www.shsh.com/products/)
+* StockBroker (http://www.jabesoft.com/)
+
+@ eBooks / eBook downloader
+
+Enables downloading ebooks directly from the device. Has two parts: a spider
+that indexes available ebooks, using data from other sites. At very least it
+indexes titile, author, url and type (plucker, palm, iSile, eReader etc.).
+Then a palm client that allows searching database build by the spider and
+manage eBooks on the device (download to the device (storing in memory or on
+the card, delete books downloaded by ourselves).
+UI on the client would be a google-inspired simple search interface. Ability
+to show books in all formats available or only those understood by the device
+(and we get that by scanning list of apps for known eBook readers), done
+as preferences.
+
+It would be free since it should be very popular and we want at least one very
+good free module that'll make people keep InfoMan on their devices.
+
+Links:
+* http://www.manybooks.net/
+
+
+@ Word of the day
+
+Very simple module: displays "word of the day". There are multiple sources
+we could use for this data:
+* http://www.wordsmith.org/words/today.html
+* http://dictionary.reference.com/wordoftheday/ (http://dictionary.reference.com/wordoftheday/)
+* http://www.m-w.com/cgi-bin/mwwod.pl
+* http://www.oed.com/cgi/display/wotd
+* http://www.nytimes.com/learning/students/wordofday/ (uses Merriam-Webster
+m-w.com data, but not sure if shows the same thing as m-w.com at the same day)
+* http://home.mn.rr.com/wwftd/
+* http://www.studyspanish.com/dailyword/
+* http://www.onelook.com/?w=dioxin&loc=wotd (a meta-index)
+* http://www.transparent.com/wotd/today/ge_wotd.htm
+* http://french.about.com/library/motdujour/bl_motdujour.htm
+* http://www.infoplease.com/cgi-bin/word
+* http://education.yahoo.com/college/wotd/
+* http://www.wordthink.com/
+* http://travlang.com/wordofday/
+
+It's trivial to cache this data on the server (only changes once a day so we
+can re-get it every hour or so). 
+
+Client UI:
+a) Multiple levels like in Phone Book module
+b) Or just one page that shows them all aggregated. Hyperlinks for headers
+so that it's easy to 5-way navigate between words coming from different services.
+It's a better solution, I think, since it's faster to use, but might not scale
+above some number of services. In this mode users could unselect services
+they don't want to see.
+
+As an additional bonus, we could also play the word (some services provide
+*.wav file).
+
+@ flight schedule
+displays the status of a flight. 
+Possible source of data: 
+* sniff where does aa timetable pc app gets the data from
+  (http://www.aa.com/content/travelInformation/airportAmenities/electronicTimetable.jhtml)
+* http://dps1.travelocity.com/dparrqst.ctl?SEQ=110414920080592212272004&LANG=EN
+
+Similar software:
+* http://ww.freewarepalm.com/travel/flightstatus.shtml
+* http://www.andrewsoft.net/downloads.html
+
+@ weekly most frequently shared songs/movies
+There are websites that track which songs/movies are most frequently shared on
+p2p networks which is one measure of popularity. We might call it "Popular songs",
+"Popular movies" or add to lists of bests. Sources of data:
+* http://www.bigchampagne.com/
+* http://p2pnet.net/story/3350, http://p2pnet.net/story/3377
+  (they use bigchampagne.com data)
+
+@ IMDB.com module
+
+Risky but would be very cool. There's imdb python module.
+http://search.cpan.org/~stepanov/IMDB-Film-0.04/lib/IMDB/Film.pm
+
+@ Rottentomatoes.com module
+
+Risky.
+
+@ metacritic.com module
+
+@ Music artist info
+Risky.
+
+http://www.allmusic.com/
+http://launch.yahoo.com/artist/artistFocus.asp?artistID=1021192
+
+@ quotes
+
+Links:
+* http://palmaddicts.blogspot.com/2004/08/software-quotemaster.html
+
+@ eBay module
+eBay module would be great since many people use eBay. However, it's not easy
+to write. It's hard to decide, which functionality should be included (e.g.
+just tracking bids or full searching/displaying information (hard, because
+info is arbitrary html).
+links:
+* http://www.hitmenow.com/ebay/mobile.hmn
+* http://discuss.treocentral.com/showthread.php?threadid=65147
+* http://www.mobileread.com/forums/showthread.php?threadid=2649
+* http://discuss.treocentral.com/showthread.php?threadid=58648
+* http://abidia.com/p5-3.html
+
+@ emmy awards
+http://www.emmys.org/awards/awardsearch.php
+
+@ new on dvd
+show lists of new movies that came out on dvd, link to amazon.com info
+where to get this data?
+
+@ fedex, ups, usps, dhl tracker
+track shippments. hard to test (need a shipement to test if it works)
+http://www.benhammersley.com/code/source_code_for_fedex_tracker_in_rss.html
+http://www.young-technologies.com/Utilities/PackageTracking/
+http://www.ec.ups.com/ecommerce/solutions/c1a1.html
+
+@ word spy
+http://www.wordspy.com/
+
+@ webcams
+http://www.earthcam.com/
+
+http://www.palmgear.com/index.cfm?fuseaction=software.showsoftware&SID=
+A1C41E19-CF18-AC2E-788600B4F9DACD03&PartnerREF=&catid=0&area=software.
+newupdated&searchtitle=Search%20Results&searchterm=&step=1&orderby=
+modificationdate&direction=asc&userid=0&prodid=61667
+
+@ del.icio.us
+
+@ http://www.wondir.com/
+
+MODULES UNLIKELY TO BE WRITTEN
+
+@ OED client
+
+Partner with Oxford English Dictionary (http://www.oed.com/) people to provide 
+palm client for their on-line dictionary. The module would be free, but people
+would have to have existing OED account (which is very expensive, $295/year,
+$29.95 a month). It would be very cool and should generate good reviews. However,
+I doubt OED would be very interested in working with us, plus they would have to
+provide additional interface to their data that we could use (i.e. that's work
+for them).
+
+@ Dictionary/Reference
+
+Dictionary lookups using many existing web-based dictionaries.
+
+It would be useful but we probably can't do it. First, we don't want to compete
+with iNoah. Second, doing that through our proxy would be pushing things on
+the legal side so we would have to go directly to web pages.
+

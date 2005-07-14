@@ -1,0 +1,54 @@
+Stocks module.
+
+* General idea: stocks module allows people to view current stock quotes.
+
+* Data source: http://finance.yahoo.com/ (unless can find better)
+
+* Competition, similar programs:
+- StockManager (http://www.tinystocks.com/sm.html)
+- Handmark Express
+
+* Data model
+
+We have multiple portfolios. Each portfolio is a list of stock symbols (e.g. 
+AAPL, MSFT etc.). In first version of the module we'll only have one, default
+portfolio, but the code should be written with ability to have multiple 
+portfolios in mind.
+At first we'll support US stock market.
+
+* UI design
+
+UI in first version will be pretty much the same as in Express:
+http://express.handmark.com/ex_stocks.htm i.e. the main screen is an an 
+"overview" screen of the portfolio, one stock per line with basic info about 
+the stock: last trade, change and change percent.
+
+Selecting an item goes to a detailed screen with an info about one stock. We 
+probably won't display every information we send from the server on the detailed 
+stock page, only as much as fits on one screen. We can either use a form like 
+Express for displaying details or use a list. At the bottom we have "Done" and 
+"Update" buttons
+
+The only differences:
+- instead of "New" button we have "Add" and it'll be to the right of the screen, 
+not next to "Update" button
+- we don't have the top line which in Express is a scrolling text as in many 
+stock tickers on a PC
+
+Pressing "Add" button brings "Add stock" dialog box" whith a field for entering 
+a ticker symbol (e.g. AAPL, MSFT etc.) with "Done" and "Cancel" buttons. 
+
+* Client-server protocol
+
+Client sends:
+Get-Stocks-Info: $stock1 $stock2 $stock3 ...
+e.g.
+Get-Stocks-Info: AAPL MSFT
+
+Server returns payload in Stocks-Info which has information about stocks in UDF 
+format which will contain:
+Last trade, trade time, change, change percent (same as change but in percent), 
+previous close, open, bid, ask, day's range, 52wk range, volume, average volume,
+market cap, p/e, eps.
+
+

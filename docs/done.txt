@@ -1,0 +1,1248 @@
+## 2. Add another list display style that is exactly the same as in
+Handmark's Express. It has to have customizable background for selection
+so that we can use a different color. Should be easy given that we have
+a lot of infrastructure written.
+
+Size: small
+
+Owner: Andrzej
+
+Done: 2004-08-13
+
+## 3. We need to figure out how to do operations like fetching pages from the
+internet that might take a lot of time and block in a non-blocking way
+so that they don't block Twisted even-loop and make the server inaccessible
+for everyone else. I think that defferred might have something to do with it.
+Or maybe twisted has asynchronous code equivalent to urllib for making http
+requests?
+
+Size: medium
+
+Principal owner: Andrzej but everybody needs to understand that
+
+Done: 2004-08-10
+
+## 10. remember selected item on main page i.e. after pressing "done" we get
+back to previously selected item.
+
+Owner: Krzysztof
+
+Size: small
+
+Done: 2004-08-11
+
+## 8. Implement disabling modules. We need a way for the server to tell the client 
+that a given module (or modules) have been disabled (e.g. because the data we 
+were scrapping is no longer available).
+
+MoriartyModule_t has active_ that can be used to disable a given module at runtime.
+
+Krzysztof and Andrzej discussed the design at some point but I forgot the 
+details.
+
+Size: medium
+
+Owner: Andrzej
+
+## 11. on recipies page we don't start with a blank screen but a small help page
+that tells the user how to use it e.g.
+
+"Find a recipie by entering an ingredient e.g. "bread" into text field and 
+pressing "Search"".
+
+## 21. Ability to display temperature in Celsius in Weather module. Ultimately 
+this should be a preference item in pref dialog for weather module, but for now 
+we'll just have 2 menu items: Temp/Celsius, Temp/Farenheit.
+
+Owner: Szymon
+
+Size: small
+
+Done: 2004-08-17
+
+## 20. remove default location from Movies and Weather - user has to select it
+first and then we persist it in preferences.
+
+Owner:
+
+Size: small
+
+Done: 2004-08-17
+
+## 15. Weather & Movies - data stored
+
+When we run movies or weather after exiting InfoMan title is "Movies for ''" or
+"Weather for ''". We can't use preferences.moviesLocation, because it can be set for
+invalid location (or just "blah blah").
+We can solve in two ways:
+*When locationToDisplay (in LookupManager) is empty display sth like "Last results"
+*Use fetchWeather(weatherLocation) instead of sending event after storing location
+in preferences. (we can then set location in preferences only if it was correct, so
+we can use it to display after reload data)
+
+Size: very small/small
+
+Owner: Szymon
+
+Done: 2004-08-17
+
+## 11. 411 modules are inconsistent in how they handle entering the form with
+results.
+
+Business search, Reverse phone, Zip code, Area code, Reverse Area Code, 
+International area code work well i.e. if there were no results returned 
+previously, to go directly to dialog where user enters data.
+
+Person search, Reverse zip code don't work like that: show empty page if there 
+were no results and user has to press "Search". They should behave like all the 
+other ones.
+
+Owner: Szymon
+
+Size: small
+
+Done: 2004-08-18
+
+## 10. Handle server errors properly in 411 module
+Currently if there is an error in the server (e.g. an exception) when doing
+411 request, client just silently ignores it instead of displaying apropriate
+error message. M411MainForm::handleLookupFinished() needs to be fixed
+to handle error messages from the server etc. Since it seems like it's a code
+common to all modules, it should be factored out and used everywhere to
+minimize code duplication.
+
+This can be tested on a modified server that always throws an exception (to
+force error condition).
+
+Owner: Szymon
+
+Size: small (find it was not so easy - just one line was missing)
+
+Done: 2004-08-18
+
+## 13. Store results in 411
+
+Now results are not stored, but can be stored like weather or movies. Should we do
+it?
+
+Size: small
+
+Owner: Szymon
+
+Done: 2004-08-19 (only person & business search)
+
+## 24. bug. in epicurious, debug build, select menu update and get assert. Also,
+option update doesn't make sense there
+Owner: szymon
+Size: small
+
+Done: 2004-08-22
+
+## 23. location for weather module should also accept a city,state in addition
+to zip code
+
+Owner: szymon
+
+Size: medium
+
+Done: 2004-08-24
+
+## 25. bug: movies ask for location even if it was given last time
+Owner: szymon
+Size: small
+Done: 2004-08-24
+
+## 22. store preferences - this is important!
+
+Owner: 
+
+Size: small
+Done: by Andrzej
+
+## 14. Recipe view - epicurious
+Shouldn't we show last searched recipe instead of list of recipes in epicurious?
+Size: small
+Owner: Andrzej
+
+## 29. Move movies to Universal Data Format
+Owner: Szymon
+Size: medium
+Done: by Andrzej
+
+## 26. when a user doesn't provide a location for the module, we get back to main
+screen, not show an empty thing (like e.g. in weather). applies to all modules
+Owner: szymon
+Size: small
+Done: 2004-08-24
+
+## 19. auto-focus of the text field in all places in 411 where it makes sense 
+(auto-focus means what we do e.g. for Options/Register: when dialog shows up, 
+text field automatically gets focus). Also in recipes.
+Owner: Szymon
+Size: small
+Done: 2004-08-25
+
+## 27. I don't like the way enum PayloadType {} is handled. The same enum value
+means different things in different modules because they all start from
+the same value. This is not safe. Also, spreading this enum across multiple files
+is unnecessary complexity. We should have one file that defines enum PayloadType
+and everyone just includes it. That's simple and safe.
+
+Owner: Andrzej
+Size: small
+Done: 2004-08-28
+
+## 28. I don't like all those *Connection.[cpp|hpp] classes. They all do the same
+thing, just for fields with differnt names. We can simplify this by getting
+rid of all those files and handling everything in MoriartyConnection.cpp. We
+should have a data-driven approach where we basically define all the fields
+and their types in a struct e.g.
+enum FieldName {} (that's what we now call PayloadType, it's basically an enum
+name instead of string name)
+enum FieldType {
+fieldNoValue, // this is a field without value
+fieldInlineValue, // this is a field with value in the same line
+fieldPayloadValue, // this is a field that has payload value
+};
+
+struct FieldDefinition 
+{
+  const char_t *  fieldName,  // use char_t* instead of String for efficiency and simplicity
+  FieldType       type,
+  FieldName       name
+};
+
+Then the parser part of the protocol can use that data to parse all fields
+and we don't have to write repetetive code for that the way we do now.
+We just need to expose the result of parsing to consumer in a different way,
+I guess.
+
+Owner: Andrzej
+Size: medium
+Done: 2004-08-28
+
+## 18. In the new list style, add a line after the last item in the list. 
+Otherwise it looks strange.
+
+Owner: Andrzej
+
+Size: small
+
+## 4. Remove alerts module - we'll punt it and use "Check for updates" or "InfoMan
+news" menu items that just launch apropriate web page instead.
+
+Size: small
+
+Owner: Krzysztof
+
+Done: 2004-08-31
+
+## 1. "Box office" module. Grab box office (most popular movies during last
+week) data from one of many sources (http://movies.yahoo.com/boxoffice/latest/rank.html, http://www.rottentomatoes.com/movies/box_office.php).
+
+Implement python server code for getting the data. Client request:
+Get-Current-Box-Office. Server response: Current-Box-Office with payload
+data in our universal data format. Each item is one piece of information
+about the movie. We return from the server as much as we can (depends on
+the data source we use).
+Each item consists of the following elements:
+* last week position ("-" means it's a new movie that came out this week)
+* movie title
+* weekend gross
+* cumulative gross
+* release weeks
+* number of theaters
+
+On the client side, we display those as a list. Currently we'll only
+display the following:
+* position (can be inferred from the item's position)
+* title
+* weekend gross
+* cumulative gross
+
+It'll probably require a 2-line display for each movie. On the bottom
+are "Done" button on the left (as in every other module) and "Update"
+button on the right (so that it's not close to "Done").
+
+Size: medium
+
+Owner: Marek
+
+Done: 2004-08-31
+
+## 5. Make the server easily deployable on our server so that it can be tested
+on the server as opposed to testing manually.
+Size: small
+Owner: Krzysztof
+Done: 2004-08-31
+
+## 17. change all lists to the new list style
+Owner:
+Size: medium
+Done: 2004-08-31
+
+## 31. Change the name of 411 to Phone book
+Size: small
+Owner: Krzysztof
+Done: 2004-08-31
+
+## 4. New module: dream dictionary
+
+Get informations about dream meaning.
+possible source:
+http://dreammoods.com/cgibin/searchcsv.pl?search=shoes&method=exact&header=symbol
+but try to find something like polish (more informations, more meanings, more cases):
+http://www.sennik.net/modules/glossaire/
+pri: medium
+Owner:
+Done: 2004-08-30
+
+## 32. Changing farenheit<->celsius should be persisted in preferences. Currently
+it only lasts during one execution.
+Owner: Szymon
+Size: small
+
+Done: 2004-09-01
+
+## 7. Add About module which displays information about InfoMan using our
+rendering engine (similar to iPedia).
+
+Size: medium
+Owner: Andrzej
+Done: 2004-09-02
+
+## 31. Fix server tests.
+\server\tests\runtests.bat fails for all tests. This need to be fixed.
+Owner: Krzysztof
+Size: medium
+Done: 2004-09-02
+
+## 39. bug: assert when displaying movie theater info
+repro:
+ - use movies module
+ - click on the theater
+ - get an assert "RenderingPreferences.hpp, Line:76, hyperlinkType<hyperlinkTypesCount_"
+
+size: small
+Owner: Andrzej
+Done: 2004-09-02
+
+## 41. bug in Weather module
+
+Switching from detailed view that has a lot of data to summary view, might 
+leave garbage on the screen.
+
+The way I managed to repro it:
+- run on 5.4 sim with 320x480 resoultion (i.e. hide virtual silk-screen to get 
+maximum of space on the screen)
+- get weather for e.g. 98105
+- switch to detailed view for the first day (since it has the most information)
+- switch to summary view. the list is displayed but if info on previous screen 
+was bigger than the size of the list, there will be garbage on the screen (i.e. 
+the part from previous screen that was not fully covered by list on the currrent
+screen will still be visible).
+We probably need to refresh on just clear the background when we switch between 
+those views.
+
+Size: small
+Owner: Szymon
+Done: 2004-09-03 (resize.height was missing)
+
+## 42. bug in recipes module
+
+Repro:
+- use debug build of InfoMan on e.g. sim 5.3
+- run the server
+- enter recipes module and search for "bread"
+- get a list of recipes
+- kill the server
+- select a recipe from the list
+- get an error than server is not available
+- select a recipe from the list again
+- get few asserts and crash when they are ignored
+
+Size: small
+Owner: Szymon
+Done: 2004-09-03 (jokes relay on the same method)
+
+## 43. Display full country name in 411 international results
+Currently when we show results for international calling codes, the form
+title is e.g. "Calling codes for: PL". We should display "Poland" instead of 
+"PL" i.e. full name of the country.
+
+Size: small
+Owner: Szymon
+Done: 2004-09-03
+
+## 33. cleanup exception usage - return errors instead.
+return errors instead of raising exceptions in our own code
+Owner: Krzysztof
+Size: medium
+Done: 2004-09-03
+
+## 34. Change most cases of ServerErrors.serverFailure to 
+ServerErrors.moduleTemporarilyDown. Basically if we can't return results because
+the server we use is down or return an errors for any resons, we don't want to
+look like it's failure of our server but a temporary disruption. We add
+new error moduleTemporarilyDown and show apropriate message on the client.
+Owner: Krzysztof
+Size: small
+Done: 2004-09-03
+
+## 6. Cache box office listings.
+We shouldn't re-download box office listing every time user does query. This
+data doesn't change often (once per week). Instead, we should have it in a file
+in file system and re-create this file every hour from the server. I believe
+Twisted has support for scheduling tasks to execute at a later time. We need
+to be careful about synchronization i.e. we shouldn't update/write to a file if
+someone is reading it. We might need to do a lock since some of the stuff 
+executes in a separate thread.
+Owner: 
+Size: medium
+Done: 2004-09-03
+
+Ok, so I ended up implementing something much simpler for caching. But it works 
+and is good enough.
+
+## 4. Phone call in 411
+
+If we realy want to give user posibility to call using personSearch, businessSearch
+or reversePhone results, we need to find way to do this.
+Or move it after V1?
+
+Size: unknown
+
+Pri: unknown
+
+Owner: Szymon, but I need help (source of information)
+
+Done: 2004-09-04
+
+## 12. Add "Change location" button in Weather module, at the bottom of the 
+form, aligned to right. Does exactly the same thing as menu 'Main/Change 
+location"
+Owner: szymon
+Size: small
+Done: 2004-09-06
+
+## 11. Logging of requests
+We need a way to log requests on the server so that we can easily analyze what 
+requests people are doing and be able to see if we get errors.
+Owner: krzysztof
+Size: medium
+Done: 2004-09-10
+
+## 15. bug: recipes/dreams conflict
+Repro:
+- recipes module, search for bread, select some recipe
+- switch to dreams module. you see dream description for "bread"
+
+It seems that dreams and recipes re-use the same place for storing the last 
+search and one picks up queries done in the other.
+
+Owner: Szymon
+Size: small
+Done: auto done?
+
+## 13. Bug: sometimes InfoMan unnecessarily asks for a location. (I dont think so//szymon)
+
+I'm pretty sure I've noticed this more than once: sometimes e.g. in weather of 
+movies module we have data from previous lookup (i.e. we provided location 
+earlier) but upon entering those modules, we're asked for a location again.
+
+I haven't figured out the exact repro but it does happen.
+
+Owner: Szymon
+Size: small
+Done: auto done?
+
+## 14. Reuse common fields.
+
+It looks like many modules have their own fields to mean "no results for your 
+query have been found". We should simply use a common "Not-found" fields for 
+all those. This should especially decrease the client size. Fields that should 
+be replaced with "Not-found": 411-No-Results, 411-Person-Search-No-City (?), 
+Dream-No-Results, Jokes-No-Results, 411-Business-Search-No-City (?), Empty-List 
+(?), Location-Unknown. So the task is:
+- remove all those fields from the server and replace them with generic 
+"Not-found"
+- modify the client aproprietly
+- re-test the client
+- fix unit tests etc.
+
+Owner: Szymon
+Size: medium
+
+Done: 2004-09-19
+
+## Implement preferences dialog.
+
+At the very minimum, we need to allow the user to disable modules from the main
+page so that he doesn't have to see those that he doesn't use.
+
+Also think about what other stuff can be there.
+
+Owner: Andrzej
+
+Done: 2004-09-20
+
+## bug: server is flaky
+
+Not sure what's going on but something's wrong with the server in face of
+multiple simultanous requests (I suspect deffering has something to do with it).
+
+Repro: just run server tests \server\tests\runtests.bat
+
+You'll see that Get-Weather-Fail, Get-Movies-Fail, Get-Recipe-Fail randomly fail
+(i.e. sometimes do, sometimes don't). It never happens when they are executed
+separately (can be forced by setting testName to e.g. "Get-Movies-Fail" in
+MoriartyServerTest.py).
+
+It basically seems that either server doesn't send the whole thing (the Error: 
+field is missing) or the test code doesn't rea  the whole thing or data is being 
+written to the wrong socket or maybe python test client code is broken.
+
+It might have something to do with breaking palm client on the device.
+
+Owner: Andrzej
+
+Done: 2004-09-20 Doesn't seem so flaky anymore.
+
+## 3. Add unit tests for all 411 sub-modules and all the modules that don't have
+unit tests yet to UnitTestServer.py. We need to have at least one request 
+exercising every handle* function in the server.
+
+Pri: med
+Owner: Szymon
+Size: medium
+Done: 2004-09-24
+
+## 8. Module stocks
+See modules_stocks.txt
+Owner: Szymon
+Size: big
+Done: 2004-09-24 (I hope so :))
+
+## 5. Cache random joke. It should be ready when user send "Get-Joke"
+Pri: med
+Owner:
+Size: medium
+Done: 2004-09-24 (Szymon)
+
+## 16. MainForm - menu->About (is not what we want)
+Done: 2004-09-27
+
+## 14. bug: on Treo 600 sim press 1 on numerical keyboard (I think it's 
+equivalent of pressing left/down at the same time). Simulator crashes, probably 
+because of a bug in our code. It doesn't crash in other apps (e.g. iPedia)
+
+Note: it happens in iPedia also - just not when you are in an edit box. 
+Switch to extended list results and check then. It happens outside our code.
+Date: 2004-09-27
+
+## 9. Module currency converter
+See modules_currency.txt
+Owner: Marek
+Size: big
+Date: 2004-09-29
+
+## 3. improve performance of readUniversalDataFromReader()
+On the device, there's a user-noticable pause when entering e.g. movies module
+if we show cached data.
+I suspect this is due to readUniversalDataFromReader() being slow. Looks like
+the problem lies in Reader::readLine() which does byte-by-byte reading, which
+has terrible performance. It should be changed to to use small buffer (few hundred
+bytes should be enough).
+
+Size: small
+Owner: Andrzej
+Date: 2004-10-03
+
+## 2. Implement reg code expiration.
+
+The plan is that people purchase 1-year subscription to InfoMan service,
+as opposed to just bying the app. It means that purchased registration code
+is valid only for a year. We need to detect that reg code expired on the server
+and send regCodeExpired error from the server. Client needs to detect that
+and display apropriate message telling the user that he needs to purchase
+another reg code for the next year.
+Server shouldn't be fooled by multiple registration using the same code (not
+sure if this is the case currently - see the way we create new user ids).
+Also, client can send Get-Reg-Code-Days-To-Expire request with any other request
+and server responds with Reg-Code-Days-To-Expire response where the value is
+number of days that a given reg code is valid.
+The client will only send this once per session, attaching this request to the
+first request (but only if it's registered i.e. has reg code).
+If this is sent by a client that is not registered, server responds with error
+MalformedRequest (this, however, should never happen since that means a bug in
+the client or someone is trying to hack the protocol (or it's our unit testing
+checking if we do the right thing).
+We don't have to display this information in v1 client (but then again, we might
+add this to some about dialog).
+
+Size: medium
+Owner: Krzysztof
+Date: 2004-10-04
+
+
+## 15. implement registration
+
+Size: medium
+Owner: krzysztof
+Date: 2004-10-04
+
+## 4. make all dialogs that accept numbers only to be numeric.
+Pri: med
+Owner: Krzysztof
+Size: small
+Date: 2004-10-04
+
+## 12. bug: if there's an exception when getting currency, server doesn't send 
+Error field.
+Protocol-Version: 1
+Client-Info: Palm 1.0
+Transaction-ID: F7D83000
+Cookie: e4af47b7ea5fac4c5c52e34b6244ffd3
+Get-Currency-Conversion: USD EUR JPY GBP
+-----------------------------------------------------------------------
+
+Transaction-ID: F7D83000
+creating management connection
+retrieveHttpResponseWithRedirectionHandleException: http://www.fms.treas.gov/
+intn.html
+
+failed to retrieve data for 'http://www.fms.treas.gov/intn.html'
+reason:Traceback (most recent call last):
+
+  File "Retrieve.py", line 44, in 
+retrieveHttpResponseWithRedirectionHandleException
+
+    status, reason, responseText = retrieveHttpResponseWithRedirection(host, 
+url)
+
+
+  File "arsutils.py", line 440, in retrieveHttpResponseWithRedirection
+    return getHttpUsingUrllib2(host, url)
+
+  File "arsutils.py", line 436, in getHttpUsingUrllib2
+    result = opener.open(request)
+
+  File "C:\Python22\lib\urllib2.py", line 328, in open
+    '_open', req)
+
+  File "C:\Python22\lib\urllib2.py", line 307, in _call_chain
+    result = func(*args)
+
+  File "C:\Python22\lib\urllib2.py", line 824, in http_open
+    return self.do_open(httplib.HTTP, req)
+
+  File "C:\Python22\lib\urllib2.py", line 809, in do_open
+    raise URLError(err)
+
+URLError: <urlopen error (10060, 'Operation timed out')>
+
+------------------------------------------------------------------------
+
+Owner: Krzysztof
+Size: small
+Date: 2004-10-04
+
+## 1. Automatic logging of pages when there's a parsing error.
+
+Every time one of the parser methods returns UNKNOWN_FORMAT, we need to log the
+html that caused the problem (probably with other information as well) to a file
+and send an e-mail to everyone telling that it happened. That way we'll get quickly
+informed about parser breaking, either because it was used on a data that we don't
+handle yet or because the format of data has changed.
+
+In other words: implement logParsingFailure as spec'ed in InfoManServer.py and
+put it in every handle* function in apropriate place (see handleGetWeather for
+example). Also requires moving all retrieve* functions from Retrieve.py to
+InfoManServer.py since we need access to htmlText. And they're very short so
+it's not a problem.
+
+Pri: high
+Owner: Szymon
+size: medium
+Date: 2004-10-09
+
+## 11. bug: if server only sends Transaction-ID back, currency module doesn't 
+display "malformed response" error
+
+Date: 2004-10-09
+
+## 7. Cache currency information. It doesn't change often.
+Pri: med
+Owner: Krzysztof
+Size: medium
+Date: 2004-10-10
+
+
+## 6. setFocusControlId() broken? It seems recently something got broken wrt.
+to treo focus. On Treo 600 dbg sim e.g. in About module "done" button is 
+supposed to have focus at start, but it doesn't. I just tried to get the same 
+effect in boxoffice form (i.e. "done" button has focus) but neither 
+setFocusControlId() nor doneButton_.focus() seem to work.
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-10-11
+
+## 1. currency form on treo should behave like on non-treo devices i.e.
+amount field is always highlighted/focused so that typing will immediately
+start changing the amount even if the focus ring is on the currency list.
+I think the way to do it is to either have focus on amount field and route
+5-way nav to the list or the other way around.
+Owner: Andrzej
+Size: small
+Pri: med
+Date: 2004-10-15
+
+## 4. Dream-Interpretation unit test is failing.
+Run rununittestsserver.bat
+Pri: high
+Owner: Szymon
+Size: small
+Date: 2004-10-18 (but it was earlier)
+
+## 2. re-issue url requests for 411 modules if we get exception
+error: (10054, 'Connection reset by peer')
+This is for robustness - connection to yp.com often times out. We should re-try
+this 3 times or so with a small timeout.
+Pri: high
+Owner: Krzysztof
+Size: medium
+Date: 2004-10-19
+
+## 1. fix currency module (evocash.com doesn't work anymore). Even better,
+provide reliability by using more than one server and using second/n-th server
+is the first one doesn't work anymore (or temporarily)
+module_currency.txt has a list of possible servers to use.
+Pri: high
+Size: medium
+Owner: Andrzej
+Date: 2004-10-22
+Note: currently uses 5 sources
+
+## 14. Amazon (left)
+detailed page on server
+3 line view on server (2nd line in all categories)
+hyperlinks on client & server (as many as we can!)
+how to detect category crossing browsing? (books->dvd->music->down,down,down->xmlNoResults (category = books, node is from music))
+Owner: szymon
+Date: 2004-10-27 (without category crossing, but we cant do that)
+
+## 7. automatic, daily stats for server usage
+Runs as a cron script once a day. Each time incrementally processes requests log
+and generates summary. For each day that has stats changed vs. previous run,
+provide:
+* for each request field, number of requests made
+* after that, a list of all requests made, sorted by field name and then
+  alphabetically. If field values repeat, we provide a count
+Mail those stats to some e-mail addresses.
+This is to give us a good understanding of how people are using the server
+and how quickly server usage is growing.
+In the future we might add user stats (number of requests by a given user),
+generate static, cross-referenced html stats.
+Pri: high
+Owner: Krzysztof
+Size: medium
+
+Date: 2004-10-31
+
+## 2. Bug: scrollbar in our list doesn't respond to tapping on arrows.
+Pressing on scrollbar arrows should scroll the list but no longer does that.
+It seems to happen on all lists so it seems to be an issue with our list
+implementation. I believe it used to work correctly at some point.
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-11-01
+
+## 5. get number of server unit tests failures to 0
+In my opinion we should retry request in all modules when 
+'reset by peer' was found.
+Pri: high
+Owner: Szymon
+Size: small
+Date: ? but when all 411 becomes double-sourced
+
+## 0. bug: disabling modules in preferences is not persisted.
+Repro: disable a module in preferences, exit InfoMan, launch InfoMan.
+Expected: disabled module should still be disabled. It's not.
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-11-17
+
+## 7. convert About module to use SimpleTextDoneForm 
+(better use StocksDetailedDoneUpdateForm - with update.hide()
+because it has hyperlinks already)
+Pri: medium
+Owner: Krzysztof
+Size: medium
+Date: 2004-11-19
+
+## 13. better 5-way support in movies: when we scroll past last element in a 
+list of movies/theaters, set focus on "Done" button. Same for weather and other 
+modules.
+In box office "Done" should have focus by default.
+In Jokes "Random joke" should have focus by default.
+In stocks "done" should have focus by default.
+In about "done" should have focus by default.
+
+Note: setting focus to anything other than field or table works only on Treo 600.
+See AboutForm::handleOpen()
+Date: 2004-11-19
+
+## 1. selecting portfolio is not 5-way navigable
+Pri: high
+Owner: Szymon
+Size: medium
+Date: 2004-11-20
+
+## 2. selecting a stock from a list of matching stocks is not fully 5-way
+navigable (can't select a stock from the list). To repro: "add stock" with 
+'palmone' and try to select the stock from the list using only 5-way nav.
+Pri: high
+Owner: Szymon
+Size: medium
+Date: 2004-11-20
+
+## 6. Bug? Prev/Next buttons on treo 600 sim.
+In weather module try to navigate using < > buttons but only with 5-way. 
+When you go to 1st day button is disabled, but if you leave (5 way) it turns enable again.
+What about [Done] in other modules (if leaving list it is not bordered!)
+Why < > in amazon are bordered only after reentering form?
+Date: 2004-11-19
+
+## 1. In SimpleTextDoneForm.* (e.g. About) the startup focus should be on
+"done" button. From the code it seems it should be, but isn't. Only pressing 
+5-way left focuses on done button.
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-11-20
+
+## 6. movie times: do a request for the first time. We show a list of theaters
+but no theater is selected on the list, even though list has focus. We should
+select the first theater in the list. It does happen afterwards but not after
+first request.
+Pri: high
+Owner: Szymon
+Size: small
+Date: 2004-11-20
+
+## 2. Web page with updates
+Add something there, or change url.
+Pri: medium
+Owner: Krzysztof
+Size: small
+Date: 2004-11-21
+
+## 5. wether: choosing menu "view/detailed" should show details for the 
+currently selected day on the list.
+Pri: high
+Owner: Krzysztof
+Size: medium
+Date: 2004-11-21
+
+## 1. Weather bitmap - it hides after click on definition. Can we fix that?
+Pri: medium ?
+Owner: Andrzej
+Size: small ?
+Date: 2004-11-21
+
+## 22. log and mail all exceptions on the server
+Pri: high
+Owner: Krzysztof
+Size: medium
+Date: 2004-11-21
+
+## One list remains (ambigous location list)
+Change it to our list, because it is hard to navigate using 5-way
+(hold center and press down)
+Pri: high
+Owner: Andrzej?
+size: small
+Date: 2004-11-23
+
+## Recipes - scrolling recipe down causes TextRenderer to loose focus
+TextRenderer should loose focus while scrolling only when there's no more text to scroll.
+Date: 2004-11-25
+
+## movies: in list of movies, enable keyboard scrolling (pressing a letter
+scrolls to the first movie starting with that letter)
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-11-25 (Also sorted theaters and made them navigable)
+
+## Netflix - in details scrollbar doesn't work; in description TextRenderer is to wide
+## Gas prices - in details TextRenderer is too wide
+## Amazon - crash in search 
+Date: 2004-11-25
+
+## Text selection - for example on stocks detailed form. 
+The justifyRightLastElementInLine justyfication is threated like justifyLeft when text is selected -
+pen points are not recalculated.
+
+Date: 2004-11-28
+
+## new module horoscopes
+
+Investigate http://www.ipodsoft.com/ipodagent.aspx and see where does it go
+for the info.
+Pri: medium
+Size: medium
+Owner: (szymon)
+Date: 2004-11-29
+
+## horoscopes - bug: exiting infoman causes us to forget what we display.
+To repro:
+a) run horoscopes module
+b) select a sign => horoscope for this sign is displayed
+c) press 'Update' - we re-download horoscope for this sign
+d) exit infoman
+e) launch infoman again, go to horoscope => we still display horoscope for that
+sign
+f) press 'update'
+Date: 2004-11-30 (if we change provider or sth, check if stored urls doesn't contain
+any date dependant values (/blabla/30122004). for now they don't.)
+
+## weather: in summary display align day of month and temperature better i.e.
+instead of:
+Mon  Nov 23  13C
+Tue Nov 24   9C
+
+do:
+Mon Nov 23   13C
+Tue Nov 24    9C
+
+(note: the example only makes sense in mono-spaced font (each letter has the
+same dx) and I had to cheat (add a space after Mon) because InfoMan display
+is not aligned because we don't use mono-spaced font so the total width
+of "Fri" is different than total widht of "Thu".
+Date: 2004-11-28 or even earlier
+
+## Weather - numbers aren't formatted accordng to user's preferences
+Jokes - ratings in the list aren't formatted accordng to user's preferences
+Amazon - prices aren't formatted accordng to user's preferences
+Date: 2004-11-30
+
+## 5-way link navigation: the background/foreground color of currently selected
+link when doing 5-way link navigation makes the text hard to read (it's dark
+gray/brown on black background). We should use the same thing as in iPedia
+(brigh green or black - looks quite nice) or Blazer on Treo 650 i.e. white text
+on light blue.
+Pri: high
+Owner: Andrzej
+Size: small
+Done with white on blue.
+Date: 2004-12-01
+
+## 5-way link navigation: when text edit area looses the ring focus for another
+gadget, we should unselect the link. Currently we leave the last selected link 
+as selected.
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-12-01
+
+## jokes: incorrect 5-way nav of joke text.
+Repro:
+* get any joke longer than 2 screens
+* use down 5-way to scroll it down
+
+Expected: works like everywhere else i.e. scrolls the text to the bottom and
+when it reaches bottom it gives ring focus to the gadget below.
+
+Observed: it does scroll by one screen but also immediately gives ring focus
+to the gadget below.
+
+Pri: high
+Owner: Andrzej
+Size: small
+Date: 2004-12-01
+
+
+## 5-way nav: the way 5-way left is handled has changed. When we're on the first
+link, left should behave like up i.e. scroll up and if we're up switch the focus
+to the gadget before. Currently it just wraps around i.e. when we leave the 
+first link, we go to the lowest link currently on the screen.
+Date: 2004-12-04
+
+## iPedia compilation broken: Definition.hpp (parseSimpleFormatting()) refers
+to hyperlinkCallback which is only defined in InfoMan's RenderingPreferences.hpp
+therefore breaking iPedia build. RenderingPreferences.hpp either have to be
+unified (moved to common sources) or InfoMan-specific code is removed from
+common code so that it doesn't break other projects using it.
+Pri: high
+Owner: Szymon
+Size: small
+Date: 2004-12-06 (hyperlinkDefault added)
+
+## focus ring for text renderer should include scroll bar. Otherwise it looks
+strange.
+Owner: Andrzej
+Pri: high
+Size: small
+Date: 2004-12-06
+
+## prefs database is not backed up during hotsync: InfoMan's data database
+doesn't have a 'backup' bit set. This means that the database is not backed up
+during a hotsync. That means that re-install or upgrade or hard reset will loose
+all the user data, including preferences and a reg-code which is very bad. We
+need to set 'backup' bit (can be verified in the simulator with 'view database'
+and checking attributes). Question: this database holds both cache and 
+preferences. Cache might be big so maybe we don't want it to be backed up in
+which case we would have to split the data into two database: one that we
+backup and the other one that we don't. But for v1 we can stay with just
+one db that'll always be backed up.
+Owner: Andrzej
+Pri: high
+Size: small
+Date: 2004-12-06
+
+## text renderer: versamail on treo 650 has a nice idea: ring focus for the area
+that displays text of the e-mail has only upper and bottom borders, no left or
+right. We should do that too since it doesn't obscure text on left/right.
+Owner: Andrzej
+size: medium
+Pri: medium
+Date: 2004-12-06
+
+## Buttons: stocks (add stock), connection progress (cancel).
+Date: Date: 2004-12-06
+
+## Amazon - still crashes.
+Repro (Sim 5.4 Debug): Enter Amazon, in search box enter "grendel", press search
+navigate through list of results to album "Prescription: Medicide" by band Grendel,
+view detailed info for it and press link "By: _Grendel_". Voila!
+Date: 2004-12-07
+
+## if InfoMan is not yet registered, we should show this on the main screen.
+Display "About (unregistered)" instead "About" on the main screen. Other 
+options: have title "InfoMan (unregistered)" (but this might be less visible)
+or show a dialog box (but that's annoying for the user).
+Note: I think that showing "(unregistered)" next to "About" has little sense, as it
+would make impression that module About is unregistered, not the whole app.
+Threrefore I decided to put it in the title bar, as most PC shareware apps do.
+Owner: Andrzej
+Pri: high
+Size: small
+Date: Date: 2004-12-07
+
+## Something's leaking in the state of InfoMan - precisely in List of Bests 
+Possible memory leak: MoriartyConnection.cpp: 821 (30 bytes)
+Possible memory leak: ModulesData.cpp: 106 (30 bytes)
+Date: Date: 2004-12-07
+
+## incorrect handling of Reg-Code-Days-To-Expire
+Sometimes when a user is registered, data is not shown after being downloaded.
+Also, client sends 'Get-Reg-Code_days-To-Expire'. It should only send it
+once per session. Also, server sends 'Registration-Code-Valid' along with
+Reg-Code-Days-To-Expire. Those problems seems to be related somehow. I don't
+have an exact repro, but it does happen. Just register, play a little bit,
+observe the traffic.
+Pri: high
+Owner: Andrzej
+Size: medium
+Date: 2004-12-19 Ithink it got fixed by some of the earlier checkins, I  (kjk)
+  can't repro it anymore
+
+## ListsOfBest module
+Pri: high
+Owner: Szymon
+Size: big
+Date: 2004-12-20
+
+## Lyrics - change button "Done" in lyrics display to "Back"
+Owner: Szymon
+Size: small
+Pri: high
+Date: 2004-12-27 (why other forms have "Done" instead?(stocks, amazon, lob))
+
+## Recipes - change navigation
+Navigation in recipes is confusing. Changes: on a form that displays recipe
+text, we remove the button "List" and change "Done" into "Back", which returns
+to the main screen with search field and list of last results.
+I'm talking about logical forms, "main" form and "recipe details" form can
+be the same physical form, as is now.
+Owner: Szymon
+Pri: high
+Size: medium
+Date: 2004-12-27
+
+## Lyrics module
+Pri: ?
+Owner: Szymon
+Size: ?
+Date: 2004-12-27 (still need some cosmetics)
+
+## Horoscope - small navigation changes
+On the form with horoscope details, remove "Change horoscope" button, change
+"Done" to "Back" (works as "Change horoscope"), more "Update" to right.
+//lyrics
+Also, button "Search" should be aligned to right, so that it's not easy to
+press it accidently when you want to press "Done" (and vice-versa)
+
+Owner: Szymon
+Size: small
+Pri: high
+Date: 2004-12-27 
+
+## Netflix - it seems that items in main list (browse, search login) are little to tall. 
+They would look better if they were some 2px shorter.
+Date: 2004-12-27 
+
+## Wiki test module
+Add module for easy testing of wiki syntax and easy prototyping of new ways
+to display information.
+Owner: Krzysztof
+Size: medium
+Date: 2004-12-27
+
+## make our list behave more like standard Palm list
+We need two background colors for currently high-lighted item. One, darker, is
+when the list has focus. Other, lighter, is used when list doesn't have focus.
+This is how lists in built-in treo apps behave e.g. in contacts. Should
+be able to easy change colors, but at first we should use the same as Treo 
+colors (dark blue for background if list has focus, lighter blue if doesn't
+have focus).
+Owner: Andrzej
+Pri: high
+Size: medium
+Date: 2004-12-28
+
+## Automatic notify about upgrades.
+We want to tell users when a new version is available.
+We check for a new version by appending "Get-Latest-Client-Version" query
+to the first search, type of the client is the argument (currently only
+"Palm" is valid, in the future we might have "Smartphone", "PocketPC").
+Server appends "Latest-Client-Version" with a inline text being the latest
+version of the client e.g. "1.2". The server part of this is already working.
+
+We display whatever results were asked and then compare the client version we
+got from the server with our version. If server version is bigger, we display
+an dialog box:
+"A new version $version is available. We recommend upgrading."
+It also has a checkbox "Don't ask me again", off by default and
+two buttons: "Upgrade", "Later".
+Pressing "Upgrade" launches the "check for upgrade" web page (same as "Check for
+updates" menu).
+We do this every time the program is started, unless user selects "Don't ask me
+again" checkbox in which case we remember that in preferences. But this option
+is only valid for one upgrade cycle i.e. if user has version "1.1" and the 
+latest is "1.2", we show the dialog, he check "Don't ask me again" check box.
+We still ask server for version but as long as it's 1.2, we don't show the 
+dialog. However, if the server returns "1.3" version, we start showing the
+dialog box again.
+
+To be defined: how to compare version numbers. If we assume that we'll only
+have "1.1", "1.2", "1.3" etc., it's easy. But what if we want to have more 
+complicated versioning e.g. "1.1.1" ? or "1.1a", "1.1b" for releasing minor
+updates?
+
+Another, less intrusive option, would be to show that a new version is available
+on the main screen e.g. on About list item (as an additional text e.g.
+"get new version 1.3" and add explicit "download updated version 1.3" link in
+About screen (instead of just "check for updates") if we know that there is
+an update.
+
+Owner: Krzysztof
+Size: medium
+Comment: so I ended up implementing non-intrusive version. Shoul be good enough.
+Date: 2004-12-28
+
+## why is transacion id 0 so often?
+it doesn't really matter since the client never sends requests in parallel,
+but if we send it, we should get it right
+Comment: turns out, transactionId_ wasn't set at all so it was not-so random
+garbage
+Owner: Krzysztof
+Date: 2004-12-28
+
+## 5way navigation bug: can't go down from renderer to back button. Probably
+because in NAVIGATION resource we tell it to go to doneButton, but since 
+doneButton is invisible, this doesn't work as expected. Need to find a way
+to make 5way down work from renderer to back button
+Owner: Krzysztof
+Date: 2005-01-03
+Comment: I think I fixed this problem
+
+## gas prices: default mode is inline and the background of inline part needs
+to be in a different color so that this part is more visible to the user.
+Owner: szymon
+Date: 2005-01-03
+
+## deleting a stock from portfolio does a request to the server. It's not
+necessary (although probably simpler to implement that way).
+Pri: low
+Comment: not really a problem
+
+## add ability to stop the server with ctrl-c as it was the case when it was
+based on twisted
+Owner: krzysztof
+Date: 2005-01-03
+
+## Show the last update time of a module.
+Handmark Express has a nice functionaliy: it shows when a given module has been
+updated the last time. We should do that too. It could be done like this:
+* we add another meta-data for DEF_M_M: bool flag saying if a module needs to
+  keep track of the last update time (since for some modules, e.g. Phone Book,
+  it doesn't make sense
+* for each each module that tracks this, we preserve the last update time
+  in preferences
+* we display that on the right on MainForm, in a way that is user friendly e.g.
+  "1 hour", "2 hours". If greater than 5 hours, it's "1 day" and after that
+  just "2 days", "3 days", "50 days" etc. The idea is that don't try to be
+  super-precise but just provide enough information to the user so that he
+  can make a decision whether to update the information or not. We might
+  try to do "1 hour ago" to make it more clear, but I'm not sure if it'll fit
+  in the list.
+Modules that DON'T show last update time:
+* phone book, jokes
+Owner: Andrzej
+Pri: high
+Size: medium
+Date: 2004-12-28
+
+## Movie listing improvements. Someone complained that:
+"But how do I find a particular theater?  I live in zip code 95014
+(Cupertino, CA) and the closest theater to me is the Century 16 in
+Mountain View.  When I search for theaters, it doesn't list itthough."
+The problem is that Century 16 doesn't show on the main list
+(url http://movies.yahoo.com/showtimes/showtimes.html?z=95014&r=sim).
+It shows only when you click on "More theaters..." (url
+http://movies.yahoo.com/showtimes/showtimes.html?z=95014&date=20050105&nt=20)
+The max for "nt" number depends on the zip, sometimes it goes up to 50. In 
+Yahoo web interface, if there's "More theaters..." link, each time it increases 
+nt by 10. So what we should do is: if on the first page there is "More 
+theaters..." link, we automatically fetch the page with nt=30 (that should be 
+enough for most cases).
+Date: 2005-01-08 (simply add "&nt=30" to moviesUrl :-) )
+
+## Lyrics - smaller space between title of the song and the lyrics.
+E.g. "faith no more", "faster disco" - the space looks like 2 lines. Should
+be only one.
+Also, change the way title is displayed:
+"      *Faster Disco*        "
+"performed by Faith No More  "
+
+to:
+" *Faster Disco* by Faith No More".
+*foo* means *foo* in bold.
+
+Owner: Krzysztof
+Size: small
+Pri: high
+
+Date: 2005-01-14
+
+## remove large list from the main screen. It's ugly, it's buggy (if you switch
+to big list and come back to main screen, it switches back to small list) and
+I don't think anyone uses it.
+Owner: krzysztof
+
+Date: 2005-01-14

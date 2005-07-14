@@ -1,0 +1,65 @@
+In this file we will keep all cross modules links:
+
+# Amazon
+ s+amazonsearch:<SEARCHINDEX>;;1;<KEYWORD>
+
+   Search index is one of amazon indexes (see ourAmazon.py) (Blended - all stores)
+   Examples:
+    s+amazonsearch:Blended;;1;test
+    s+amazonsearch:Books;;1;Nabokov
+    s+amazonsearch:Music;;1;Metallica
+    s+amazonsearch:DVD;;1;Kill bill 2
+
+# Lyrics
+ s+lyricssearch:<ARTIST>;<TITLE>;<ALBUM>;<COMPOSER>;<FULL TEXT SEARCH>
+
+   Examples:
+    s+lyricssearch:Linkin Park;;;;
+    s+lyricssearch:;Numb;;;
+    s+lyricssearch:;;Meteora;;
+
+# Netflix
+ s+netflixsearch:<KEYWORD>;<MATCHES>;?
+
+   ? - logged - in netflix this is (T,Y) or (F,N), but you don't need to know that (just put '?')
+   MATCHES: People,Movie,Genre or Popular (for all matches)
+   MATCHES is ignored for unsigned users (only movie matches are available for them)
+   Examples:
+    s+netflixsearch:Harrison Ford;People;?
+    s+netflixsearch:Matrix;Movie;?
+
+# Encyclopedia
+ s+pediasearch:[<lang>:]<KEYWORD>
+
+   Examples:
+    s+pediasearch:en:Metallica
+    s+pediasearch:Matrix
+
+    import encyclopedia
+    link = encyclopedia.create_search_link(term, lang_code = None)
+
+# ListsOfBests:
+ s+listsofbestssearch:<KEYWORD>;<MEDIA>;<TITLE/CREATOR>
+   MEDIA = [Everything, Books, Music, Movies]
+   TITLE/CREATOR = [Both, Title, Creator]
+
+   Examples:
+    s+listsofbestssearch:Nabokov;Books;Creator
+    s+listsofbestssearch:Metallica;Music;Creator
+    s+listsofbestssearch:Hero;Movies;Title
+    s+listsofbestssearch:test;Everything;Both
+
+# eBooks
+    import ebooks
+    link = ebooks.create_search_author_link(author, formats = None)
+    link = ebooks.create_search_title_link(title, formats = None)
+
+# eBay
+ s+ebay:search;0;?;<KEYWORD>
+
+   Examples:
+    s+ebay:search;0;?;test
+    s+ebay:search;0;?;nabokov
+    s+ebay:search;0;?;metallica
+   Note:
+    this 0 is category id, but you dont know category id, so use 0 - all categories

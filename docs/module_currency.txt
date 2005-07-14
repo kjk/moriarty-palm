@@ -1,0 +1,123 @@
+Currency module.
+
+* Overview
+Currency module enables convert currencies into each other on the basis of
+current exchange rates.
+
+Many currency converters can be found here:
+http://applications.palmsource.com/Software/Solutions.asp?PCID=28&PSCID=131&offset=0
+http://www.5star-shareware.com/Palm/Calculators/Calculators1.html
+
+Sources of information of current currency rates:
+
+This site contains very explicit notice forbidding webscraping
+http://www.xe.com/
+
+Not many currencies:
+http://www.x-rates.com/
+
+http://www.oanda.com/convert/classic
+
+
+These have a lot of currencies, but also a note:
+http://www.exchangerate.com/world_rates.html?cont=Africa
+http://www.exchangerate.com/world_rates.html?cont=Central%20America/Caribbean
+http://www.exchangerate.com/world_rates.html?cont=Asia
+http://www.exchangerate.com/world_rates.html?cont=Europe
+http://www.exchangerate.com/world_rates.html?cont=North%20America
+http://www.exchangerate.com/world_rates.html?cont=Australia/Oceania
+http://www.exchangerate.com/world_rates.html?cont=Middle%20East
+http://www.exchangerate.com/world_rates.html?cont=South%20America
+Content, information, data, material, services, or products comprising this web-site may not be published, broadcast, rewritten
+or redistributed without written permission from ExchangeRate.com Inc.. The information supplied by this web-site is believed to be accurate, but
+ExchangeRate.com Inc. does not warrant or guarantee such accuracy. Users are always advised to verify information with their
+financial and accounting advisors or with the appropriate government agencies before relying on any
+such information. Information contained in this web-site is intended for your personal, non-commercial use. All other
+uses are expressly unauthorized and prohibited to the maximum extent allowed by law.
+
+Rates from this site really come from the cvs below (Central Bank of Canada)
+http://fx.sauder.ubc.ca/today.html
+
+I don't know if that's of any value in US but this is really nice:
+http://www.nbp.gov.pl/kursy/xml/a207z041021.xml
+
+This one seems really nice:
+http://www.bankofcanada.ca/en/financial_markets/csv/exchange_eng.csv
+
+
+This one is based on Malayan Banking - not many currencies, not very useful
+http://biz.thestar.com.my/business/exchange.asp
+
+This server is really slow:
+http://www.moneyextra.com/rates/currency/tourist.htm
+
+This one is useless! It contains outdated data, updated only every 3 months!
+http://www.fms.treas.gov/intn.html
+
+* UI
+
+** Main page
+
+Main page is a list of currencies with values. We start with a list
+containing 4 most popular currencies (usd, euro, british pound and yen). usd
+is set to 1 and the rest to corresponding converted values.
+
+Users can add/delete currencies from this list.
+
+There really is no "from" currency. Currently highlighted currency on the
+list is the current "from" currency. We also have "Amount:" text edit field
+on the main form. It displays the value of the currently highlighted currency
+on the list (the current "from" currency).
+
+We can do that because we have the data for all currencies.
+
+When user edits this value, we dynamically (i.e. while user is still entering
+the value) update the values of all other currencies on the list (those are
+the current "to" currencies. To see how detect changes to text edit field
+while they're made see noah_pro_2nd_segment.c, evtFieldChanged and
+DoFieldChanged() in common.c in noah_palm project.
+
+When users enter letters, we should simply ignore them i.e.:
+* get text of the field
+* strip all characters that are not valid in  a number i.e. only leave 0-9 and "."
+* if len(str)>0 - treat the rest as a number and do the conversion
+
+So the layout on the screen would be:
+| curr1                       |
+| curr2                       |
+| ....                        |
+| Amount: .....               |
+| [Done] [Add] [Del] [Update] |
+or:
+| Amount: .....     [Update]  |
+| [Done]     [Add] [Delete]   |
+
+Pressing [Update] re-downloads latest currency data and updates the
+values in the list.
+
+Pressing [Add] brings a list of currencies and allows the user to select one.
+If selected, it gets added to the end of the list.
+
+* Selecting currency from list
+
+Pressing [Add] on the main page shows a form where user selects a currency.
+There are [OK] and [Cancel] buttons at the bottom. The rest is a list of
+currencies. Each entry is one line formatted as follows:
+Currency symbol, currency name, countries using this currency e.g.:
+
+BRL, Real, Brazil
+EUR, Euro, Austria, Belgium, Finland
+
+First four items on the list are $, euro, british pound and yen. The rest is
+a list sorted alphabetically by currency symbol.
+
+When a form is launched, the first item on the list is automatically highlihted.
+
+Pressing a key will automatically scroll list to first currency starting with a
+given letter e.g. pressing "u" would scroll to "UAH".
+
+We already do that in "Select state" form, so you can lookup the code for doing
+that there.
+
+* Protocol
+

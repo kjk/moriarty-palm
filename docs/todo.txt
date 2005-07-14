@@ -1,0 +1,288 @@
+# This file is a random list of things that we can add to InfoMan.
+# todo-scheduled.txt is the file that contains the current schedule.
+
+## a simple windows gui program that pings the server from time to time (e.g. 
+every 5 min) and sends an e-mail if the server is down.
+
+## need to improve logging in yp_retrieve.py. We just got an e-mail with just "failed to parse 
+data" which doesn't even show where the problem was. Only yp_retrieve.py has 
+such logging.
+note: hmmm... yp_retrieve.py have individual logging of parsing failures for 411.com and yp.com, 
+but it sends also (i think) email when log(SEV_EXC, "failed to parse data\n") is called (when 2 of 2 fails)
+so this is not bug. (you will recive 3 mails: 1-yp.com fails, 2-411.com fails, 3-"failed to parse data")
+
+## stats: version used stats, especially to see how many current requests are 
+done with outdated version (to see how quickly people update InfoMan)
+
+## add request popularity stats to stats script.
+
+## move all http calls to getHttp
+
+## amazon: improve the way we show comments. Details TBD
+
+## netflix: improve the way we show information. Details TBD
+
+## amazon: add ability to buy directly from InfoMan
+
+## jokes: make it work even if the server is down/changed the format.
+ - cache all jokes locally in a file when we download them, so that we can
+   get them from this file when the server is down/parsing fails
+ - find another, backup source of data
+
+## possibly very hard: add barcode recognition via treo camera and ability to 
+lookup things in amazon from scanned barcode.
+
+## fix failing unit tests
+6 out of 41 tests failed
+Failing tests: 3 9 30 70 71 72
+
+## images support for iPedia
+
+## fix table list of modules
+- when we switch to table list, the selection is not visible until we scroll
+- when scrolling up or down, selection gets lost
+- test table selection when there is odd number of items i.e. number of rows in
+  both columns isn't equal. Not sure if scrolling of selection works for that
+  case.
+
+## add "update all" function. Many people seem to be asing for it.
+
+## some list items don't have margins on the left & right. Since we stretch the lists
+to fill entire screen's width it looks ugly. Some examples:
+- Jokes
+- Amazon
+- Netflix
+- Recipes
+- LOB
+- Horrorscopes
+Pri: high
+Size: medium
+
+## Hyperlink movie titles from "box office" module to the movies module
+Would probably have to change the display to wiki based.
+
+## add more movie information to movie times module
+We should display the director, cast, running time, rating etc.
+Size: medium
+
+## add movie reviews to movie times
+We should add links to movie reviews. That requires spidering of movie reviews
+from other sites.
+Size: big
+
+## Reduce the size of *prc by at least 100 kB.
+
+Don't know exactly how, but our executable is way too big (currently around
+600kB) compared to what we do. I suspect that using all this C++ causes this
+bloat. Usually I wouldn't care (programmer efficiency is more important than
+size of the resulting executable) but in this case we ask people to download
+*prc over-the-air so we do need to make them as small as possible.
+
+The ways to reduce code size that I see:
+* use String as little as possible, use char_t * instead. I've seen reductions
+of 200 bytes just by changing type of one variable from String to char_t. 200
+bytes seem small, but I believe those things add up. One thing that we should
+change is the list item renderers
+* reduce number of getters/setters
+* not using classes and OO when not necessary
+
+This will probably be an on-going thing.
+
+Size: large
+
+## Server load and performance testing
+1. Stress testing i.e. bombarding the server with random, parallel request. Can
+be done from python using threads. Parameters: how many multiple requests
+(threads) to use at once, how many requests to launch.
+2. Performance testing. For each module/type of the request we need to know how
+many requests per unit of time our server can handle. We need a framework for
+easy adding tests for new modules, launching the tests, remembering and
+comparing results (so that we can track how numbers change)
+Owner:
+Size: big
+
+## T5 5-way compatibility. T5 also supports 5-way nav and focus rings like treo
+but has different api. We should support it as well (according to docs palmOne
+will release a glue library in sdk that'll support both treo api and t5 api but
+that didn't happen yet).
+
+## selection problem - what kind of selection we want to use?
+1) as it is now (like CW selection):
+    - when selecting left, pice of letter makes selection
+    - when selecting right, pice of letter makes selection of previous one
+2) select by pice
+    - any direction, if only pice of letter is under selection range, select this letter
+3) select by middle
+    - any direction, if center of letter is under selection range, seletc this letter
+IMHO 3) is the best (MSWord :)). (2 - how to select nothing?)(1 - asymmetric)
+
+## box office: somehow link movies to their information in the "movie times"
+module (only after movies location is selected)
+
+## box office: add (default?) single line display without gross info so that all
+movies fit in one screen. Add ability to switch between those 2 views.
+Pri: medium
+Owner: Krzysztof
+Size: medium
+
+## movie times: add info about movies (short description, cast, director,
+rating, running time etc.). This is available on the website.
+
+## stocks: show the quantity of currently selected stock on the list in the
+upper right part of the screen, after the form title.
+
+## stocks: ability to display all portfolios on one screen (on one list, one
+after another). Alternatively we have a virtual 'combined' portfolio that has
+all stocks from all portfolios on one screen.
+Pri: low
+
+## stocks: entering a fractional number of shares in a portfolio should be
+allowed (or at least we should display an error if user gives that). Currently
+we silently truncate to 0.
+
+## optional keyboard launching of modules from the main screen.
+What's left to do:
+1. preferences item to turn it on/off (call it "disable keyboard launch" ?)
+Pri: medium
+Owner: Andrzej
+Size: medium
+
+## Color schemes
+
+Implement color schemes schemes i.e. user ability to define what
+colors are used to display list elements etc. We should have a few pre-defined
+schemes and ability to create user-defined schemes.
+
+Pri: low
+
+## simplify LookupManagerBase/LookupProgressReporter
+My head hurts just by looking at this. Why is it any more complicated than
+LookupManagerBase having a pointer to ProgressReporter which has 1
+method reportProgress(int percentage) ??? Everything else is managed in
+ProgressReporter (size, look of the report). In truth, just a callback
+function would do, packaging it as a class is just a convenience.
+
+Pri: medium
+Size: medium
+Owner:
+
+## Add phone information to module "movies"
+We can get phone number for a given theater by retrieving an additional
+page e.g.:
+http://movies.yahoo.com/showtimes/showtimes.html?z=san+jose+ca&r=sim
+and click "Theater info":
+http://movies.yahoo.com/showtimes/theater?id=459&date=20040902
+We should retrieve that number, send it to the client, show it as a link
+on when users clicks that link, we start a call.
+The problem is that it requires getting a new html page for each theater which
+takes more time, so I'm not sure if it's worth it.
+If we do it after v1, this might also cause compatibility problems with older
+clients.
+(in udf we have item: (name, address).
+so if we assert greater instead of equal older clients just wont see it
+we can then send (name, address, phone) tuple)
+
+Size: medium
+
+## Ability to create list of theaters in module movies
+Handmark Express has a nice feature: a user can create a list of theaters so
+that when he updates data, it updates data for a list of theaters he created
+and not just theaters for a given zip code
+
+Size: medium
+Owner:
+
+## Add list of recent items for dialogs that ask for input.
+
+E.g. in a dialog that ask for a location (zip code or city/state), we should
+also have a list with N (say 10) previous locations entered by a user, sorted
+by time they were last used.
+
+This will especially help when user wants to e.g. check a weather in a
+different city but then quickly switch to his main city. Having a list of N
+recent location he won't have to re-enter his default location after changing
+it temporarily.
+
+This general idea applies to many dialogs. They should be changed to forms with
+entry fields for data at the top and a list of recent entries below.
+
+We would store this info in preferences.
+
+Size: medium
+Owner:
+
+## Address book & Memo pad - category
+
+New records inserted by our functions have category "Unfiled". Decide if we should
+implement methods to create and then insert data in that category (for example
+results from 411 will be stored in "ArsLexis - 411" category instead of "Unfiled"
+Size: medium (I don't know how to do this)
+Owner:
+
+## timing http calls (and more)
+It could be useful to know how much time all http calls take when we retrieve
+data from the internet. That way we could look at stats and e.g. try to find
+other sources of data for slow queries. We could also add more extensive timing
+tracing so that we can tell how much time a given portion of the request
+handling takes.
+Pri: small
+Owner: ?
+Size: medium
+
+## add unit conversion functionality
+Something similar to http://www.ridic.com/products/apples/index.html
+This doesn't require server component, the whole logic is in the client. The
+idea is that our product is a good "traveler companion" (because we have
+weather, movie times, currency conversion, international calling codes) so this
+would improve InfoMan's capabilities as traveler companion.
+Size: big
+
+## add Tivo 100 best and 25 best rating somewhere (lists of bests?)
+http://www.tivo.com/5.3.top100.asp
+
+## add some of the features from Fitz traveller
+
+http://www.mobilegadgetnews.com/modules.php?op=modload&name=Reviews&file=index
+&req=showcontent&id=86
+
+• Weather maps, satellite overlay maps
+• Airports delays for your chosen favourite cities local airports ** based on
+weather conditions.
+• Daylight map shows the light and dark parts of the planet.
+• General conversions - convert many different elements such as temperature,
+length, weight...
+
+## support for more countries to phone book
+http://www.infobel.com/teldir/
+
+## investigate those sources of information:
+#  AirNav: Airport by ID
+# Burning Man
+# CDW | Mac Warehouse
+# Commonwealth Club of California
+# Consumer Search
+# Dictionary.com
+# Drugstore.com
+# eBay
+# eLyrics4U
+# Epicurious
+# Lyrics Cafe
+# Lyrics Time
+# Lyrics XP
+# Motley Fool
+# National Public Radio
+# Pollstar Concerts
+# Python Documentation
+# Rotten Tomatoes
+# United States Government
+# Weather Channel
+# WebTender
+
+## improve stocks
+http://www.freenet.org.nz/python/yahooquote/
+
+## TV listings module
+Pri: maybe in the future
+Owner: Andrzej
+Size: big
+

@@ -1,0 +1,229 @@
+
+
+## ebooks bug: I went to ebooks and used menu Main\Manage eBooks. The first time 
+it told me "You don't have enough memory to complete the operation" (unlikely). 
+Second time it did nothing. I didn't have any books downloaded.
+
+## ebooks: show number of books, browsing by authors and titles.
+This is about 2 things:
+- showing the user the number of books we offer for download
+- enable browsing the catalogue by author and title
+
+Proposed implementation notes.
+
+Home page is built entirely on the server because it contains information only 
+known by the server (like number of books). At the same time, it doesn't change 
+often (only when we add new books to our index) so we should be smart enough to 
+download it only when we need. Implementation idea: we use 32bit integer as an 
+ebook-homepage-version. We have a request Ebooks-Homepage-Ver 
+which we send once per session, bundled with the first request we send to the 
+server. Server returns current homepage version using the same 
+Ebooks-Homepage-Ver field. When users enter ebooks module and we detect that
+this version is different (must be greater) than the version of the page we 
+have cached, we download the homepage with Ebooks-Homepage request, cache it 
+and remember homepage version in preferences.
+
+The layout of home page:
+
+"Welcome to eBooks module. There are $N eBooks available. You can [search] for 
+ebooks or browse [by author] or [by title].
+
+           Browse by author        <- centered on the screen
+ [A-D] * [D-E] * [F-K] * [L-P] * [Q-Z]       <- divided in about 5 parts
+
+           Browse by title
+ [A-C] * ...                         <- etc., also in about 5 parts
+
+Manage [downloaded books]."
+
+[foo] is a link.
+
+The idea is to implement drill-down browsing. It's like traversing a tree. We
+have 2 tweakable parameters: node-page-size (e.g. 10) and leaf-page-size (e.g. 
+20)
+
+At the top of the tree (root node) we have all books visible. Each non-leaf 
+node has node-page-size children. Non-leaf nodes represents a range of books. Each 
+leaf node has up to leaf-page-size books and represents books. From those 2 
+parameters we can build the tree i.e. what range is in each non-leaf node and 
+what books are in each leaf node. For example, let's say we have 1000 books and 
+we build a tree for browsing by author's last name. We sort books by author's 
+last name. Root node represents range for all books i.e. "A-Z". To calculate a 
+range for it's $node-page-size children, we divide sorted list of book by 
+$node-page-size. We build a range for a given child by looking at the last 
+author name from the previous range and fist name from this range e.g. if 
+$nage-page-size is 10, we get ten ranges for books 0-99, 100-199 etc.
+Let's assume that book number 9 is by author "Barecki" and book number 10 is by 
+author "Bogowiecki". Range for first child is "A-Ba" and range for second child 
+is "Bo-..." i.e common prefix+1.
+There is a problem if both book 99 and 100 is by "Barecki". We have to either:
+- make the ranges "A-Barecki" "Barecki-..." (long), or:
+- shift the ranges a little bit so that the first child really has the books 
+0-100, the second 101-200 etc. i.e. we fold books by the same author into the same 
+range.
+
+We repeat that recursively until a there are less than $leaf-page-size books in 
+which case we build a leaf node which lists the books.
+
+There should be an easy way to dump this tree to stdout so that we can "debug" 
+the partitioning algorithm.
+
+The idea is to give users a way to pretty quickly drill-down to find a book if 
+they already know the author or title.
+
+Now the look of node pages:
+
+"[Home] / Browse by author
+* [A-D]
+* [D-E]
+* ... etc."
+This is root node for browsing by author.
+
+"[Home] / [Browse by author] / D-E
+
+* [D-Da]
+* [Dc-Df]
+* ... etc"
+
+And so on. An alternative display would be to have ranges displayed as:
+
+"[Home] / Browse by author
+  [A-D] * [D-E] * ..."
+
+Best, there should be a switch on the server to change between those 2 layouts 
+since it requires testing to decide which one is best.
+
+Also, a good idea (especially in the first layout) is to also show number of 
+books e.g.:
+
+"[Home] / Browse by author (9.343 books)
+* [A-D] (923 books)
+* [D-E] (924 books)
+* ... etc."
+
+And the leaf node would simply be:
+
+"[Home] / [Browse by author] / Albertson-Borowski
+
+* [Silent night] by [John Albertson]
+* ...
+* [Growing the beard] by [Rusty Borowski]
+
+           [prev page] * [next page]  <-- like in amazon module, goes to the next leaf node)
+
+The links should be pop-up menus and currently offer jump to Amazon module (in 
+the future this will also be jump to encyclopedia and maybe other stuff).
+
+### ebooks: a better way to deal with showing available formats. Currently the 
+biggest problem is that if we don't detect any ebook reader, we always zero 
+results for searches, which is not a good thing (users will think we simply 
+have no books available).
+
+We have two conflicting goals:
+* show them as much formats as possible, so that they feel that InfoMan has 
+  lots of feature
+* don't clutter the result lists with things that user doesn't need
+
+Solution:
+* we get rid of "Show only eBooks in formats  compatible with installed readers" 
+option
+* we add preferences screen where user can manually select which formats he's 
+interested in
+* by default we show all formats with the execption of pdf. We only include pdf 
+if we find pdf reader
+* when a user tries to download a format for which we didn't detect a reader, 
+we ask:
+
+"We didn't detectt any eBook reader capable of displaying format 'foo'. 
+Are you sure you want to download the eBook?
+
+[ ] Don't ask me again
+
+[Download ebook]             [Cancel]
+
+## ebooks.py should speedup lupy indexing with psyco (if psyco is available). I 
+believe there's an option to speedup just selected functions (should be safer 
+than speeding up everything)
+
+## [2005-06-29] visual tweak: "Add stock" button on LifeDrive is too much to the right.
+
+## [2005-06-29] encyclopedia: sometimes just starting an encyclopiedia module automatically
+does some request to the server. We shouldn't be doing that - iPedia is very
+careful and always bundles whatever it needs to find out with the first request
+from the user. We should be doing the same in InfoMan.
+
+## [2005-06-29] better way to inform about upgrades. The goal is to make users upgrade to 
+newer version of InfoMan as quickly as possible. Currently they have to go to 
+"About" module and click on an "check for updates" link. Most of them probably 
+doesn't do that.
+
+Solution: when we detect a new version, in the main screen at the top we show 
+additional list item: "Upgrade to version X" (an alternative would be some kind 
+of one-line link, but I think making it a list item would be simpler). It would 
+be good if this item looked differently from other items, so that users do 
+notice it. We hide this after user has upgraded.
+
+
+## [2005-06-21] start running build monkey every hour for InfoMan on dvd
+## [2005-06-21] add building ipedia to the buildInfoman.py script (and rename it)
+
+* [2005-06-20] stocks bug:
+Repro:
+- start with new portfolio
+- add 'plmo'
+- add 'msft'
+- add 'goog'
+- add 'aapl'
+
+Observed: when I add 'aapl', nothing happens. The query sent to server is:
+Get-Stocks-List-Validate-Last: ^DJI;^IXIC;^GSPC;PLMO;MSFT;GOOG;appl
+but it seems to return results without 'appl' stock.
+It works when I enter "Apple" and then select apple from the list in which case
+the query sent to the server is:
+Get-Stocks-List: ^DJI;^IXIC;^GSPC;PLMO;MSFT;GOOG;AAPL
+
+After fixing this we should find a way to add a UnitTests for such problems in 
+the future to UnitTestsServer.py (if it's a server problem, and not client 
+problem).
+
+* [2005-06-20] amazon bug: search for 'nick hornby' in books. The first screen shows 
+"0-10/107" at the top. Going to the next page of results (e.g. by pressing 
+arrow in upper-right corner) makes it to be "10-20/100". On 3rd page of results 
+it's "20-30/94". On 4th it's "30-40/90". After than the total stays at 90.
+
+That's rather wierd and inconsistent, the total shouldn't change.
+
+* [2005-06-18] weather bug: when I do weather for 80906, the client displays all 
+temperatures as 0 fahrenheit. However, when I do query from commend line, I get 
+results that look correct:
+
+C:\kjk\src\mine\moriarty_palm\scripts>m-weather.bat 80906
+c:\Python24\lib\cookielib.py:1554: UserWarning: cookielib bug!
+Traceback (most recent call last):
+  File "c:\Python24\lib\cookielib.py", line 1551, in make_cookies
+    ns_cookies = self._cookies_from_attrs_set(
+  File "c:\Python24\lib\cookielib.py", line 1522, in _cookies_from_attrs_set
+    cookie = self._cookie_from_cookie_tuple(tup, request)
+  File "c:\Python24\lib\cookielib.py", line 1441, in _cookie_from_cookie_tuple
+    if version is not None: version = int(version)
+ValueError: invalid literal for int(): "1"
+
+  reraise_unmasked_exceptions()
+(14, '11\n2 7 2 1 2 2 8 19 7\n5 0 7 3 3 2\n3 6 9 3 3 2\n3 6 7 3 3 2\n3 6 11 3 3 2\n3 6 11 3 3 2\n3 6 11 3 3 2\n3 6
+12 33 2\n3 6 11 3 3 2\n3 6 7 3 3 2\n3 6 10 3 3 2\n64 Showers 64 6 46 52 16.09 mi 
+29.65 in and steady N 3 mph Today  Showers67  55  60 Sat Jun 18 T-Showers 70  56  50 Sun Jun 19 Showers 75  56  50 Mon 
+Jun 20 Few Showers 76  57  30 Tue Jun 21 Few Showers 73  55  30 Wed Jun 22 Few Showers 73  54  30 Thu Jun 23 Mostly 
+Sunny 72  56  20 Fri Jun 24 Few Showers 69  53 30 Sat Jun 25 Showers 68  54  40 Sun Jun 26 Light Rain 67  52  60 ')
+
+* [2005-06-18] on InfoMan startup, if *ebooks*.dat file exists but index doesn't, 
+automatically start building an index (equivalent of ebooks.py -reindex) in the 
+background
+
+* [2005-06-21] improve spidering process wrt. to disk usage. Currently the way we re-save 
+all info spidered so far couple of times per minute taxes the hard-drive a lot.
+I understand this is periodic saving of data to make the process incremental, 
+but you could imagine much more efficient solution where 
+every N spidered items we would save the newly spidered data to separate 
+files like manybooks-spider-tmp-000.dat, manybooks-spider-tmp-001.dat etc. 
+When spidering is complete, we would save everything to a final file and 
+delete those *-tmp-*.dat files.

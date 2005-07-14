@@ -1,0 +1,92 @@
+Author: Szymon Knitter
+
+Byte format (Rich text format) is used to serialize DefinitionElements on server (and send them in udf).
+We want to build definition on server and show it on client.
+
+Format description:
+BCF = <header> <elements>
+
+<header> = <total size> <elements count> <version>
+
+<total size> = <longtob>          //total size of BCF
+<elements count> = <longtob>      //number of elements inside
+<version> = <longtob>             //1 - and no check available for now
+
+<longtob> = 4B unsigned long value
+
+<elements> = {<element>}*  //list of elements (zero or more elements)
+
+<element> = <type> <totalSize> <PARAMS> | 'popp'   //special element popp - Pop Parent
+
+<type> = <4cc>           //'lbrk', 'gtxt', 'hrzl' and others
+<totalSize> = <longtob>  //total size of PARAMS blob
+<PARAMS> = {<param>}*    //list of params (zero or more parameters)
+
+<param> = <paramType> <paramSizeType> [<paramValueSize>] <paramValue>
+
+<paramType> = <4cc>                                       //'text', 'hypl', 'just' and others
+<paramSizeType> = '1', '2', '4', '8', 'c' /*as 12*/, 'L'  //if 'L' then <paramValueSize> is present, 
+                                                          //else paramValueSize is set to 1,2,4,8 or 12
+<paramValueSize> = <longtob>    //length of paramvalue
+<paramValue> = whatever         //depands on <paramType>
+
+<4cc> = 4B - 4 chars
+
+
+Notes:
+Note about parent:
+we use special type = 'popp'
+it pops last element from pointers stack.
+if stack is not empty, inserted element have parent = stack.back();
+else parent = NULL;
+
+
+Functions on server:
+
+definitionBuilder.py gives class Definitnion.
+use it like in examples.
+
+ df = Definition()
+ genericText = df.TextElement("test text")
+ genericText.setJustify("center")
+ genericText.setHyperlink(link)
+
+to build tree structure like:
+ * father
+   * son 1
+     * son's 1 son
+   * son 2
+
+do this:
+
+ df.BulletElement(False)  ##this false is value of closeElement
+ df.TextElement("father")
+ df.BulletElement(False)
+ df.TextElement("son 1")
+ df.BulletElement(False)
+ df.TextElement("son's 1 son")
+ df.PopParentElement()
+ df.PopParentElement()
+ df.BulletElement(False)
+ df.TextElement("son 2")
+ df.PopParentElement()
+ df.PopParentElement()
+
+TODO:
+universalDataFormatWithDefinition(definition, listsoflists)
+
+
+Functions on client:
+
+class ByteFormatParser.
+usage:
+
+ ByteFormatParser parser;
+ parser.getElements(elems);
+
+or instead parseAll (when you have part of definition) use:
+
+ parser.handleIncrement(partOfText, length, fEndOfText);
+
+TODO:
+describe hyperlinkHandler...

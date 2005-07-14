@@ -1,0 +1,78 @@
+Lists of bests module.
+
+** Overview
+
+Lists of bests module is inspired by http://listsofbests.com/. It presents
+a browsable list of lists. Lists can be nested (e.g. at the top level we have
+list of categories like "movies", "music", "books", in "books" we have a list
+of all book lists, each book list is again a list etc.). Also we can display
+details of the item (e.g. selecting a book from the book lists displays detail
+info about the book e.g. titile/author/link to amazon.com information etc.
+
+** UI design:
+
+We have to types of screens:
+- lists of items. Items can be of different types so they might be displayed
+  differently. We have two types of lists:
+  -- simple e.g. list of categories. This is displayed as one-line item
+  -- list of items e.g. list of books, albums, movies. Those are two-line items.
+     For books first line is book title, second is book author. For albums
+     first line is album title, second is album author. For movies first line
+     is movie title, second is movie director. However, the UI doesn't really
+     care, since the display for all those 3 types is the same.
+- item details. This is simply a wiki-powered screen generated on the server,
+  similar to what amazon module uses
+
+** Protocol
+
+Data model is:
+* data is divided into nodes
+* each node has node id (integer, unique), node version, node type and
+  node data (payload). Format of node data depends on node type. Node number 
+* the root node has node id 0
+
+Node types:
+* simple (one-line item) list (1)
+* two-line item list (2)
+* item details (3)
+
+Get-ListsOfBests-Node: $node_id
+
+Returns: ListsOfBests-Node: with payload or Error malformedRequest if $node_id is not known
+on the server.
+
+UDF format of data returned by ListsOfBests-Node:
+* first line consists of 3 elementes: node id, node type and node version
+* sedon line is a single element: node version
+* format of the rest depends on node type
+
+If the node type is simple list (1) the rest of UDF is a list. Each item in a
+list is a list:
+* node id (integer)
+* text
+
+Text is a what we display on the screen. Node id is id of the node we'll request 
+when user selects the item from the list.
+
+If the node type is two-line item list (2), the rest of UDF is a list. Each item
+in a list is a list:
+* node id (integer)
+* text of first line
+* text of second line
+
+If the node type is item details (3) the rest of UDF is a wiki tekst to display.
+
+** Future
+
+In the future we might find more sources for our lists and add integration
+with other modules (e.g. movies detail info can link directly to amazon and
+netflix descriptions, books and music can link to amazon description).
+
+We might cache some nodes (e.g. at least the currently displayed and/or
+top-level node) on the device. What if the node content changes on the server?
+Currently the only way to get new data is if users manually updates the data.
+We should have a way of automatically detecting changes. We have a node version
+which identifies the version of each node. We don't cache a lot of nodes so
+once per session we could append ListsOfBests-Check-Nodes-Versions: $node_id1, $node_id2, ...
+request which returns current versions on the server for those nodes and then
+the client could compare with cached version and request updated nodes.

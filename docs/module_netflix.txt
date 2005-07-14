@@ -1,0 +1,142 @@
+Netflix module.
+
+** Overview
+
+Netflix.com is a on-line DVD rental with more than 2 million subscribers. 
+Everyone can browse list of DVDs offered by Netflix, see movie details and
+user comments. Registered users can manage their rental queue (add movies to
+rental queue, remove movies from the rental queue, re-arrange movies in the
+rental queue (since DVDs are sent in the order they are present in the rental
+queu)).
+
+Features of Netflix module:
+* display rental queue of a given person (very important)
+* remove movies from rental queue
+* re-arrange movies in the rental queue
+* searching of netflix catalogue
+* displaying the details of a movie
+* adding movies to netflix queue
+* browsing by genres, new releases etc.
+
+For testing functionality that requires modification of the queue use the
+account: krzysztofk@pobox.com (password: bruhaha03)
+
+** UI design:
+
+UI for browsing/searching/displaying movie details can be similar to Amazon
+module UI.
+
+A few random thoughts.
+
+Some features (related to rental queue management) are only available when a
+user has netflix account (user name and password). Our interface should ask
+for username/password if user tries to access functionality only available
+for users with accounts (we persist this data in preferences so that user only
+has to provide it once).
+
+Adding movies to the queue: when displaying movie details like in Amazon module
+we have additional button: "Add to queue". We should handle adding movie that
+already exists in the rental queue (either don't show "Add to queue" or
+display apropriate message when user adds duplicate). We should be able to
+re-use amazon.com form by adding a button that we show/hide).
+
+Main screen either shows rental queue or browsing scheme (like in amazon.com)
+with the search (as in amazon) always at the bottom. We switch between those
+two modes e.g. using menu ("Main/Rental queue", "Main/Browsing").
+
+Rentail queue is just a list showing a number (1, 2, 3 etc.), movie title maybe
+availability. We should have only one line per movie (rental queues are long so
+we should display as much as possible on the screen).
+
+Selecting a movie from the list shows movie details (title, director, actors,
+user revievs etc.). The same information is displayed as a result of selecting
+a movie from the list of movies matching a search query. The only difference is
+that for movies in the queue we also show position of the movie in the queue.
+
+Also, if this is a movie from the search we allow adding it to the queue (e.g.
+"Add to queue" button) while if this is a movie from rentail queue we allow
+changing position of the movie in the queue (e.g. "Queue position" button which
+shows a dialog box:
+"Change the position of movie '$title' from position $n to
+..... (numeric text field)
+[Ok] [Cancel]"
+The same dialog box is available via menu item "Main/Queue position" (changes
+position of the currently selected movie on the rental queue list).
+
+Another option would be re-arranging via drag-and-drop but that's much harder
+to implement (I think).
+
+** Protocol
+
+To be designed.
+
+One important thing: we don't want to send username/password from the client to
+our server with each request. 
+Netflix server assigns a cookie for user authentication so we only need to send
+the cookie. The design can be:
+* if there is no netflix cookie on the client, we do Netflix-Login: username password
+with response Netflix-Login-Cookie:. All this data (username, password, cookie)
+is stored on the client.
+* if we have the cookie on the client, we send the cookie with requests that
+require it
+
+We also need to handle cookie expiration (i.e. if for some reason netflix.com
+server no longer recognizes the cookie). One way to solve this would be: when
+our server detects this (based on what netflix.com server returns) it
+returns Netflix-Invalid-Cookie: to the client. In response the client needs to
+resend Netflix-Login: request with username/password so that our server can get
+another cookie from netflix.com. This is hard to test so in debug build of the
+client we should have "Corrupt cookie" menu item which corrupts the cookie
+(making it invalid from the point of view of netflix.com server), simulating
+this case.
+
+** Protocol - ver 1
+
+In UDF sent by server last Item is (<code>[, <cookie>]). It means:
+* first element from last item is a string representing type of the response
+("B" for Browsing, "S" for search, ...)
+* second element is (optional) cookie.
+
+And about the cookie... 
+it is more than 700B of data in cookie, so if we want to send cookie we will generate 
+more traffic...
+So my proposition is to store client's cookies on the server. We can name them after usernames 
+(krzysztofk@pobox.com.cookie), so the user only needs to send the username - without password, 
+or we can name them 1,2,3...999 and give user his cookieId only (but better use username).
+When we have cookie cached on server, we can simply update it with every request (IE does that).
+
+Client will send to server tuple: (<query>;<username>;[<password> | ""])
+<query> depands on request (keyword to search, url to browse...)
+<username> just username - empty if not logged
+<password> just first time, or after bad cookie, but in most cases empty
+
+Storing the cookies.
+
+A simple way to store cookies is to use serialized dictionary with pickle (or
+cPicle) module.
+
+We have g_cookiesDict = {} dictionary where key is username (e.g. "krzyszotfk@pobox.com")
+that the client sends and the value is the cookie to store.
+
+We serialize this to netflixCookies_pickle.dat file every time we update (add entries)
+to g_cookiesDict. To make sure this always happens we should have:
+def persistNetflixCookie(cookieName,cookieValue):
+    global g_cookiesDict
+    assert not g_cookiesDict.has_key(cookieName)
+    g_cookiesDict[cookieName] = cookieValue
+    pickleNetflixCookies()
+(this assumes that it doesn't happen very often since we serialize all cookies
+to a file every time a new cookie is added. More scalable approach would be
+to call pickleNetfilixCookies() only every N cookies added but in this case
+we need to make sure to also call pickleNetflixCookies() before program exists
+(using e.g. try: finally: to make sure it happens even if program crashes/gets
+killed))
+
+We unpickle (deserialize) cookies from netflixCookies_pickle.dat at startup. We 
+don't have to fear loosing this file, since our protocol re-gets the cookie if
+it's lost/corrupted.
+
+Pickling is a good way to persist data if the amount of data isn't big.
+
+To see how to use pickle module, see pickleState() and unpickleState() in
+InfoManParseLogs.py

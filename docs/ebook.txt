@@ -1,0 +1,96 @@
+Now I would like you to work on e-book downloader. I wrote some basic info in future-modules.txt
+
+"Enables downloading ebooks directly from the device. Has two parts: a spider that indexes available ebooks, using data from other sites. At very least it indexes titile, author, url and type (plucker, palm, iSile, eReader etc.). Then a palm client that allows searching database build by the spider and manage eBooks on the device (download to the device (storing in memory or on the card, delete books downloaded by ourselves). UI on the client would be a google-inspired simple search interface. Ability to show books in all formats available or only those understood by the device (and we get that by scanning list of apps for known eBook readers), done as preferences.
+
+Links:
+* http://www.manybooks.net/ "
+
+The idea is to write a stand-alone spider in python to spider manybooks.net and other sites like this to get book title, author, url of the *.pdb file and maybe other information (genre/category, maybe descritption). We would periodically run it and if there's enough new information, we would update the index on the server.
+
+I don't want to store the data on the server in a database but use lupy
+(http://www.divmod.org/Home/Projects/Lupy/) for indexing that.
+
+The interface on the client could be similar to amazon i.e. browsing, searching, link author/title to amazon, encyclopedia.
+
+Then when a user selects a book to download, we download it to either memory or SD card (user has to choose). We keep track of downloaded books, allow the user to see a list of downloaded books so far (we base it on the books we remember were downloaded but only show those that still exist on the device).
+
+------------------
+
+The things that would be nice to have:
+
+1. A cache for *.pdb files that we build on-demand i.e. at the time when a first person downloads a given ebook, we download it and cache it somewhere with mapping to original url. We can then always give this e-book to other people from our server or only when we determine with HEAD request that this url doesn't exist anymore.
+
+In extreme cases we could (slowly and tactfuly) spider all the ebooks so that we'll be operational even if the site that was providing them in the first place is down.
+
+2. Detect most popular eBook readers and allow launching a given book with a given eBook reader directly from list of downloaded ebooks in InfoMan.
+
+-----------------
+
+formats:
+
+DOC readers for Palm OS devices:
+    • AportisDoc is a full-featured freeware DOC reader
+    • BookWormie
+    • CSpotRun is a good freeware reader
+    • DeepReader has anti-aliased fonts and "smart" formatting
+    • Documents To Go by DataViz (also handles Word & Excel files)
+    • eReader (formerly Palm Reader) also handles DOC format
+    • Express Reader is a Qvadis' Palm-based DOC reader (free and GT versions)
+    • FastWriter handles Word, Text, HTML, RTF and DOC files on PC and Palm
+    • HandStory a multi-format app that reads DOC, text and graphics
+    • iambic Reader handles DOC files with or without HTML tags
+    • iSilo reads both iSilo and DOC documents
+    • MobiPocket offers both PalmOS and WinCE/PPC versions
+    • PanaRead provides extra large text capabilities
+    • QED allows DOC editing right on the Palm
+    • ReadThemAll offers innovative auto-scrolling
+    • RichReader reads both DOC and RTF documents
+    • SmartDoc (another on-Palm Doc editor/reader)
+    • Smoothy provides smooth text scrolling
+    • SuperDoc uses SuperFont for clearer text
+    • TealDoc (offers extended formatting) (A TealDoc editor)
+    • TomeRaider handles DOC files on PalmOS, Pocket PC and EPOC
+    • WeaselReader handles both DOC and zTXT files
+    • WordSmith is a word processor and DOC reader
+    • ZDoc (freeware)
+
+Acrobat readers for Palm OS devices:
+    • Check out Acrobat Reader for Palm OS.
+
+eReader (formerly PalmReader)  	 
+	eReader is a proprietary text document format readable only by the eReader application available from palmdigitalmedia.com. It permits reading of eReader and DOC format files on Palm OS, PocketPC, Windows and Mac platforms.
+
+HandStory eBook  	
+	HandStory eBooks are specially formatted to make for a nice reading experience. To use HandStory eBook (.hsb) files, you must have the HandStory Converter loaded on your PC or Mac, and HandStory Browser on your handheld.
+
+
+iSilo  	
+	iSilo is a large text format that allows a couple of advantages over the DOC format, such as higher compression rates (which saves your precious RAM) and extended formatting (such as bold, italics, horizontal dividers, and hyperlinks). Check out iSilo's website for more info and to download their reader application. iSilo also reads DOC files, it's very easy to convert text, HTML, and DOC files into the iSilo format, and with iSiloWeb, you can grab content off the web and make iSilo documents automatically.  	Palm OS, Pocket PC
+
+iSilo3 	
+	iSilo3 is the 3rd version of the iSilo document format. iSilo3 documents are not compatible with old iSilo readers, so getting the new reader program is necessary. iSilo3 offers many enhancements over previous versions of iSilo. Check out iSilo's website for more info and to download the reader application (currently in beta). iSilo also reads DOC files, it's very easy to convert text, HTML, and DOC files into the iSilo format, and with iSiloX, you can grab content off the web and make iSilo3 documents automatically.
+
+
+MobiPocket  	
+	MobiPocket is a text document format offering advanced formatting functions. MobiPocket offers readers for a variety of PDA platforms, all available at the MobiPocket website.
+
+Plucker  	
+	Plucker is an extended text-and-graphics document format for handhelds. It can be used for both local and remote (e.g., Internet) files. More info can be found at the Plucker website.
+
+RichReader  	
+	RichReader, by Michael Arena, adds extensive formatting capabilities to otherwise plain DOC files. More info and downloads are available at the RichReader webpage.
+
+TomeRaider  	
+	TomeRaider is a powerful text reader application with database-like capabilities, and versions are available for Palm OS, EPOC, and Pocket PC platforms. For more information or to download the TomeRaider reader program, see the TomeRaider homepage. For MacOS-based Palm users, the Mac PalmOS converter is available as an alpha product. Note that TomeRaider files are downloaded as *.tr files -- if these are to be read on a PalmOS device, they need to be converted into a .pdb file using one of the conversion programs available at the TomeRaider website (for more information on using TomeRaider files on Palm OS devices, please see the README file).
+
+
+summary:
+
+- DOC
+- PDF
+- eReader
+- plucker
+- zTXT
+- iSilo
+- iSiloX
+

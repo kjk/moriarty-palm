@@ -1,0 +1,58 @@
+Current release schedule plan.
+
+Last updated on: 2005-06-20
+
+The basisc idea is to update InfoMan every 2 weeks or so and release a new 
+version on Monday (which means that it's built on Sat/Sun). If we can manage to
+write modules faster, we'll make a release after a week.
+
+Modules ready for the release:
+* recipes
+
+Modules that still need work/testing:
+* netflix - important
+* ebooks downloader - important
+* ebay - important but hard to write
+* flight schedule
+* lyrics
+* lists of bests
+
+Modules that need to be written:
+* tv schedules - important
+* sport scores/nba - important
+* sport scores/nhl - important
+* sport scores/footbal - important
+* word of the day
+* iNoah inside InfoMan
+
+Modules that would be nice to have but for one reason or another, might not happen:
+* imdb.com
+* oed
+* rottentomatoes.com
+* metacritic.com
+* dictionary/reference
+
+Releases done:
+2004-12-20 - InfoMan 1.0 
+2005-01-03 - InfoMan 1.1
+  * adds gas prices
+  * shows that update is available
+  * improve list highlight to have 2 different colors for background color for
+  * focused/not focused list
+2005-01-23 - InfoMan 1.2
+  * slipped by a week
+  * adds horoscopes
+  * fixes gfx scaling bug on Zire
+  * removes large list for the main screen
+  * fixes connection terminated problem with connection managers 
+2005-06-20 - InfoMan 1.4, adds amazon
+
+Planned releases:
+2005-07-03 - InfoMan 1.5, adds flickr ?
+2005-**-** - InfoMan 1.6, adds netflix
+2005-**-** - InfoMan 1.7, adds ebooks
+2005-**-** - InfoMan 1.8, adds encyclopedia
+2005-**-** - InfoMan 1.9, adds dictionary
+2005-**-** - InfoMan 2.0, adds flight schedule
+2005-**-** - InfoMan 2.1, adds lyrics
+

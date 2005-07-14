@@ -1,0 +1,21 @@
+Dictionary module.
+
+** Overview
+
+Dictionary module implements a dictionary, similar to what iNoah does, except
+better.
+
+It's designed to support multiple dictionaries, although we'll probably only
+offer Wordnet 2.0 to the public.
+
+It uses Get-Url request with schema "dict". Then we provide dictionary
+identifier (e.g. "wn" for WordNet), space and a search term (usually a
+word to find).
+
+The response is a definition.
+
+** Dictionary data
+
+Source data come from wn-dict.txt, wn-word-index.pickle, wn-words.pickle created
+from original wordnet 2.0 data by /scripts/wn2infoman.py.
+

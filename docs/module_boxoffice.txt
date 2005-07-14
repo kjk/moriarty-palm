@@ -1,0 +1,38 @@
+Box office module.
+
+Box office provides information about most popular 
+movies during last week
+
+Data sources:
+http://movies.yahoo.com/boxoffice/latest/rank.html
+http://www.rottentomatoes.com/movies/box_office.php
+
+
+Protocol details:
+
+Client request: Get-Current-Box-Office. 
+Server response: Current-Box-Office with payload
+data in our universal data format. Each item is one piece
+of information about the movie. We return from the server
+as much as we can (depends on the data source we use).
+
+Each item consists of the following elements:
+* last week position ("-" means it's a new movie that came out this week)
+* movie title
+* weekend gross
+* cumulative gross
+* release weeks
+* number of theaters
+
+UI design:
+
+On the client side, we display those as a list. Currently we'll only
+display the following:
+* position (can be inferred from the item's position)
+* title
+* weekend gross
+* cumulative gross
+
+It'll probably require a 2-line display for each movie. On the bottom
+are "Done" button on the left (as in every other module) and "Update"
+button on the right (so that it's not close to "Done").

@@ -1,0 +1,35 @@
+Lyrics module.
+
+Allow to search for songs texts.
+Should we allow browsing? (by first letter -> artist ->song list)
+
+Data sources:
+http://lyrictracker.com/      (advance search)
+
+
+Protocol details:
+
+Client requests:
+* Get-Lyrics-Search	(query parameters are sended ';' separated [artist, title, album, composer, fulltext]) 
+* Get-Lyrics-Item	(id is sended)
+Server responses: 
+* Lyrics-Search   (each item is: (id, artist, title))
+* Lyrics-Item     (text of song)
+
+
+
+UI design:
+
+Start from blank page (with help text?)
+Buttons:
+* Search - popup search form
+* Done
+
+Search form looks like: http://lyrictracker.com/main.php?action=advanced
+(but maybe without composer, and with one line full text)
+
+After search we show list of results (2 lines: artist, title (or title, artist))
+when item is selected we download it and show using stocksDetailedDoneUpdateForm (as amazon, lob, and others)
+
+we should be prepared for adding "browse" option - if added we will not start with empty screen but with a-z0-9 list.
+

@@ -1,0 +1,32 @@
+Gas prices module.
+
+* Overview
+
+Gas prices module shows gas prices for a given zip code. Data comes from
+http://www.gasbuddy.com/
+
+get data from redirection start:
+http://www.gasbuddy.com/findsite.asp?zip=98101
+
+* UI
+
+Ask user for a zip code. Then show results in a list.
+
+To determine: how to display the results in a compact way but still present
+all the information. We can either do it as a list or using our rendering
+engine.
+
+* Protocol
+
+To get prices:
+Get-Gas-Prices: $zip-code
+
+It returns No-Results or Gas-Prices. Gas-Prices returns a payload which is a
+list of results. Each item in a list consists of three elements:
+- price (e.g $1.95)
+- station name (e.g "Arco")
+- station address (e.g. "665 23rd Av...")
+- area (e.g. "Seattle - Central")
+(see results for 98101)
+
+

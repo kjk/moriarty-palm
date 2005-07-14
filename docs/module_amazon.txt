@@ -1,0 +1,26 @@
+Amazon module.
+
+** Overview
+
+Amazon module provides interface to Amazon.com web services 
+(http://www.amazon.com/gp/browse.html/103-1529513-0599051?%5Fencoding=UTF8&node=3435361)
+
+Basic features:
+* searching the catalogue
+* browsing the catalogue
+* reading the details of an item
+
+We use pyamazon module for getting the information: http://diveintomark.org/projects/pyamazon/
+
+For inspiration see:
+* http://www.kokogiak.com/amazon/
+* http://www.kokogiak.com/amazon2M/default.asp
+
+Our subscription key: 0BQBVJXTZGZT1Y49GQR2
+
+** UI design:
+
+
+** Protocol
+
+
