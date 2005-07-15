@@ -14,30 +14,30 @@ from definitionBuilder import *
 # Format of dictionary data:
 # * we have a file wn-dict.txt which contains definitions for all words. Each
 #   definition is described by an (offset,length) within wn-dict.txt file.
-# * in memory we have a hash (dictionary) g_wordIndex mapping a word to
+# * in memory we have a hash (dictionary) g_wnWordIndex mapping a word to
 #   a (offset, length) tuple. This is pickled to wn-word-index.pickle file.
-# * we also have g_words array which has all the words sorted alphabetically
+# * we also have g_wnWords array which has all the words sorted alphabetically
 #   this is pickled to wn-words.pickle file. Allows calculating nearby words.
-#   We could generate g_words from g_wordIndex but I hope that unpickling is
+#   We could generate g_wnWords from g_wnWordIndex but I hope that unpickling is
 #   more efficient (both in time as well as wrt. memory used)
 
 # wn-dict.txt, wn-word-index.pickle, wn-words.pickle are created by wn2infoman.py
 # script and live in $storage-dir/dict directory
 
 # What we return as a result for a search term:
-# * if we have an exact match in g_wordIndex, we add ('D', Definition) in
+# * if we have an exact match in g_wnWordIndex, we add ('D', Definition) in
 #   the UDF
-# * if we don't have an exact match in g_wordIndex, but a given word is simply
-#   a known conjugation of some other word which we have in g_wordIndex, we
+# * if we don't have an exact match in g_wnWordIndex, but a given word is simply
+#   a known conjugation of some other word which we have in g_wnWordIndex, we
 #   return ('D', Definition) for that other word, possibly with some explanation
 #   at the beginning (e.g. "'granted' is a past tense for the verb 'grant')
 # * if we don't have an exact match but ispell returns a list of alternatives
 #   we return ('D', Definition) saying something along the lines: "Didn't find
 #   definition of '$word'. Did you mean $word1, $word2, $word3... ?" where $word1,
 #   $word2 etc. are ispell suggestions (but only if we have their definition in
-#   g_wordIndex
+#   g_wnWordIndex
 # * definition also contains a list of N nearby words at the bottom, which we
-#   calculate from g_words
+#   calculate from g_wnWords
 # * if we have link(s) to *.wav files with sound recording of this word, then
 #   we add them to UDF as ('S', links). This allows us to play the audio of the
 #   word. We get those audio files by spidering other dictionaries like encarta
@@ -53,12 +53,15 @@ g_wnDictPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN
 g_wnIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_INDEX_FILE)
 g_wnWordsPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_WORDS_FILE)
 
+# how many nearby words we show
+NEARBY_WORDS_TO_SHOW = 8
+
 # it's ok to throw an exception, we don't want to proceed if the file is missing
 # TODO: somehow make it that this file is closed when we kill InfoMan
 g_wnFo = None
 
-g_wordIndex = {}
-g_words = []
+g_wnWordIndex = {}
+g_wnWords = []
 
 # random.Random() object used to generate random definitions. Must be initialized
 # in initDictionary
@@ -75,7 +78,7 @@ g_fDisabled = None
 
 # load WordNet dictionary files. Return False if one of the files doesn't exist
 def loadPickledFiles():
-    global g_words, g_wordIndex, g_wnDictPath, g_wnIndexPath, g_wnWordsPath
+    global g_wnWords, g_wnWordIndex, g_wnDictPath, g_wnIndexPath, g_wnWordsPath
     print "loading wn dictionary data files"
 
     if not arsutils.fFileExists(g_wnDictPath):
@@ -92,11 +95,11 @@ def loadPickledFiles():
 
     try:
         fo = open(g_wnIndexPath, "rb")
-        g_wordIndex = cPickle.load(fo)
+        g_wnWordIndex = cPickle.load(fo)
         fo.close()
 
         fo = open(g_wnWordsPath, "rb")
-        g_words = cPickle.load(fo)
+        g_wnWords = cPickle.load(fo)
         fo.close()
     except Exception, ex:
         print arsutils.exceptionAsStr(ex)
@@ -165,13 +168,13 @@ def _getNearbyWords(sortedWords, word, nearbyWordsCount):
 
 # return a definition for a given word or None if doesn't exist
 def _getDef(word):
-    global g_wnFo, g_defReadLock, g_wordIndex
+    global g_wnFo, g_defReadLock, g_wnWordIndex
 
-    if not g_wordIndex.has_key(word):
+    if not g_wnWordIndex.has_key(word):
         return None
 
     wordDef = None
-    (defOffset, defLen) = g_wordIndex[word]
+    (defOffset, defLen) = g_wnWordIndex[word]
     g_defReadLock.acquire()
     try:
         g_wnFo.seek(defOffset, 0)   # 0 - absolute positioning
@@ -192,7 +195,7 @@ def test_getNearbyWords():
     assert ['maniac', 'this', 'zippy'] == _getNearbyWords(words, "zzzezo", 3)
     # print "test_getNearbyWords() is ok!\n"
 
-def _buildNearbyWords(df, nearbyWords):
+def _buildNearbyWords(df, nearbyWords, dictCode):
     if len(nearbyWords) > 0:
         df.TextElement("Nearby words: ")
         first = True
@@ -201,15 +204,15 @@ def _buildNearbyWords(df, nearbyWords):
                 first = False
             else:
                 df.TextElement(", ")
-            link = "s+dictterm:wn %s" % word
+            link = "s+dictterm:%s %s" % (dictCode.strip(), word)
             df.TextElement(word, link=link)
         df.LineBreakElement()
 
-def buildDefinitionNotFound(word, nearbyWords):
+def buildDefinitionNotFound(word, nearbyWords, dictCode):
     df = Definition()
     df.TextElement("Definition for word '%s' was not found." % word)
-    df.LineBreakElement()
-    _buildNearbyWords(df, nearbyWords)
+    df.LineBreakElement(3,2)
+    _buildNearbyWords(df, nearbyWords, dictCode)
 
     return df
 
@@ -268,11 +271,21 @@ def _parseDef(wordDef):
     synsets.append(curSynset)
     return synsets
 
+def _posToText(pos):
+    if pos == "n":
+        return "(Noun)"
+    if pos == "v":
+        return "(Verb)"
+    if pos == "r":
+        return "(Adv.)"
+    if pos == "s":
+        return "(Adj.)"
+
 def test_parseDefAll():
-    global g_words
+    global g_wnWords
     print "parsing all definitions"
     n = 1
-    for word in g_words:
+    for word in g_wnWords:
         if 0 == n % 20000:
             print "processed %d" % n
         wordDef = _getDef(word)
@@ -286,38 +299,65 @@ def test_parseDefAll():
     print "finished parsing all definitions"
 
 # build a Definition object for a found definition
-def buildDefinitionFound(wordDef, nearbyWords):
+def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
     df = Definition()
     synsets = _parseDef(wordDef)
     print synsets
 
-    df.TextElement("this is a definition")
-    df.LineBreakElement()
+    styleNameExample = df.AddStyle("ex", color=[127,63,0])
+    df.TextElement(word, style=styleNamePageTitle)
+    df.LineBreakElement(1,2)
 
-    _buildNearbyWords(df, nearbyWords)
+    for synset in synsets:
+        df.BulletElement(False)
+        df.TextElement(_posToText(synset.pos)+" ", style=styleNameGreen)
+        df.TextElement(synset.defTxt)
+        for ex in synset.examples:
+            df.LineBreakElement()
+            gtxt = df.TextElement("\""+ex+"\"")
+            gtxt.setStyleName(styleNameExample)
+        if len(synset.words) > 1:
+            df.LineBreakElement()
+            df.TextElement("Synonyms: ", style=styleNameBold)
+            first = False
+            for syn in synset.words:
+                if syn != word:
+                    if first:
+                        df.TextElement(", ")
+                    else:
+                        first = True
+                    df.TextElement(syn, link="s+dictterm:%s %s" % (dictCode.strip(), syn))
+        df.PopParentElement()
+
+    df.LineBreakElement(3,2)
+    _buildNearbyWords(df, nearbyWords, dictCode)
     return df
 
 def getDictionaryRandom(dictCode, fDebug=False):
-    global g_words, g_fDisabled
+    global g_wnWords, g_fDisabled
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
 
+    udf = None
+    word = ""
+    dictCode = dictCode.split()[0]
+    # dict code have code + random number.
     if dictCode.startswith("wn"):
-        pass
+        totalWords = len(g_wnWords)
+        randomWordNo = g_random.randint(0, totalWords-1)
+        word = g_wnWords[randomWordNo]
+        nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
+        wordDef = _getDef(word)
+        assert None != wordDef
+        df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
+        udf = universalDataFormatWithDefinition(df, [["H", word]])
     else:
         return (INVALID_REQUEST, None)
 
-    totalWords = len(g_words)
-    randomWordNo = g_random.randint(0, totalWords-1)
-    word = g_words[randomWordNo]
+
     if fDebug:
         print "random word is %s" % word
-    nearbyWords = _getNearbyWords(g_words, word, 8)
-    wordDef = _getDef(word)
-    assert None != wordDef
-    df = buildDefinitionFound(wordDef, nearbyWords)
-    udf = universalDataFormatWithDefinition(df, [["H", word]])
     return (DICT_DEF, udf)
 
 # given search term in the form:
@@ -326,7 +366,7 @@ def getDictionaryRandom(dictCode, fDebug=False):
 # is a serialized definition containing dictionary definition to be displayed
 # to the user. Other resultType indicates an error.
 def getDictionaryDef(searchTerm, fDebug=False):
-    global g_words, g_fDisabled
+    global g_wnWords, g_fDisabled
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
@@ -336,11 +376,12 @@ def getDictionaryDef(searchTerm, fDebug=False):
         return (INVALID_REQUEST, None)
     assert 2 == len(parts)
     (dictName, word) = parts
-    if dictName != "wn":
-        return (INVALID_REQUEST, None)
     word = word.strip()
 
-    nearbyWords = _getNearbyWords(g_words, word, 8)
+    if dictName != "wn":
+        return (INVALID_REQUEST, None)
+
+    nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
 
     wordDef = _getDef(word)
 
@@ -353,9 +394,9 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
     # TODO: ispell and lupy
     if None == wordDef:
-        df = buildDefinitionNotFound(word, nearbyWords)
+        df = buildDefinitionNotFound(word, nearbyWords, dictName)
     else:
-        df = buildDefinitionFound(wordDef, nearbyWords)
+        df = buildDefinitionFound(word, wordDef, nearbyWords, dictName)
 
     udf = universalDataFormatWithDefinition(df, [["H", word]])
 
@@ -363,7 +404,7 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
 # request is dict type ("wn " for now)
 def getDictionaryStats(request):
-    global g_words, g_fDisabled
+    global g_wnWords, g_fDisabled
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
@@ -377,7 +418,7 @@ def getDictionaryStats(request):
     if "wn" == request:
         res.append(["N","Word net"])
         res.append(["S","wn "])
-        res.append(["C",str(len(g_words))])
+        res.append(["C",str(len(g_wnWords))])
     else:
         return INVALID_REQUEST, None
     return RESULTS_DATA, universalDataFormat(res)

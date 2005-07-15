@@ -33,6 +33,9 @@ static PopupMenuModel* BuildSelectionMenuModel(const String& text)
     if (NULL == str.AppendCharP2(urlSchemaDictTerm urlSeparatorSchemaStr, app.preferences().dictionaryPreferences.dictionaryCode))
         goto NoMemory;
 
+    // remove '\n' from text
+    replaceCharInString((char_t*) text.data(), _T('\n'), _T(' '));
+
     if (NULL == str.AppendCharPBuf(text.data(), text.length()))
         goto NoMemory;
 
@@ -178,8 +181,24 @@ void DictMainForm::showMain()
     elems.push_back(text=new TextElement("Press 'search' button to "));
     elems.push_back(text=new TextElement("search"));
     text->setHyperlink(_T("dictform:search") , hyperlinkUrl);
-
     elems.push_back(text=new TextElement(" for words definitions."));
+
+    elems.push_back(new LineBreakElement(3, 2));
+    elems.push_back(text=new TextElement("You can get "));
+    elems.push_back(text=new TextElement("random"));
+    text->setHyperlink(_T("dictform:random") , hyperlinkUrl);
+    elems.push_back(text=new TextElement(" word definition. You can olso get previous definitions using "));
+    elems.push_back(text=new TextElement("history"));
+    text->setHyperlink(_T("dictform:history") , hyperlinkUrl);
+    elems.push_back(text=new TextElement(" button."));
+
+#ifndef SHIPPING
+    elems.push_back(new LineBreakElement(3, 2));
+    elems.push_back(text=new TextElement("You can olso "));
+    elems.push_back(text=new TextElement("change dictionary"));
+    text->setHyperlink(_T("s+dictstats:") , hyperlinkUrl);
+    elems.push_back(text=new TextElement("."));
+#endif
 
     textRenderer_.setModel(model, Definition::ownModel);
     update();
@@ -220,8 +239,17 @@ void DictMainForm::randomWord()
     MoriartyApplication& app = application();
     LookupManager*       lm;
     CDynStr              url;
+    
+    DictionaryPreferences& prefs = application().preferences().dictionaryPreferences;
 
-    if (NULL == url.AppendCharP3(urlSchemaDictRandom, urlSeparatorSchemaStr, app.preferences().dictionaryPreferences.dictionaryCode))
+    if (NULL == url.AppendCharP3(urlSchemaDictRandom, urlSeparatorSchemaStr, prefs.dictionaryCode))
+        goto NoMemory;
+
+    // add increasing sufix - to make url unique
+    prefs.randomWordSufix = (prefs.randomWordSufix+1) % 100;
+    char_t buffer[16];    
+    StrPrintF(buffer, "%d", prefs.randomWordSufix);        
+    if (NULL == url.AppendCharP(buffer))
         goto NoMemory;
 
     lm = app.lookupManager;

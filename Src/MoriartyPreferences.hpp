@@ -60,6 +60,8 @@ struct DictionaryPreferences: public Serializable
     
     ulong_t wordsCount;
     
+    int     randomWordSufix;
+    
     bool    fUpdated;
     
     DictionaryPreferences();

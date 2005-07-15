@@ -756,7 +756,8 @@ void Preferences::TvListingsPreferences::serialize(Serializer& serializer)
 
 DictionaryPreferences::DictionaryPreferences():
     wordsCount(wordsCountNotChecked),
-    fUpdated(false)
+    fUpdated(false),
+    randomWordSufix(0)
 {
     std::strcpy(dictionaryCode, _T("wn "));
     std::strcpy(dictionaryName, _T("WordNet"));
@@ -767,6 +768,7 @@ void DictionaryPreferences::serialize(Serializer& serialize)
     serialize(dictionaryName, maxDictionaryNameLen + 1);
     serialize(dictionaryCode, maxDictionaryCodeLen + 1);
     serialize(wordsCount);
+    serialize(randomWordSufix);
 }
 
 PediaPreferences::PediaPreferences():
