@@ -197,7 +197,7 @@ def test_getNearbyWords():
 
 def _buildNearbyWords(df, nearbyWords, dictCode):
     if len(nearbyWords) > 0:
-        df.TextElement("Nearby words: ")
+        df.TextElement("Nearby words: ", style=styleNameBold)
         first = True
         for word in nearbyWords:
             if first:
@@ -278,8 +278,10 @@ def _posToText(pos):
         return "(Verb)"
     if pos == "r":
         return "(Adv.)"
-    if pos == "s":
+    if pos in ["s", "a"]:
         return "(Adj.)"
+    print "Unknown pos:%s" % pos
+    return "(%s)" % pos
 
 def test_parseDefAll():
     global g_wnWords
@@ -306,7 +308,7 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
 
     styleNameExample = df.AddStyle("ex", color=[127,63,0])
     df.TextElement(word, style=styleNamePageTitle)
-    df.LineBreakElement(1,2)
+    #df.LineBreakElement(1,2)
 
     for synset in synsets:
         df.BulletElement(False)
@@ -329,7 +331,8 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
                     df.TextElement(syn, link="s+dictterm:%s %s" % (dictCode.strip(), syn))
         df.PopParentElement()
 
-    df.LineBreakElement(3,2)
+    df.LineBreakElement()
+    df.LineBreakElement()
     _buildNearbyWords(df, nearbyWords, dictCode)
     return df
 
@@ -410,8 +413,15 @@ def getDictionaryStats(request):
         return (MODULE_DOWN, None)
     
     request = request.strip()
-    if 0 == len(request):
+    if 0 == len(request) or "private" == request:
         # TODO: null request can return page, to select dictionary...
+        private = False
+        if "private" == request:
+            private = True
+
+
+
+            
         pass
 
     res = []        
@@ -435,6 +445,7 @@ def main():
         pass
 
     if "-test" in sys.argv:
+        initDictionary()
         test_parseDefAll()
         test_getNearbyWords()
         pos = sys.argv.index("-test")
