@@ -573,6 +573,11 @@ g_allTests = [
 
   [70, [Fields.getUrl, "eBook-search: earth; doc pdf"], [Fields.outEBookSearchResults]],
   [71, [Fields.getUrl, "eBook-search: conrad; *"], [Fields.outEBookSearchResults]],
+
+  [72, [Fields.getUrl, "s+dictterm:wn:home"], [Fields.outDictDef]],
+  [73, [Fields.getUrl, "s+dictterm:wn:backstroke"], [Fiels.outDictDef]],
+  [74, [Fields.getUrl, "s+dictterm:wn:we return definitions even for some garbage"], [Fields.outDictDef]],
+
  ]
 
 def checkTestNumbersUnique():

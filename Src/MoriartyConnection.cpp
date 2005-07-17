@@ -1413,15 +1413,19 @@ status_t MoriartyConnection::completeDictStatsField(FieldPayloadProtocolConnecti
     prefs->fUpdated = true;
     for (int i = 0; i < udf->getItemsCount(); i++)
     {
-        switch(udf->getItemText(i,0)[0])        {
+        switch(udf->getItemText(i,0)[0])
+        {
             case 'N':
-                std::strcpy(prefs->dictionaryName, udf->getItemText(i,1));
+                prefs->dictionaryName[DictionaryPreferences::maxDictionaryNameLen] = 0;
+                std::strncpy(prefs->dictionaryName, udf->getItemText(i,1), DictionaryPreferences::maxDictionaryNameLen);
                 break;
             case 'S':
-                std::strcpy(prefs->dictionaryCode, udf->getItemText(i,1));
+                prefs->dictionaryCode[DictionaryPreferences::maxDictionaryCodeLen] = 0;
+                std::strncpy(prefs->dictionaryCode, udf->getItemText(i,1), DictionaryPreferences::maxDictionaryCodeLen);
                 break;
             case 'C':
-                prefs->wordsCount = udf->getItemTextAsLong(i,1);                 break;
+                prefs->wordsCount = udf->getItemTextAsLong(i,1);
+                break;
         }
     }
     return errNone;

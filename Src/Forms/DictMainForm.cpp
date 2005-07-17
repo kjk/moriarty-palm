@@ -30,7 +30,7 @@ static PopupMenuModel* BuildSelectionMenuModel(const String& text)
     if (NULL == items[0].text)
         goto NoMemory;
 
-    if (NULL == str.AppendCharP2(urlSchemaDictTerm urlSeparatorSchemaStr, app.preferences().dictionaryPreferences.dictionaryCode))
+    if (NULL == str.AppendCharP3(urlSchemaDictTerm urlSeparatorSchemaStr, app.preferences().dictionaryPreferences.dictionaryCode, _T(":")))
         goto NoMemory;
 
     // remove '\n' from text
@@ -165,40 +165,37 @@ void DictMainForm::showMain()
 
     elems.push_back(text=new TextElement("You are using "));
     elems.push_back(text=new TextElement(prefs.dictionaryName));
-    elems.push_back(text=new TextElement(" dictionary."));
+    elems.push_back(text=new TextElement(" dictionary"));
     
     if (prefs.wordsCountNotChecked != prefs.wordsCount)
     {
         elems.push_back(new LineBreakElement());
-        elems.push_back(text=new TextElement("It contains "));
+        elems.push_back(text=new TextElement("("));
         char_t buffer[24];
         int len = formatNumber(prefs.wordsCount, buffer, sizeof(buffer));
         elems.push_back(text=new TextElement(buffer));
-        elems.push_back(text=new TextElement(" definitions."));
+        elems.push_back(text=new TextElement("definitions)"));
     }
+    elems.push_back(text=new TextElement("."));
 
     elems.push_back(new LineBreakElement(3, 2));
-    elems.push_back(text=new TextElement("Press 'search' button to "));
+    elems.push_back(text=new TextElement("You can "));
     elems.push_back(text=new TextElement("search"));
     text->setHyperlink(_T("dictform:search") , hyperlinkUrl);
-    elems.push_back(text=new TextElement(" for words definitions."));
-
-    elems.push_back(new LineBreakElement(3, 2));
-    elems.push_back(text=new TextElement("You can get "));
+    elems.push_back(text=new TextElement(" for definitions, get "));
     elems.push_back(text=new TextElement("random"));
     text->setHyperlink(_T("dictform:random") , hyperlinkUrl);
-    elems.push_back(text=new TextElement(" word definition. You can olso get previous definitions using "));
-    elems.push_back(text=new TextElement("history"));
+    elems.push_back(text=new TextElement(" word definition, "));
+    elems.push_back(text=new TextElement("see history"));
     text->setHyperlink(_T("dictform:history") , hyperlinkUrl);
-    elems.push_back(text=new TextElement(" button."));
+    elems.push_back(text=new TextElement(" of searches"));
 
 #ifndef SHIPPING
-    elems.push_back(new LineBreakElement(3, 2));
-    elems.push_back(text=new TextElement("You can olso "));
-    elems.push_back(text=new TextElement("change dictionary"));
+    elems.push_back(text=new TextElement(" or use "));
+    elems.push_back(text=new TextElement("another dictionary"));
     text->setHyperlink(_T("s+dictstats:") , hyperlinkUrl);
-    elems.push_back(text=new TextElement("."));
 #endif
+    elems.push_back(text=new TextElement("."));
 
     textRenderer_.setModel(model, Definition::ownModel);
     update();
@@ -248,7 +245,8 @@ void DictMainForm::randomWord()
     // add increasing sufix - to make url unique
     prefs.randomWordSufix = (prefs.randomWordSufix+1) % 100;
     char_t buffer[16];    
-    StrPrintF(buffer, "%d", prefs.randomWordSufix);        
+    StrPrintF(buffer, "%d", prefs.randomWordSufix);
+        
     if (NULL == url.AppendCharP(buffer))
         goto NoMemory;
 
@@ -358,7 +356,10 @@ void DictMainForm::search(const char_t* text)
     MoriartyApplication& app = application();
     LookupManager* lm = app.lookupManager;
 
-    if (NULL == str.AppendCharP3(schema, app.preferences().dictionaryPreferences.dictionaryCode, text))
+    if (NULL == str.AppendCharP(schema))
+        goto NoMemory;
+
+    if (NULL == str.AppendCharP3(app.preferences().dictionaryPreferences.dictionaryCode, _T(":"), text))
         goto NoMemory;
 
     if (memErrNotEnoughSpace == lm->fetchUrl(str.GetCStr()))

@@ -90,6 +90,9 @@ This will probably be an on-going thing.
 
 Size: large
 
+## add drag&drop for list so that e.g. users can re-arrange lists of currencies
+or stocks via drag&drop
+
 ## Server load and performance testing
 1. Stress testing i.e. bombarding the server with random, parallel request. Can
 be done from python using threads. Parameters: how many multiple requests

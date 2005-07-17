@@ -195,7 +195,7 @@ def test_getNearbyWords():
     assert ['maniac', 'this', 'zippy'] == _getNearbyWords(words, "zzzezo", 3)
     # print "test_getNearbyWords() is ok!\n"
 
-def _buildNearbyWords(df, nearbyWords, dictCode):
+def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
     if len(nearbyWords) > 0:
         df.TextElement("Nearby words: ", style=styleNameBold)
         first = True
@@ -204,15 +204,18 @@ def _buildNearbyWords(df, nearbyWords, dictCode):
                 first = False
             else:
                 df.TextElement(", ")
-            link = "s+dictterm:%s %s" % (dictCode.strip(), word)
-            df.TextElement(word, link=link)
+            if origWord != word:
+                link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
+                df.TextElement(word, link=link)
+            else:
+                df.TextElement(word)
         df.LineBreakElement()
 
 def buildDefinitionNotFound(word, nearbyWords, dictCode):
     df = Definition()
     df.TextElement("Definition for word '%s' was not found." % word)
     df.LineBreakElement(3,2)
-    _buildNearbyWords(df, nearbyWords, dictCode)
+    _buildNearbyWords(df, word, nearbyWords, dictCode)
 
     return df
 
@@ -304,7 +307,7 @@ def test_parseDefAll():
 def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
     df = Definition()
     synsets = _parseDef(wordDef)
-    print synsets
+    #print synsets
 
     styleNameExample = df.AddStyle("ex", color=[127,63,0])
     df.TextElement(word, style=styleNamePageTitle)
@@ -328,12 +331,12 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
                         df.TextElement(", ")
                     else:
                         first = True
-                    df.TextElement(syn, link="s+dictterm:%s %s" % (dictCode.strip(), syn))
+                    df.TextElement(syn, link="s+dictterm:%s:%s" % (dictCode.strip(), syn))
         df.PopParentElement()
 
     df.LineBreakElement()
     df.LineBreakElement()
-    _buildNearbyWords(df, nearbyWords, dictCode)
+    _buildNearbyWords(df, word, nearbyWords, dictCode)
     return df
 
 def getDictionaryRandom(dictCode, fDebug=False):
@@ -358,7 +361,6 @@ def getDictionaryRandom(dictCode, fDebug=False):
     else:
         return (INVALID_REQUEST, None)
 
-
     if fDebug:
         print "random word is %s" % word
     return (DICT_DEF, udf)
@@ -374,7 +376,7 @@ def getDictionaryDef(searchTerm, fDebug=False):
     if g_fDisabled:
         return (MODULE_DOWN, None)
 
-    parts = searchTerm.split(" ", 1)
+    parts = searchTerm.split(":", 1)
     if 1 == len(parts):
         return (INVALID_REQUEST, None)
     assert 2 == len(parts)
@@ -405,7 +407,7 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
     return (DICT_DEF, udf)
 
-# request is dict type ("wn " for now)
+# request is dict type ("wn" for now)
 def getDictionaryStats(request):
     global g_wnWords, g_fDisabled
     initDictionary()
@@ -418,16 +420,12 @@ def getDictionaryStats(request):
         private = False
         if "private" == request:
             private = True
-
-
-
-            
         pass
 
     res = []        
     if "wn" == request:
-        res.append(["N","Word net"])
-        res.append(["S","wn "])
+        res.append(["N","an English"])
+        res.append(["S","wn"])
         res.append(["C",str(len(g_wnWords))])
     else:
         return INVALID_REQUEST, None
@@ -456,9 +454,9 @@ def main():
         sys.exit(0)
 
     if "random" == sys.argv[1]:
-        (resultType, resultBody) = getDictionaryRandom("wn ", fDebug=True)
+        (resultType, resultBody) = getDictionaryRandom("wn", fDebug=True)
     else:
-        searchTerm = "wn %s" % sys.argv[1]
+        searchTerm = "wn:%s" % sys.argv[1]
         (resultType, resultBody) = getDictionaryDef(searchTerm, fDebug=True)
     if INVALID_REQUEST == resultType:
         print "invalid request"

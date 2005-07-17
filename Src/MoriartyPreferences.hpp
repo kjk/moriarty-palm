@@ -48,8 +48,8 @@ struct PediaPreferences: public Serializable
 struct DictionaryPreferences: public Serializable
 {
     enum {
-        maxDictionaryCodeLen = 5,
-        maxDictionaryNameLen = 20
+        maxDictionaryCodeLen = 16,
+        maxDictionaryNameLen = 32
     };
     
     char_t dictionaryCode[maxDictionaryCodeLen + 1];

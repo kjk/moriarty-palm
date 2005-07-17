@@ -759,8 +759,9 @@ DictionaryPreferences::DictionaryPreferences():
     fUpdated(false),
     randomWordSufix(0)
 {
-    std::strcpy(dictionaryCode, _T("wn "));
-    std::strcpy(dictionaryName, _T("WordNet"));
+    // default dictionary is WordNet English
+    std::strcpy(dictionaryCode, _T("wn"));
+    std::strcpy(dictionaryName, _T("an English"));
 }
 
 void DictionaryPreferences::serialize(Serializer& serialize)
