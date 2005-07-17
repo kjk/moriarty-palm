@@ -76,6 +76,8 @@ g_fInitialized = False
 # g_fDisabled is set in initDictionar() it's True if there are no dictionary files
 g_fDisabled = None
 
+WORDNET_CODE = 'wn'
+
 # load WordNet dictionary files. Return False if one of the files doesn't exist
 def loadPickledFiles():
     global g_wnWords, g_wnWordIndex, g_wnDictPath, g_wnIndexPath, g_wnWordsPath
@@ -339,34 +341,34 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
     _buildNearbyWords(df, word, nearbyWords, dictCode)
     return df
 
-def getDictionaryRandom(dictCode, fDebug=False):
+# get definition of random word for a given dictionary. randomUrl is in the format:
+# 'dictCode:$num' (e.g. 'wn:5') where dictCode identifies dictionary to use
+# and $num is for implementing history on the client side
+def getDictionaryRandom(randomUrl, fDebug=False):
     global g_wnWords, g_fDisabled
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
 
-    udf = None
-    word = ""
-    dictCode = dictCode.split()[0]
-    # dict code have code + random number.
-    if dictCode.startswith("wn"):
-        totalWords = len(g_wnWords)
-        randomWordNo = g_random.randint(0, totalWords-1)
-        word = g_wnWords[randomWordNo]
-        nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
-        wordDef = _getDef(word)
-        assert None != wordDef
-        df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
-        udf = universalDataFormatWithDefinition(df, [["H", word]])
-    else:
+    dictCode = randomUrl.split(":",1)[0]
+    if WORDNET_CODE != dictCode:
         return (INVALID_REQUEST, None)
+
+    totalWords = len(g_wnWords)
+    randomWordNo = g_random.randint(0, totalWords-1)
+    word = g_wnWords[randomWordNo]
+    nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
+    wordDef = _getDef(word)
+    assert None != wordDef
+    df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
+    udf = universalDataFormatWithDefinition(df, [["H", word]])
 
     if fDebug:
         print "random word is %s" % word
     return (DICT_DEF, udf)
 
 # given search term in the form:
-#   dictName SPACE searchTerm
+#   dictCode SPACE searchTerm
 # return a tuple (resultType, resultData). If resultType is DICT_DEF, resultData
 # is a serialized definition containing dictionary definition to be displayed
 # to the user. Other resultType indicates an error.
@@ -380,10 +382,10 @@ def getDictionaryDef(searchTerm, fDebug=False):
     if 1 == len(parts):
         return (INVALID_REQUEST, None)
     assert 2 == len(parts)
-    (dictName, word) = parts
+    (dictCode, word) = parts
     word = word.strip()
 
-    if dictName != "wn":
+    if dictCode != WORDNET_CODE:
         return (INVALID_REQUEST, None)
 
     nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
@@ -399,9 +401,9 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
     # TODO: ispell and lupy
     if None == wordDef:
-        df = buildDefinitionNotFound(word, nearbyWords, dictName)
+        df = buildDefinitionNotFound(word, nearbyWords, dictCode)
     else:
-        df = buildDefinitionFound(word, wordDef, nearbyWords, dictName)
+        df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
 
     udf = universalDataFormatWithDefinition(df, [["H", word]])
 
@@ -423,9 +425,9 @@ def getDictionaryStats(request):
         pass
 
     res = []        
-    if "wn" == request:
+    if WORDNET_CODE == request:
         res.append(["N","an English"])
-        res.append(["S","wn"])
+        res.append(["S", WORDNET_CODE])
         res.append(["C",str(len(g_wnWords))])
     else:
         return INVALID_REQUEST, None
@@ -454,9 +456,9 @@ def main():
         sys.exit(0)
 
     if "random" == sys.argv[1]:
-        (resultType, resultBody) = getDictionaryRandom("wn", fDebug=True)
+        (resultType, resultBody) = getDictionaryRandom(WORDNET_CODE, fDebug=True)
     else:
-        searchTerm = "wn:%s" % sys.argv[1]
+        searchTerm = "%s:%s" % (WORDNET_CODE, sys.argv[1])
         (resultType, resultBody) = getDictionaryDef(searchTerm, fDebug=True)
     if INVALID_REQUEST == resultType:
         print "invalid request"

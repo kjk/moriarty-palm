@@ -245,8 +245,8 @@ void DictMainForm::randomWord()
     // add increasing sufix - to make url unique
     prefs.randomWordSufix = (prefs.randomWordSufix+1) % 100;
     char_t buffer[16];    
-    StrPrintF(buffer, "%d", prefs.randomWordSufix);
-        
+    StrPrintF(buffer, ":%d", prefs.randomWordSufix);
+
     if (NULL == url.AppendCharP(buffer))
         goto NoMemory;
 
