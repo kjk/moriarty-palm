@@ -120,6 +120,11 @@ def mainOld():
     fo2Small.close()
     print "preview end"
 
+def amazonCommon(df):
+    df.TextElement("You can ")
+    df.TextElement("search", link="amazonform:search")
+    df.TextElement(" for any item or browse Amazon shops using links above.");
+
 def amazonStart():
     global g_categories
 
@@ -146,10 +151,7 @@ def amazonStart():
     df.LineBreakElement()
     df.LineBreakElement()
 
-    df.TextElement(" Browse different stores using links. Press 'Search' button to ")
-    df.TextElement("search", link="amazonform:search")
-    df.TextElement(" for an item.");
-
+    amazonCommon(df)
     print "amazonStart() finished"
 
     return df.serialize()
@@ -177,9 +179,7 @@ def amazonStartMajor():
     df.LineBreakElement()
     df.LineBreakElement()
 
-    df.TextElement(" Browse different stores using links. Press 'Search' button to ")
-    df.TextElement("search", link="amazonform:search")
-    df.TextElement(" for an item.");
+    amazonCommon(df)
 
     print "amazonStartMajor() finished"
     return df.serialize()
