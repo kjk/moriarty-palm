@@ -174,7 +174,7 @@ void DictMainForm::showMain()
         char_t buffer[24];
         int len = formatNumber(prefs.wordsCount, buffer, sizeof(buffer));
         elems.push_back(text=new TextElement(buffer));
-        elems.push_back(text=new TextElement("definitions)"));
+        elems.push_back(text=new TextElement(" definitions)"));
     }
     elems.push_back(text=new TextElement("."));
 
@@ -193,7 +193,7 @@ void DictMainForm::showMain()
 #ifndef SHIPPING
     elems.push_back(text=new TextElement(" or use "));
     elems.push_back(text=new TextElement("another dictionary"));
-    text->setHyperlink(_T("s+dictstats:") , hyperlinkUrl);
+    text->setHyperlink(_T("hs+dictstats:") , hyperlinkUrl);
 #endif
     elems.push_back(text=new TextElement("."));
 
@@ -440,6 +440,10 @@ void DictMainForm::handleLookupFinished(const EventType& event)
     {
         case lookupResultDictDef:
             readUdf();
+            break;
+            
+        case lookupResultDictStats:
+            showMain();
             break;
 
         // linked modules

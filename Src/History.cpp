@@ -131,6 +131,9 @@ static UrlSchemaToCacheNameEntry schemaToCacheNameDispatch[] =
 {
     {urlSchemaDictTerm,           dictHistoryCacheName,         DictCacheDataRead},
     {urlSchemaDictRandom,         dictHistoryCacheName,         DictCacheDataRead},
+    {_T("hs+dictstats"),          dictHistoryCacheName,         DictCacheDataRead},
+    {_T("Hs+dictstats"),          dictHistoryCacheName,         DictCacheDataRead},
+
     
     {urlSchemaEncyclopediaTerm,   pediaHistoryCacheName,        PediaCacheDataRead},
     {urlSchemaEncyclopediaSearch, pediaHistoryCacheName,        PediaSearchDataRead},

@@ -1428,6 +1428,8 @@ status_t MoriartyConnection::completeDictStatsField(FieldPayloadProtocolConnecti
                 break;
         }
     }
+    if (lookupResultNone == result_)
+        setLookupResult(lookupResultDictStats);
     return errNone;
 }
 

@@ -116,6 +116,7 @@ enum LookupResult {
     lookupResultTvListingsFull,
 
     lookupResultDictDef,
+    lookupResultDictStats,
     
     lookupResultPediaArticle,
     lookupResultPediaSearch,

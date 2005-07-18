@@ -2146,7 +2146,11 @@ class InfoManProtocol(LineReceiver):
             self.appendPayloadField(Fields.outDictStats, resultBody)
             return None
 
-        # TODO: handle empty dictstats, to get BCF list of dictionaries
+        if DICT_DEF == resultType:
+            self.appendPayloadField(Fields.outDictDef, resultBody)
+            return None
+
+        # TODO: handle empty dictstats, to get BCF list of dictionaries (done)
         return ServerErrors.moduleTemporarilyDown
 
     def handleDictionaryRandom(self, fieldName, fieldValue):

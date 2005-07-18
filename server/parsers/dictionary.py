@@ -449,6 +449,28 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
     return (DICT_DEF, udf)
 
+def _getAvailableDicts(private):
+    initDictionary()
+    if g_fDisabled:
+        return (MODULE_DOWN, None)
+
+    df = Definition()
+    df.TextElement("Home", link="dictform:main")
+    df.TextElement(" / Select dictionary")
+    df.LineBreakElement(3,2)
+
+    df.TextElement("We're sorry, but for now only ")
+    df.TextElement("WordNet", link="s+dictstats:wn")
+    df.TextElement(" dictionary is available.")
+
+    df.LineBreakElement(3,2)
+
+    df.TextElement("test other", link="s+dictstats:th")
+    df.TextElement(" this is not working dict - only to test dict change page.")
+
+    udf = universalDataFormatWithDefinition(df, [["H", "Change dictionary"]])
+    return (DICT_DEF, udf)
+
 # request is dict type ("wn" for now)
 def getDictionaryStats(request):
     global g_wnWords, g_fDisabled
@@ -462,13 +484,18 @@ def getDictionaryStats(request):
         private = False
         if "private" == request:
             private = True
-        pass
+
+        return _getAvailableDicts(private)
 
     res = []        
     if WORDNET_CODE == request:
         res.append(["N","an English"])
         res.append(["S", WORDNET_CODE])
         res.append(["C",str(len(g_wnWords))])
+    elif "th" == request:
+        res.append(["N","test thesaurus"])
+        res.append(["S", "th"])
+        res.append(["C","0"])
     else:
         return INVALID_REQUEST, None
     return RESULTS_DATA, universalDataFormat(res)
