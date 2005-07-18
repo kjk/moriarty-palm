@@ -199,6 +199,8 @@ def test_getNearbyWords():
 
 def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
     if len(nearbyWords) > 0:
+        df.LineBreakElement()
+        df.LineBreakElement()
         df.TextElement("Nearby words: ", style=styleNameBold)
         first = True
         for word in nearbyWords:
@@ -216,7 +218,6 @@ def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
 def buildDefinitionNotFound(word, nearbyWords, dictCode):
     df = Definition()
     df.TextElement("Definition for word '%s' was not found." % word)
-    df.LineBreakElement(3,2)
     _buildNearbyWords(df, word, nearbyWords, dictCode)
 
     return df
@@ -232,6 +233,9 @@ class Synset:
         self.pos = None
         self.defTxt = None
         self.examples = []
+
+def sortByPos(el1, el2):
+    return cmp(el1.pos, el2.pos)
 
 # parse definition and return an array of synsets
 def _parseDef(wordDef):
@@ -274,17 +278,19 @@ def _parseDef(wordDef):
             curSynset.defTxt = "%s\n%s" % (curSynset.defTxt, line.strip())
             fCanFinish = True
     synsets.append(curSynset)
+    # sort synsets by pos.
+    synsets.sort(sortByPos)    
     return synsets
 
 def _posToText(pos):
     if pos == "n":
-        return "(Noun)"
+        return "Noun"
     if pos == "v":
-        return "(Verb)"
+        return "Verb"
     if pos == "r":
-        return "(Adv.)"
+        return "Adv."
     if pos in ["s", "a"]:
-        return "(Adj.)"
+        return "Adj."
     print "Unknown pos:%s" % pos
     return "(%s)" % pos
 
@@ -305,19 +311,55 @@ def test_parseDefAll():
         n = n + 1
     print "finished parsing all definitions"
 
+def moreThanOnePosInSynsets(synsets):
+    if len(synsets) > 0:
+        pos = synsets[0].pos
+        for synset in synsets:
+            if synset.pos != pos:
+                return True
+    return False
+
 # build a Definition object for a found definition
 def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
     df = Definition()
     synsets = _parseDef(wordDef)
-    #print synsets
 
     styleNameExample = df.AddStyle("ex", color=[127,63,0])
-    df.TextElement(word, style=styleNamePageTitle)
-    #df.LineBreakElement(1,2)
+    df.TextElement("Home", link="dictform:main")
+    df.TextElement(" / ")
+    df.TextElement(word, style=styleNameBoldBlue)
 
-    for synset in synsets:
-        df.BulletElement(False)
-        df.TextElement(_posToText(synset.pos)+" ", style=styleNameGreen)
+    moreThanOnePos = moreThanOnePosInSynsets(synsets)
+    roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+    i = 0
+    posNumber = 0
+    listNumber = 1
+    currPos = ""
+    while i < len(synsets):
+        synset = synsets[i]
+        if currPos != synset.pos:
+            listNumber = 1
+            currPos = synset.pos
+            if moreThanOnePos:
+                df.LineBreakElement()
+                df.TextElement(roman[posNumber] + " " + _posToText(synset.pos), style=styleNameBoldGreen)
+                posNumber += 1
+            else:
+                df.LineBreakElement()
+                df.TextElement(_posToText(synset.pos), style=styleNameBoldGreen)
+
+        df.LineBreakElement()
+        if listNumber == 1:
+            if i == len(synsets)-1:
+                pass
+            elif currPos != synsets[i+1].pos:
+                pass
+            else:
+                df.TextElement("%d) " % listNumber)
+        else:
+            df.TextElement("%d) " % listNumber)
+        listNumber += 1
+
         df.TextElement(synset.defTxt)
         for ex in synset.examples:
             df.LineBreakElement()
@@ -334,10 +376,8 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
                     else:
                         first = True
                     df.TextElement(syn, link="s+dictterm:%s:%s" % (dictCode.strip(), syn))
-        df.PopParentElement()
+        i += 1
 
-    df.LineBreakElement()
-    df.LineBreakElement()
     _buildNearbyWords(df, word, nearbyWords, dictCode)
     return df
 
