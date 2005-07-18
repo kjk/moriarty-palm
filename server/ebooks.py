@@ -279,7 +279,7 @@ def _partition_by_field(data, field_index, field_name):
             first_book = data[start_index]
             last_book = data[end_index - 1]
             if start_label is None:
-                start_label = _alnum_key(first_book[field_index])[0].title()
+                start_label = "#" # _alnum_key(first_book[field_index])[0].title()
             if end_index == len(data):
                 next_label = _alnum_key(last_book[field_index])[0].title()
             else:
