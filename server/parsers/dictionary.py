@@ -4,7 +4,7 @@
 # Purpose:
 #  dictionary module
 #
-import sys, os, os.path, string, bisect, cPickle, random
+import sys, os, os.path, string, bisect, cPickle, random, popen2
 from threading import Lock
 import multiUserSupport, parserUtils, arsutils
 from ResultType import *
@@ -77,6 +77,57 @@ g_fInitialized = False
 g_fDisabled = None
 
 WORDNET_CODE = 'wn'
+
+# based on http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/117221
+# probably won't work on windows
+class aspell:
+    def __init__(self):
+        self._f = popen2.Popen3("aspell -a")
+        self._f.fromchild.readline() #skip the credit line
+    def __call__(self, word):
+        self._f.tochild.write(word+'\n')
+        self._f.tochild.flush()
+        s = self._f.fromchild.readline()
+        self._f.fromchild.readline() #skip the blank line
+        if s[:8]=="word: ok":
+            return None
+        else:
+            return (s[17:-1]).split(', ')
+
+# an active session to aspell process
+g_aspell = None
+
+# True if we failed to create an active session to aspell process
+# (this might happen if e.g. there is no aspell executable like, for example,
+# on windows
+g_fAspellFailed = False
+
+# given a word, return a list of spell-checking suggestions. Returns None if
+# there are not suggestions or if we cannot talk to aspell process
+def getSpellcheckSuggestions(word):
+    global g_aspell, g_fAspellFailed
+    # TODO: probably needs to be wrapped in a Lock for multi-threaded safety
+    # since it uses just one aspell process to do its job
+    # also, not sure what will happen if the aspell process dies (if it can happen)
+    # maybe it also needs a try/catch block and re-create aspell object (to open
+    # connection to a new aspell process)
+    if g_fAspellFailed:
+        return None
+    if None == g_aspell:
+        try:
+            g_aspell = aspell()
+            print "opened connection to aspell"
+        except Exception, ex:
+            # assume we failed to open connection to aspell process
+            print "failed to open connection to aspell"
+            g_fAspellFailed = True
+            return None
+    suggestions = g_aspell(word)
+    # if list of suggestions consists of only one empty string, it means no
+    # suggestions
+    if 1 == len(suggestions) and 0 == len(suggestions[0]):
+        return None
+    return suggestions
 
 # load WordNet dictionary files. Return False if one of the files doesn't exist
 def loadPickledFiles():

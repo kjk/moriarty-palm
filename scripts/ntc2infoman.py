@@ -153,26 +153,12 @@ ipaMap = [
 
 def buildHashFromMap(map):
     hash = {}
-    for el in map:
-        hash[el[0]] = el[1]
+    for (key, value) in map:
+        hash[key] = value
     return hash
 
 g_accentHash = buildHashFromMap(accentMap)
 g_ipaHash = buildHashFromMap(ipaMap)
-
-def replaceAccentSlow(cNum):
-    global accentMap
-    for accEl in accentMap:
-        if cNum == accEl[0]:
-            return accEl[1]
-    return None
-
-def replaceIpaSlow(cNum):
-    global ipaMap
-    for ipaEl in ipaMap:
-        if cNum == ipaEl[0]:
-            return ipaEl[1]
-    return None
 
 def replaceAccent(cNum):
     global g_accentHash
@@ -214,7 +200,7 @@ def decodeDef(wordDef, wordLen, mysteryLen, defLen):
         # 0xd9 - I. Main item
         # 0xda - (a) sub-item
         # 0xd8 - (a) sub-item
-        # 0xd8 1. sub-item
+        # 0xdb 1. sub-item
         if cNum in [0xd9, 0xda, 0xd8, 0xdb]:
             if len(res) > 0:
                 res.append('\n')
@@ -236,8 +222,8 @@ def decodeDef(wordDef, wordLen, mysteryLen, defLen):
         if None != ipaStr:
             res.append(ipaStr)
             continue
+        # if couldn't map -> change it to its hex code
         res.append("0x%x" % cNum)
-        # TODO: if not mapped, change to %X
     fullDef = string.join(res, "")
     return (word, fullDef)
 

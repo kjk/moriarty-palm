@@ -8,14 +8,16 @@ write modules faster, we'll make a release after a week.
 
 Modules ready for the release:
 * recipes
-
-Modules that still need work/testing:
 * netflix - important
 * ebooks downloader - important
+* encyclopedia
+
+Modules that still need work/testing:
 * ebay - important but hard to write
 * flight schedule
 * lyrics
 * lists of bests
+* iNoah inside InfoMan
 
 Modules that need to be written:
 * tv schedules - important
@@ -23,7 +25,6 @@ Modules that need to be written:
 * sport scores/nhl - important
 * sport scores/footbal - important
 * word of the day
-* iNoah inside InfoMan
 
 Modules that would be nice to have but for one reason or another, might not happen:
 * imdb.com
