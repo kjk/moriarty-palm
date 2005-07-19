@@ -102,10 +102,12 @@ g_aspell = None
 # on windows
 g_fAspellFailed = False
 
+g_aspellLock = Lock()
+
 # given a word, return a list of spell-checking suggestions. Returns None if
 # there are not suggestions or if we cannot talk to aspell process
 def getSpellcheckSuggestions(word):
-    global g_aspell, g_fAspellFailed
+    global g_aspell, g_fAspellFailed, g_aspellLock
     # TODO: probably needs to be wrapped in a Lock for multi-threaded safety
     # since it uses just one aspell process to do its job
     # also, not sure what will happen if the aspell process dies (if it can happen)
@@ -113,16 +115,23 @@ def getSpellcheckSuggestions(word):
     # connection to a new aspell process)
     if g_fAspellFailed:
         return None
-    if None == g_aspell:
-        try:
-            g_aspell = aspell()
-            print "opened connection to aspell"
-        except Exception, ex:
-            # assume we failed to open connection to aspell process
-            print "failed to open connection to aspell"
-            g_fAspellFailed = True
-            return None
-    suggestions = g_aspell(word)
+
+    g_aspellLock.acquire()
+    try:
+        if None == g_aspell:
+            try:
+                g_aspell = aspell()
+                print "opened connection to aspell"
+            except Exception, ex:
+                # assume we failed to open connection to aspell process
+                print "failed to open connection to aspell"
+                g_fAspellFailed = True
+                g_aspellLock.release()
+                return None
+        suggestions = g_aspell(word)
+    finally:
+        g_aspellLock.release()
+
     # if list of suggestions consists of only one empty string, it means no
     # suggestions
     if 1 == len(suggestions) and 0 == len(suggestions[0]):
@@ -248,6 +257,20 @@ def test_getNearbyWords():
     assert ['maniac', 'this', 'zippy'] == _getNearbyWords(words, "zzzezo", 3)
     # print "test_getNearbyWords() is ok!\n"
 
+def _buildSuggestions(df, origWord, suggestions, dictCode):
+    if len(suggestions) > 0:
+        df.LineBreakElement()
+        df.LineBreakElement()
+        df.TextElement("Suggestions: ", style=styleNameBold)
+        first = True
+        for word in suggestions:
+            if first:
+                first = False
+            else:
+                df.TextElement(", ")
+            link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
+            df.TextElement(word, link=link)
+
 def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
     if len(nearbyWords) > 0:
         df.LineBreakElement()
@@ -264,12 +287,12 @@ def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
                 df.TextElement(word, link=link)
             else:
                 df.TextElement(word)
-        df.LineBreakElement()
 
-def buildDefinitionNotFound(word, nearbyWords, dictCode):
+def buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions):
     df = Definition()
     df.TextElement("Definition for word '%s' was not found." % word)
     _buildNearbyWords(df, word, nearbyWords, dictCode)
+    _buildSuggestions(df, word, suggestions, dictCode)
 
     return df
 
@@ -478,8 +501,9 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
     if dictCode != WORDNET_CODE:
         return (INVALID_REQUEST, None)
+    words = g_wnWords
 
-    nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
+    nearbyWords = _getNearbyWords(words, word, NEARBY_WORDS_TO_SHOW)
 
     wordDef = _getDef(word)
 
@@ -491,8 +515,16 @@ def getDictionaryDef(searchTerm, fDebug=False):
             print wordDef
 
     # TODO: ispell and lupy
+    # ispell
+    suggestionsUnfiltred = getSpellcheckSuggestions(word)
+    suggestions = []
+    if suggestionsUnfiltred != None:
+        for sug in suggestionsUnfiltred:
+            if sug in words:
+                suggestions.append(sug)
+    
     if None == wordDef:
-        df = buildDefinitionNotFound(word, nearbyWords, dictCode)
+        df = buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions)
     else:
         df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
 
