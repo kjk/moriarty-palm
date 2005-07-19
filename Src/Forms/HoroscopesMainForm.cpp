@@ -388,7 +388,8 @@ void HoroscopesMainForm::handleLookupFinished(const EventType& event)
     switch (data.result)
     {
         case lookupResultHoroscope:
-            currentHoroscopeIndex_ = downloadingHoroscopeIndex_;
+            if (horoscopeIndexNone != downloadingHoroscopeIndex_)
+                currentHoroscopeIndex_ = downloadingHoroscopeIndex_;
             prepareHoroscope();
             if (showHoroscope!=displayMode_)
                 setDisplayMode(showHoroscope);
