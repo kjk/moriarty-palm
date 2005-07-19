@@ -2168,18 +2168,16 @@ class InfoManProtocol(LineReceiver):
         self.appendPayloadField(Fields.outPediaArticle, payload)
 
     def handlePediaTerm(self, fieldName, fieldValue):
+        parts = string.split(fieldValue, ":", 1)
+        if 2 != len(parts):
+            return ServerErrors.invalidRequest
 
-        lang = "en"
-        title = fieldValue
-        pos = fieldValue.find(':')
-        if -1 != pos:
-            t = fieldValue[:pos]
-            if encyclopedia.languageName(t) is not None:
-                lang = t
-                title = fieldValue[pos + 1:]
+        (lang, title) = parts
+        if None == encyclopedia.languageName(lang):
+            return ServerErrors.invalidRequest
 
         dbInfo = iPediaServer.getCurrDbForLang(lang)
-        if dbInfo is None:
+        if None == dbInfo:
             return ServerErrors.invalidRequest
 
         db = iPediaServer.createArticlesConnection(dbInfo.dbName)
@@ -2240,7 +2238,6 @@ class InfoManProtocol(LineReceiver):
         self.appendField(Fields.outPediaDbDate, str(dbInfo.dbDate))
         return None
 
-
     def handlePediaSearch(self, fieldName, fieldValue):
         startOffset = 0
         l = fieldValue.split(";")
@@ -2248,14 +2245,13 @@ class InfoManProtocol(LineReceiver):
             fieldValue = l[0]
             startOffset = int(l[1])
 
-        lang = "en"
-        searchTerm = fieldValue
-        pos = fieldValue.find(':')
-        if -1 != pos:
-            t = fieldValue[:pos]
-            if encyclopedia.languageName(t) is not None:
-                lang = t
-                searchTerm = fieldValue[pos + 1:]
+        parts = string.split(fieldValue, ":", 1)
+        if 2 != len(parts):
+            return ServerErrors.invalidRequest
+
+        (lang, searchTerm) = parts
+        if None == encyclopedia.languageName(lang):
+            return ServerErrors.invalidRequest
 
         dbInfo = iPediaServer.getCurrDbForLang(lang)
         if dbInfo is None:

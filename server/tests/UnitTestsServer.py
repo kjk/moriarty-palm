@@ -524,14 +524,14 @@ class ServerTests(unittest.TestCase):
 # Third item is a list of expected fields in the result. Each item can be
 # either a field name or a list [fieldName, expectedFieldValue]
 g_allTests = [
-  [1,  [Fields.getUrl, "pediasearch:test"], [Fields.outPediaSearchResults]],
+  [1,  [Fields.getUrl, "pediasearch:test"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
   [2,  [Fields.getUrl, "pediasearch:de:test"], [Fields.outPediaSearchResults]],
   [3,  [Fields.getUrl, "pediasearch:xw:test"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
   [4,  [Fields.getUrl, "pediarandom:en"], [Fields.outPediaArticle, Fields.outPediaArticleTitle]],
   [5,  [Fields.getUrl, "pediarandom:xw"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
   [6,  [Fields.getUrl, "pedialangs:"], [Fields.outPediaLangs]],
   [7,  [Fields.getUrl, "pediaterm:en:test"], [Fields.outPediaArticleTitle, Fields.outPediaArticle]],
-  [8,  [Fields.getUrl, "pediaterm:test"], [Fields.outPediaArticleTitle, Fields.outPediaArticle]],
+  [8,  [Fields.getUrl, "pediaterm:test"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
   [9,  [Fields.getUrl, "pediaterm:xw:test"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
   [10, [Fields.getUrl, "pediaterm:en:zxcwfwefewcerfvergfwed4e321e2d"], [Fields.outNoResults]],
 
@@ -579,6 +579,9 @@ g_allTests = [
   [74, [Fields.getUrl, "s+dictterm:wn:we return definitions even for some garbage"], [Fields.outDictDef]],
 
   [75, [Fields.getUrl, "s+netflixbrowse:NewReleases?lnkctr=NavNewReleases;T"], [Fields.outNetflix]],
+
+  [76,  [Fields.getUrl, "pediarandom"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
+  [77,  [Fields.getUrl, "pediarandom:"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
 
  ]
 
