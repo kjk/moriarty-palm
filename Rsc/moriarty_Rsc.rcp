@@ -2204,7 +2204,6 @@ BEGIN
     MENUITEM "Random word"          ID randomWordMenuItem        "R"
     MENUITEM "Copy to clipboard"    ID copyMenuItem              "C"
     MENUITEM "Lookup clipboard"     ID lookupClipboardMenuItem   "L"
-    MENUITEM "Recent lookups"       ID recentLookupsMenuItem     "S"
 #ifdef DEBUG_STRESS
     MENUITEM "Stress"               ID stressMenuItem
 #endif
