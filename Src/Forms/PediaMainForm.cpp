@@ -1006,14 +1006,14 @@ void PediaMainForm::prepareAbout()
     elems.push_back(new LineBreakElement(1, 2));
     //elems.back()->setJustification(DefinitionElement::justifyLeft);
 
-    elems.push_back(new TextElement("Press \"Search\" button to "));
+    elems.push_back(new TextElement("You can "));
     elems.back()->setJustification(DefinitionElement::justifyLeft);
 
-    elems.push_back(text = new TextElement("find"));
+    elems.push_back(text = new TextElement("search"));
     elems.back()->setJustification(DefinitionElement::justifyLeft);
 
     text->setHyperlink(urlSchemaEncyclopedia urlSeparatorSchemaStr pediaUrlPartSearchDialog, hyperlinkUrl);
-    elems.push_back(new TextElement(" an article you want or use menu item \"Main/Random article\" to get a "));
+    elems.push_back(new TextElement(" for articles or get a "));
     elems.back()->setJustification(DefinitionElement::justifyLeft);
 
     elems.push_back(text = new TextElement("random"));

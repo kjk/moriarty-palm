@@ -174,6 +174,7 @@ MoriartyModule MoriartyApplication::modules_[MORIARTY_MODULES_COUNT] =
     DEF_M_M(moduleIdMovies, "Movie times", moviesSmallBitmap, frmInvalidObjectId, moviesMainForm, moviesDataRead, true, false)
     DEF_M_M(moduleIdAmazon, "Amazon", amazonSmallBitmap, frmInvalidObjectId, amazonMainForm, NULL, false, false)
     DEF_M_M(moduleIdBoxOffice, "Box office", boxofficeSmallBitmap, frmInvalidObjectId, boxOfficeMainForm, boxOfficeDataRead, true, true)
+    DEF_M_M(moduleIdNetflix, "Netflix", netflixSmallBitmap, frmInvalidObjectId, netflixMainForm, netflixDataRead, false, false)
     DEF_M_M(moduleIdCurrency, "Currency", currencySmallBitmap, frmInvalidObjectId, currencyMainForm, currencyDataRead, true, false)
     DEF_M_M(moduleIdStocks, "Stocks", stocksSmallBitmap, frmInvalidObjectId, stocksMainForm, stocksDataRead, true, false)
     DEF_M_M(moduleIdJokes, "Jokes", jokesSmallBitmap, frmInvalidObjectId, jokesMainForm, jokesDataRead, false, true)
@@ -191,7 +192,6 @@ MoriartyModule MoriartyApplication::modules_[MORIARTY_MODULES_COUNT] =
     // When changing module to appear in "shipping" version remember to change this in MoriartyPreferences.cpp as well
     // (Preferences::serialize) and MoriartyApplication::createForm() in this file
     
-    DEF_M_M(moduleIdNetflix, "Netflix", netflixSmallBitmap, frmInvalidObjectId, netflixMainForm, netflixDataRead, false, false)
     DEF_M_M(moduleIdPedia, "Encyclopedia", encyclopediaSmallBitmap, frmInvalidObjectId, pediaMainForm, NULL, true, false)
     DEF_M_M(moduleIdDict, "Dictionary", dictionarySmallBitmap, frmInvalidObjectId, dictMainForm, NULL, true, false)
     DEF_M_M(moduleIdLyrics, "Lyrics", lyricsSmallBitmap, frmInvalidObjectId, lyrics2MainForm, NULL, false, false)
@@ -454,7 +454,6 @@ Form* MoriartyApplication::createForm(UInt16 formId)
             form = new_nt AmazonMainForm(*this);
             break;
 
-#ifndef SHIPPING
         case netflixMainForm:
             form = new_nt NetflixMainForm(*this);
             break;
@@ -467,6 +466,7 @@ Form* MoriartyApplication::createForm(UInt16 formId)
             form = new_nt NetflixEnterLoginForm(*this);
             break;
 
+#ifndef SHIPPING
         case epicuriousMainForm:
             form=new_nt EpicuriousMainForm(*this);
             break;

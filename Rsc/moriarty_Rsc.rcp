@@ -916,13 +916,6 @@ END
 #ifdef SHIPPING
 MENU ID mainMenu
 BEGIN
-/*     PULLDOWN "Main"
-     BEGIN
-         MENUITEM "127.0.0.1" ID useLocalhostMenuItem
-         MENUITEM "198.0.0.1" ID useHost2MenuItem
-         MENUITEM "dict-pc.arslexis.com" ID useDictPcMenuItem
-     END */
-
      PULLDOWN "Options"
      BEGIN
         MENUITEM "Preferences..." ID preferencesMenuItem
@@ -936,13 +929,6 @@ END
 #else
 MENU ID mainMenu
 BEGIN
-/*     PULLDOWN "Main"
-     BEGIN
-         MENUITEM "127.0.0.1" ID useLocalhostMenuItem
-         MENUITEM "198.0.0.1" ID useHost2MenuItem
-         MENUITEM "dict-pc.arslexis.com" ID useDictPcMenuItem
-     END */
-
      PULLDOWN "Options"
      BEGIN
         MENUITEM "Change server..." ID changeServerMenuItem

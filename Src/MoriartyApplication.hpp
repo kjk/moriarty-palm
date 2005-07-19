@@ -68,7 +68,7 @@ struct MoriartyModule {
 static const UInt32 moduleNeverUpdated = UInt32(-1);
 
 #ifdef SHIPPING
-#define MORIARTY_MODULES_COUNT 12
+#define MORIARTY_MODULES_COUNT 13
 #else
 #define MORIARTY_MODULES_COUNT 25
 #endif

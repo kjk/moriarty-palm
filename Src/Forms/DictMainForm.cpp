@@ -170,11 +170,11 @@ void DictMainForm::showMain()
     if (prefs.wordsCountNotChecked != prefs.wordsCount)
     {
         elems.push_back(new LineBreakElement());
-        elems.push_back(text=new TextElement("("));
+        elems.push_back(text=new TextElement(" with "));
         char_t buffer[24];
         int len = formatNumber(prefs.wordsCount, buffer, sizeof(buffer));
         elems.push_back(text=new TextElement(buffer));
-        elems.push_back(text=new TextElement(" definitions)"));
+        elems.push_back(text=new TextElement(" definitions"));
     }
     elems.push_back(text=new TextElement("."));
 

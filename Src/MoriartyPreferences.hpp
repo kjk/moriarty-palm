@@ -23,6 +23,12 @@
 #define SERVER_ANDRZEJ_INTERNET "rabban.no-ip.org:4000"
 #endif
 
+enum {
+    mainFormViewList = 0,
+    mainFormViewTable = 1,
+    mainFormViewRenderer = 2
+};
+
 class MoriartyApplication;
 
 struct PediaPreferences: public Serializable

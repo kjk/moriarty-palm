@@ -67,7 +67,7 @@ Preferences::Preferences():
     fServerSelected(false),
 #endif
     fBoxOfficeCompactView(false),
-    mainFormView(0)
+    mainFormView(mainFormViewTable)
 {
 }
 
@@ -347,10 +347,10 @@ status_t Preferences::serialize(Serializer& serializer)
         (latestClientVersion,serialIdLatestClientVersion)
         (mainFormView, serialIdMainFromView)
         (amazonPreferences, serialIdAmazonPreferences)
+        (netflixPreferences, serialIdNetflixPreferences)
     
 #ifndef SHIPPING        
         (epicuriousPreferences , serialIdEpicuriousPreferences)
-        (netflixPreferences, serialIdNetflixPreferences)
         (listsOfBestsPreferences, serialIdListsOfBestsPreferences)
         (lyricsPreferences, serialIdLyricsPreferences)
         (pediaPrefs, serialIdPediaPreferences)

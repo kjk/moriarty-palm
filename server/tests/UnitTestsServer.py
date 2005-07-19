@@ -575,8 +575,10 @@ g_allTests = [
   [71, [Fields.getUrl, "eBook-search: conrad; *"], [Fields.outEBookSearchResults]],
 
   [72, [Fields.getUrl, "s+dictterm:wn:home"], [Fields.outDictDef]],
-  [73, [Fields.getUrl, "s+dictterm:wn:backstroke"], [Fiels.outDictDef]],
+  [73, [Fields.getUrl, "s+dictterm:wn:backstroke"], [Fields.outDictDef]],
   [74, [Fields.getUrl, "s+dictterm:wn:we return definitions even for some garbage"], [Fields.outDictDef]],
+
+  [75, [Fields.getUrl, "s+netflixbrowse:NewReleases?lnkctr=NavNewReleases;T"], [Fields.outNetflix]],
 
  ]
 

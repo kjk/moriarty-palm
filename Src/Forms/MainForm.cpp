@@ -323,12 +323,6 @@ static void ModuleNameDrawFunction(void* t, Int16 row, Int16 column, RectangleTy
 //    graphics.setBackgroundColor(color);
 }
 
-enum {
-    mainFormViewList = 0,
-    mainFormViewTable = 1,
-    mainFormViewRenderer = 2
-};
-
 MainForm::MainForm(MoriartyApplication& app):
     MoriartyForm(app, mainForm),
     smallModulesList_(*this),
