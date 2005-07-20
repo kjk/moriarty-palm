@@ -302,15 +302,17 @@ def parseBrowseLogged(htmlTxt):
                 # remove critics picks & award winners:
                 if name in ["New Releases", "Netflix Top 100"]:
                     outerList.append([url,name])
-    div = soup.first("div",{"class":"all-cat"})
-    if div:
+    divList = soup.fetch("div",{"class":"all-cat"})
+    if len(divList) > 0:
+        outerList.append(["","Genres:"])
+    for div in divList:
         aList = div.fetch("a", {"href":netflixPrefix+'%'})
         if len(aList) > 0:
-            outerList.append(["","Genres:"])
             for aItem in aList:
                 name = getAllTextFromTag(aItem)
                 url = aItem['href'][len(netflixPrefix):]
-                outerList.append([url,name])
+                if name != "(Add Favorite Genres)":
+                    outerList.append([url,name])
     div = soup.first("div",{"class":"categories"})
     if div:
         aList = div.fetch("a", {"href":netflixPrefix+'%'})
@@ -1391,7 +1393,11 @@ def parseSectionUsingTags(df, movieTags, titleTag, moreDiv, modulesInfo):
         df.LineBreakElement(1,2)
     return resultsCount
 
-def parseNewReleases(htmlTxt, modulesInfo):
+def parseNewReleasesOld(htmlTxt, modulesInfo):
+    fo = open("test1.html","wt")
+    fo.write(htmlTxt)
+    fo.close()
+
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
     # test cookie...
@@ -1442,7 +1448,59 @@ def parseNewReleases(htmlTxt, modulesInfo):
     buttons = [["H",pageTitle]]
     return (NETFLIX_BROWSE_LIST, universalDataFormatWithDefinition(df, buttons))
 
+def parseNewReleases(htmlTxt, modulesInfo):
+    fo = open("test1.html","wt")
+    fo.write(htmlTxt)
+    fo.close()
+
+    soup = BeautifulSoup()
+    soup.feed(htmlTxt)
+    # test cookie...
+    if not soup.first("a", {"href":"http://www.netflix.com/YourAccount"}):
+        return NETFLIX_REQUEST_PASSWORD, None
+    # get data
+    pageTitle = "New Releases"
+    # build definition
+    df = Definition()
+    df.TextElement("Home",link='netflixform:main')
+    df.TextElement(" / ")
+    df.TextElement("Browse",link='s+netflixbrowse:;T')
+    df.TextElement(" / "+pageTitle)
+    df.LineBreakElement(1,2)
+    # get sections...
+    resultsCount = 0
+    divList = soup.fetch("div", {"id":"boxshotimg"})
+    divList += soup.fetch("div", {"class":"boxshot"})    
+    for div in divList:
+        (title, movieUrl, addUrl, rating) = getMovieMinimum(div)
+        df.BulletElement(False)
+        gtxt = df.TextElement(title)
+        titleCrossModuleLinkLogged(gtxt, title, addUrl, movieUrl, modulesInfo)
+        addToDefinitionYearMpaaRating(df, "", "", rating)
+        df.PopParentElement()
+        resultsCount += 1
+
+    categories = soup.first("div", {"class":"categories"})
+    if categories:
+        aList = categories.fetch("a", {"href":netflixPrefix+'%'})
+        if len(aList) > 0:
+            for aItem in aList:
+                name = getAllTextFromTag(aItem)
+                url = aItem['href'][len(netflixPrefix):]
+                df.LineBreakElement(3,2)
+                df.TextElement(name, style=styleNameBold, link='s+netflixbrowse:'+url+';T')
+
+    if 0 == resultsCount:
+        return UNKNOWN_FORMAT, None
+    # buttons
+    buttons = [["H",pageTitle]]
+    return (NETFLIX_BROWSE_LIST, universalDataFormatWithDefinition(df, buttons))
+
 def parseAllNewReleases(htmlTxt, modulesInfo):
+    fo = open("test.html","wt")
+    fo.write(htmlTxt)
+    fo.close()
+
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
     # test cookie...
