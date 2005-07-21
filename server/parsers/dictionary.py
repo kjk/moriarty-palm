@@ -77,6 +77,7 @@ g_fInitialized = False
 g_fDisabled = None
 
 WORDNET_CODE = 'wn'
+THESAURUS_CODE = 'th'
 
 # based on http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/117221
 # probably won't work on windows
