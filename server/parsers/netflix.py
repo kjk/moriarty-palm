@@ -1827,7 +1827,7 @@ def saveCookieJar(userId):
 
 def getNetflixMainPage(userId, dbgLevel=0):
     #TODO:
-    print "\n######## getNetflixMainPage()"
+    #print "\n######## getNetflixMainPage()"
 
     url = "http://www.netflix.com/Login?hnjr=3";
 
@@ -1871,7 +1871,7 @@ def getNetflixMainPage(userId, dbgLevel=0):
 def netflixDoLogin(userId, userName, userPwd, dbgLevel=0):
     #TODO:
 
-    print "\n######## netflixDoLogin()"
+    #print "\n######## netflixDoLogin()"
 
     loginUrl = "https://www.netflix.com/Login"
 
