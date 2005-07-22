@@ -1449,9 +1449,9 @@ def parseNewReleasesOld(htmlTxt, modulesInfo):
     return (NETFLIX_BROWSE_LIST, universalDataFormatWithDefinition(df, buttons))
 
 def parseNewReleases(htmlTxt, modulesInfo):
-    fo = open("test1.html","wt")
-    fo.write(htmlTxt)
-    fo.close()
+    #fo = open("test1.html","wt")
+    #fo.write(htmlTxt)
+    #fo.close()
 
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
@@ -1497,9 +1497,9 @@ def parseNewReleases(htmlTxt, modulesInfo):
     return (NETFLIX_BROWSE_LIST, universalDataFormatWithDefinition(df, buttons))
 
 def parseAllNewReleases(htmlTxt, modulesInfo):
-    fo = open("test.html","wt")
-    fo.write(htmlTxt)
-    fo.close()
+    #fo = open("test.html","wt")
+    #fo.write(htmlTxt)
+    #fo.close()
 
     soup = BeautifulSoup()
     soup.feed(htmlTxt)

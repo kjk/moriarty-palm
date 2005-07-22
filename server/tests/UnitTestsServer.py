@@ -583,6 +583,7 @@ g_allTests = [
   [76,  [Fields.getUrl, "pediarandom"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
   [77,  [Fields.getUrl, "pediarandom:"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
 
+  [78,  [Fields.get411ReversePhone , "216-479-2500"], [Fields.out411ReversePhoneResult]],
  ]
 
 def checkTestNumbersUnique():
