@@ -1,9 +1,6 @@
-from Retrieve import retrieveHttpResponseWithRedirectionHandleException
-from Retrieve import retrieveHttpResponseHandleExceptionRetry, getHttp
-
 from parserUtils import *
 from ResultType import *
-from arsutils import log, SEV_LOW, SEV_MED, SEV_HI, SEV_EXC
+from arsutils import log, SEV_LOW, SEV_MED, SEV_HI, SEV_EXC, exceptionAsStr
 from parserErrorLogger import logParsingFailure
 import urllib
 import urllib2
@@ -11,18 +8,12 @@ import m411
 import m411_by411
 from Retrieve import getHttp
 
-## to fool 411.com
-def retrieve411ComResponse(url):
-    headers = {"User-Agent":"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)"}
-    htmlText = retrieveHttpResponseWithRedirectionHandleException(url, headers)
-    return htmlText
-
 ## Person Search
 
 def _retrieve_yp_person(firstName,lastName,cityOrZip,state):
     url = "http://www.yp.com/white-pages-results.php?f=%s&firstname_begins_with=1&l=%s&name_begins_with=1&c=%s&s=%s&client=1482&ver=1.4&type=r"
     url = url % (urllib.quote(firstName),urllib.quote(lastName),urllib.quote(cityOrZip),urllib.quote(state))
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.personSearch(htmlText)
@@ -33,7 +24,7 @@ def _retrieve_yp_person(firstName,lastName,cityOrZip,state):
 def _retrieve_411_person(firstName,lastName,cityOrZip,state):
     url = "http://www.411.com/search/Find_Person?firstname_begins_with=1&firstname=%s&name_begins_with=1&name=%s&city_zip=%s&state_id=%s"
     url = url % (urllib.quote(firstName),urllib.quote(lastName),urllib.quote(cityOrZip),urllib.quote(state))
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.personSearch(htmlText)
@@ -54,7 +45,8 @@ def retrievePerson(firstName,lastName,cityOrZip,state):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## international Code
@@ -62,7 +54,7 @@ def retrievePerson(firstName,lastName,cityOrZip,state):
 def _retrieve_yp_international(code):
     url = "http://yp.whitepages.com/search/Find_Intl_Code?country_id=%s"
     url = url % code
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.internationalCodeSearch(htmlText)
@@ -73,7 +65,7 @@ def _retrieve_yp_international(code):
 def _retrieve_411_international(code):
     url = "http://www.411.com/search/Find_Intl_Code?country_id=%s"
     url = url % code
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.internationalCodeSearch(htmlText)
@@ -94,7 +86,8 @@ def retrieveInternational(code):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## reverse area Code
@@ -102,7 +95,7 @@ def retrieveInternational(code):
 def _retrieve_yp_reverseAreaCode(code):
     url = "http://yp.whitepages.com/log_feature/sort/search/Reverse_Areacode?npa=%s&sort=alpha"
     url = url % code
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.reverseAreaCodeLookup(htmlText)
@@ -113,7 +106,7 @@ def _retrieve_yp_reverseAreaCode(code):
 def _retrieve_411_reverseAreaCode(code):
     url = "http://www.411.com/log_feature/sort/search/Reverse_Areacode?npa=%s&sort=alpha"
     url = url % code
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.reverseAreaCodeLookup(htmlText)
@@ -134,7 +127,8 @@ def retrieveReverseAreaCode(code):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## reverse Zip Code
@@ -142,7 +136,7 @@ def retrieveReverseAreaCode(code):
 def _retrieve_yp_reverseZipCode(code):
     url = "http://yp.whitepages.com/search/Reverse_Zip?zip=%s"
     url = url % code
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.reverseZIPCodeLookup(htmlText)
@@ -153,7 +147,7 @@ def _retrieve_yp_reverseZipCode(code):
 def _retrieve_411_reverseZipCode(code):
     url = "http://www.411.com/search/Reverse_Zip?zip=%s"
     url = url % code
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.reverseZIPCodeLookup(htmlText)
@@ -174,7 +168,8 @@ def retrieveReverseZipCode(code):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## Zip Code by city
@@ -182,7 +177,7 @@ def retrieveReverseZipCode(code):
 def _retrieve_yp_zipCodeByCity(city, state):
     url = "http://yp.whitepages.com/search/Find_Zip?city_zip=%s&state_id=%s"
     url = url % (urllib.quote(city), urllib.quote(state))
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.ZIPCodeByCity(htmlText)
@@ -193,7 +188,7 @@ def _retrieve_yp_zipCodeByCity(city, state):
 def _retrieve_411_zipCodeByCity(city, state):
     url = "http://www.411.com/search/Find_Zip?city_zip=%s&state_id=%s"
     url = url % (urllib.quote(city), urllib.quote(state))
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.ZIPCodeByCity(htmlText)
@@ -214,7 +209,8 @@ def retrieveZipCodeByCity(city, state):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## Area Code by city
@@ -222,7 +218,7 @@ def retrieveZipCodeByCity(city, state):
 def _retrieve_yp_areaCodeByCity(city, state):
     url = "http://yp.whitepages.com/search/Find_Areacode?city_zip=%s&state_id=%s"
     url = url % (urllib.quote(city), urllib.quote(state))
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.areaCodeByCity(htmlText)
@@ -233,7 +229,7 @@ def _retrieve_yp_areaCodeByCity(city, state):
 def _retrieve_411_areaCodeByCity(city, state):
     url = "http://www.411.com/search/Find_Areacode?city=%s&state_id=%s"
     url = url % (urllib.quote(city), urllib.quote(state))
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.areaCodeByCity(htmlText)
@@ -254,7 +250,8 @@ def retrieveAreaCodeByCity(city, state):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## reverse Phone
@@ -262,7 +259,7 @@ def retrieveAreaCodeByCity(city, state):
 def _retrieve_yp_reversePhone(xxx,yyy,zzzz):
     url = "http://yp.com/wp-p-results.php?npa=%s&np3=%s&np4=%s&client=1482&ver=1.2&type=p&phone=%s%s"
     url = url % (xxx,yyy,zzzz,yyy,zzzz)
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.reversePhoneLookup(htmlText)
@@ -273,7 +270,7 @@ def _retrieve_yp_reversePhone(xxx,yyy,zzzz):
 def _retrieve_411_reversePhone(xxx,yyy,zzzz):
     url = "http://www.411.com/search/Reverse_Phone?phone=%s-%s-%s"
     url = url % (xxx,yyy,zzzz)
-    htmlText = retrieve411ComResponse(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.reversePhoneLookup(htmlText)
@@ -306,7 +303,8 @@ def retrieveReversePhone(xxx,yyy,zzzz):
             if RETRIEVE_FAILED != res and UNKNOWN_FORMAT != res:
                 return res, data
         except Exception, ex:
-            log(SEV_EXC, "failed to parse data\n")
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## Business Search
@@ -330,7 +328,7 @@ def _retrieve_yp_business(name,cityOrZip,state,surrounding,categoryOrName):
         else:
             url = ypServerUrlBusinessSearchCategory % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
 
-    htmlText = retrieveHttpResponseHandleExceptionRetry(url)
+    htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411.businessSearch(htmlText)
@@ -357,7 +355,7 @@ def _retrieve_dex_business(name,cityOrZip,state,surrounding,categoryOrName):
     elif categoryOrName == "Category":
         url = dexServerUrlBusinessSearchCategory % (sur, urllib.quote(name), urllib.quote(cityOrZip),urllib.quote(state))
 
-    htmlText = retrieveHttpResponseWithRedirectionHandleException(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.businessSearchDex(htmlText)
@@ -388,7 +386,7 @@ def _retrieve_switchboard_business(name,cityOrZip,state,surrounding,categoryOrNa
         else:
             url = switchboardServerUrlBusinessSearchCategory % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
 
-    htmlText = retrieveHttpResponseWithRedirectionHandleException(url)
+    htmlText = getHttp(url)
     if htmlText is None:
         return (RETRIEVE_FAILED, None)
     res, data = m411_by411.businessSearchSwitchboard(htmlText)
@@ -410,7 +408,8 @@ def retrieveBusiness(name,cityOrZip,state,surrounding,categoryOrName):
             if res not in [RETRIEVE_FAILED, UNKNOWN_FORMAT]:
                 return res, data
         except Exception, ex:
-            pass
+            txt = exceptionAsStr(ex)
+            log(SEV_EXC, "failed to parse data\nreason:%s\n" % (txt))
     return (RETRIEVE_FAILED, None)
 
 ## by url
