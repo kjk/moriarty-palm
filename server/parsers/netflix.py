@@ -790,51 +790,47 @@ def parseItemLogged(htmlTxt, modulesInfo):
     trList = soup.fetch("tr", {"valign":"middle"})
     reviews = []
     for tr in trList:
-        script = tr.first("script")
-        italics = tr.first("i")
-        if script and italics:
-            parts = str(script).split(",")
-            if len(parts) > 3:
+        img = tr.first("img", {"alt":"%"})
+        if img:
+            note = img['alt'].split(".")[0]
+            italics = tr.first("i")
+            if italics:
                 reviewer = getAllTextFromTag(italics)
-                note = parts[2].replace(".0","")
-                next = getLastElementFromTag(tr).next
-                end = 0
-                while 0 == end:
-                    if not next:
-                        end = 2
-                    elif isinstance(next,Tag):
-                        if next.name == "i":
-                            end = 1
-                        else:
-                            end = 2
-                    else:
-                        next = next.next
-                if 1 == end:
-                    #next = <i>
-                    bItems = next.fetch("b")
-                    if len(bItems) == 2:
-                        helped = getAllTextFromTag(bItems[0])
-                        allPeople = getAllTextFromTag(bItems[1])
-                        next = getLastElementFromTag(next).next
-                else:
+                next = getLastElementFromTag(tr)
+                while next and not isinstance(next, Tag):
+                    next = next.next
+                if next:
                     helped = ""
                     allPeople = ""
-                    next = getLastElementFromTag(tr).next
-                end = 0
-                reviewText = ""
-                while 0 == end:
-                    if not next:
-                        end = 2
-                    elif not isinstance(next,Tag):
-                        if len(str(next).strip()) > 5:
-                            end = 1
-                            reviewText = getAllTextFromTag(next)
+                    if next.name == "i":
+                        bItems = next.fetch("b")
+                        if len(bItems) == 2:
+                            helped = getAllTextFromTag(bItems[0])
+                            allPeople = getAllTextFromTag(bItems[1])
+                            next = getLastElementFromTag(next).next
                         else:
-                            next = next.next
+                            next = getLastElementFromTag(tr).next
                     else:
-                        next = next.next
-                if end == 1:
-                    reviews.append([reviewer, note, helped, allPeople, reviewText])
+                        next = getLastElementFromTag(tr).next
+
+                    reviewText = ""
+                    end = 0
+                    while 0 == end:
+                        if next:
+                            if isinstance(next, Tag):
+                                next = next.next
+                            else:
+                                reviewText = getAllTextFromTag(next)
+                                if len(reviewText) > 5:
+                                    end = 1
+                                else:
+                                    next = next.next
+                        else:
+                            end = 2
+     
+                    if end == 1:
+                        reviews.append([reviewer, note, helped, allPeople, reviewText])
+                        
     if len(reviews) > 0:
         df.LineBreakElement()
         df.TextElement("Reviews by:", style='bold')
