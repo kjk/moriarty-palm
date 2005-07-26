@@ -11,6 +11,14 @@ from ResultType import *
 from parserUtils import universalDataFormatWithDefinition, universalDataFormat
 from definitionBuilder import *
 
+
+try:
+    from lupy.indexer import Index as LupyIndex
+    import lupy
+except:
+    print "requires Lupy module from http://www.divmod.org/Home/Projects/Lupy/"
+    raise
+
 # Format of dictionary data:
 # * we have a file wn-dict.txt which contains definitions for all words. Each
 #   definition is described by an (offset,length) within wn-dict.txt file.
@@ -52,6 +60,10 @@ WN_WORDS_FILE = "wn-words.pic"
 g_wnDictPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_DICT_FILE)
 g_wnIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_INDEX_FILE)
 g_wnWordsPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_WORDS_FILE)
+g_wnLupyIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-index-lupy")
+g_wnLupyIndexedCount = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-index-lupy-count.txt")
+
+g_fWnLupyIndexExamples = False
 
 # how many nearby words we show
 NEARBY_WORDS_TO_SHOW = 8
@@ -78,6 +90,103 @@ g_fDisabled = None
 
 WORDNET_CODE = 'wn'
 THESAURUS_CODE = 'th'
+
+# Lupy index.
+# main method is g_lupyIndex.getWords(word, dictCode)
+# init must call g_lupyIndex.initialize()
+class DictLupyIndex:
+    def __init__(self):
+        self._lock = Lock()
+        self._initializated = False
+        self._index = {}
+        self._failedToInit = False
+
+#	index.close() ??
+
+    def initialize(self):
+        print "init lupy index from dict module"
+        self._failedToInit = True
+        # wordNet
+        try:
+            self._index[WORDNET_CODE] = lupy.indexer.Index(g_wnLupyIndexPath)
+        except:
+            try:
+                self._index[WORDNET_CODE] = lupy.indexer.Index(g_wnLupyIndexPath, True)
+            except:
+                print " failed to init - lupy missing?"
+                self._failedToInit = True
+                return
+        i = 0
+        try:
+            fo = open(g_wnLupyIndexedCount, "rt")
+            i = int(fo.read())
+            fo.close()
+        except:
+            pass
+
+        end = len(g_wnWords)
+        if i < end:
+            while i < end:
+                word = g_wnWords[i]
+                if i % 1000 == 0:
+                    print " wn - %d words indexed" % i
+                synsets = _parseDef(_getDef(word))
+                text = ""
+                for syn in synsets:
+                    text += syn.defTxt
+                    if g_fWnLupyIndexExamples:
+                        text += " ; " + string.join(syn.examples, " ")
+                    text += " ; "
+                self._index[WORDNET_CODE].index(text=text, __title=word)
+                if i % 100 == 0:
+                    self._index[WORDNET_CODE].flush()
+                    fo = open(g_wnLupyIndexedCount, "wt")
+                    fo.write(str(i))
+                    fo.close()
+                i += 1
+            print " optimize"
+            self._index[WORDNET_CODE].flush()
+            fo = open(g_wnLupyIndexedCount, "wt")
+            fo.write(str(end))
+            fo.close()
+
+            self._index[WORDNET_CODE].optimize()
+        print " lupy index for dict module initialized"
+        self._initializated = True
+        self._failedToInit = False
+
+    def getWords(self, word, dictCode):
+        if self._failedToInit:
+            return []        
+        if not self._initializated:
+            self.initialize()            
+        results = []        
+        hits = []
+        try:
+            if self._index[dictCode]:
+                pass
+        except:
+            print "Index for dict code:%s is not available!" % dictCode
+            return []
+        
+        self._lock.acquire()
+        try:
+            hits = self._index[dictCode].find(word)
+        finally:
+            self._lock.release()
+            
+	for h in hits:
+            results.append(h.get('title'))
+
+        return results
+
+g_lupyIndex = DictLupyIndex()
+
+def initLupyIndex(inThread = True):
+    if inThread:
+        pass
+    else:
+        g_lupyIndex.initialize()
 
 # based on http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/117221
 # probably won't work on windows
@@ -117,6 +226,7 @@ def getSpellcheckSuggestions(word):
     if g_fAspellFailed:
         return None
 
+    suggestions = []
     g_aspellLock.acquire()
     try:
         if None == g_aspell:
@@ -127,12 +237,13 @@ def getSpellcheckSuggestions(word):
                 # assume we failed to open connection to aspell process
                 print "failed to open connection to aspell"
                 g_fAspellFailed = True
-                g_aspellLock.release()
-                return None
-        suggestions = g_aspell(word)
+        if not g_fAspellFailed:
+            suggestions = g_aspell(word)
     finally:
         g_aspellLock.release()
 
+    if 0 == len(suggestions):
+        return None
     # if list of suggestions consists of only one empty string, it means no
     # suggestions
     if 1 == len(suggestions) and 0 == len(suggestions[0]):
@@ -272,6 +383,25 @@ def _buildSuggestions(df, origWord, suggestions, dictCode):
             link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
             df.TextElement(word, link=link)
 
+def _buildLupyResults(df, origWord, suggestions, dictCode):
+    if len(suggestions) > 0:
+        df.LineBreakElement()
+        df.LineBreakElement()
+        df.TextElement("Definitions that contains: %s" % origWord, style=styleNameBold)
+        df.LineBreakElement()
+        first = True
+        if len(suggestions) > 20:
+            print "Found: %d words with this" % len(suggestions)
+            suggestions = suggestions[:20]
+
+        for word in suggestions:
+            if first:
+                first = False
+            else:
+                df.TextElement(", ")
+            link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
+            df.TextElement(word, link=link)
+
 def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
     if len(nearbyWords) > 0:
         df.LineBreakElement()
@@ -289,11 +419,12 @@ def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
             else:
                 df.TextElement(word)
 
-def buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions):
+def buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions, lupyResults):
     df = Definition()
     df.TextElement("Definition for word '%s' was not found." % word)
     _buildNearbyWords(df, word, nearbyWords, dictCode)
     _buildSuggestions(df, word, suggestions, dictCode)
+    _buildLupyResults(df, word, lupyResults, dictCode)
 
     return df
 
@@ -515,17 +646,20 @@ def getDictionaryDef(searchTerm, fDebug=False):
         else:
             print wordDef
 
-    # TODO: ispell and lupy
-    # ispell
-    suggestionsUnfiltred = getSpellcheckSuggestions(word)
-    suggestions = []
-    if suggestionsUnfiltred != None:
-        for sug in suggestionsUnfiltred:
-            if sug in words:
-                suggestions.append(sug)
-    
     if None == wordDef:
-        df = buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions)
+        # lupy
+        print "lupy start searching"
+        lupyResults = g_lupyIndex.getWords(word, dictCode)
+        print "lupy end searching"
+        # ispell
+        suggestionsUnfiltred = getSpellcheckSuggestions(word)
+        suggestions = []
+        if suggestionsUnfiltred != None:
+            for sug in suggestionsUnfiltred:
+                if sug in words:
+                    suggestions.append(sug)
+
+        df = buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions, lupyResults)
     else:
         df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
 
@@ -588,6 +722,7 @@ def usage():
     print "dictionary.py searchTerm"
 
 def main():
+    global g_lupyIndex
     # Import Psyco if available
     try:
         import psyco
@@ -600,6 +735,13 @@ def main():
         test_parseDefAll()
         test_getNearbyWords()
         pos = sys.argv.index("-test")
+        del sys.argv[pos]
+
+    if "-lupy" in sys.argv:
+        initDictionary()
+        initLupyIndex(inThread = False)
+
+        pos = sys.argv.index("-lupy")
         del sys.argv[pos]
 
     if 2 != len(sys.argv):

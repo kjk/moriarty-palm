@@ -186,7 +186,10 @@ class Element:
         self.addParam(Param(paramListNumber,number))
 
     def setHyperlink(self, res):
-        self.addParam(Param(paramHyperlink, res))
+        try:
+            self.addParam(Param(paramHyperlink, res.encode("latin-1", "ignore")))
+        except:
+            self.addParam(Param(paramHyperlink, res))
 
     def setJustification(self, justification):
         global g_justSymbols
@@ -199,6 +202,10 @@ class Element:
     def setText(self, text, removeEntities=True):
         if removeEntities:
             text = convertEntities(text)
+        try:
+            text = text.encode("latin-1", "ignore")
+        except:
+            pass
         self.addParam(Param(paramTextValue, text))
 
     def setStyle(self, styleIn):
