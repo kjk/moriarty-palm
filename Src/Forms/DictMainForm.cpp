@@ -283,25 +283,39 @@ bool DictMainForm::handleMenuCommand(UInt16 itemId)
             return true;
 
         case copyMenuItem:
-            assert(false); // not implemented yet
             textRenderer_.copySelectionOrAll();
             handled = true;
             break;
 
-       case historyMenuItem:
-           historyButton_.hit();
-           return true;
+        case historyMenuItem:
+            historyButton_.hit();
+            return true;
 
-       case forwardMenuItem:
-           historySupport_.moveNext();
-           return true;
+        case forwardMenuItem:
+            historySupport_.moveNext();
+            return true;
+        
+        case backMenuItem:
+            historySupport_.movePrevious();
+            return true;
 
-       case backMenuItem:
-           historySupport_.movePrevious();
-           return true;
-
-       case lookupClipboardMenuItem:
-            assert(false); // not implemented yet
+        case lookupClipboardMenuItem:
+            { 
+                UInt16 length = 0;
+                
+                MemHandle handle = ClipboardGetItem(clipboardText, &length);
+                if (handle)
+                {
+                    const char_t* text = (const char_t*) MemHandleLock(handle);
+                    if (NULL != text)
+                    {
+                        String textS = String(text, length);
+                        MemHandleUnlock(handle); 
+                        replaceCharInString((char_t*) textS.data(), _T('\n'), _T(' '));
+                        search(textS.data());
+                    }
+                }
+            }                   
             handled = true;
             break;
 
