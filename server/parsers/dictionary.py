@@ -10,7 +10,8 @@ import multiUserSupport, parserUtils, arsutils
 from ResultType import *
 from parserUtils import universalDataFormatWithDefinition, universalDataFormat
 from definitionBuilder import *
-
+from arsutils import log, SEV_LOW, SEV_MED, SEV_HI, SEV_EXC, exceptionAsStr
+import threading
 
 try:
     from lupy.indexer import Index as LupyIndex
@@ -103,6 +104,16 @@ class DictLupyIndex:
 
 #	index.close() ??
 
+    def fInitialized(self):
+        return self._initializated and not self._failedToInit
+
+    def fNeedInitialization(self):
+        if self._initializated:
+            return False
+        if self._failedToInit:
+            return False
+        return True
+
     def initialize(self):
         print "init lupy index from dict module"
         self._failedToInit = True
@@ -156,10 +167,12 @@ class DictLupyIndex:
         self._failedToInit = False
 
     def getWords(self, word, dictCode):
-        if self._failedToInit:
-            return []        
-        if not self._initializated:
-            self.initialize()            
+        if self.fNeedInitialization():
+            initLupyIndex(inThread = True)
+            return []
+        if not self.fInitialized():
+            print "Index not ready."
+            return []
         results = []        
         hits = []
         try:
@@ -182,9 +195,25 @@ class DictLupyIndex:
 
 g_lupyIndex = DictLupyIndex()
 
+class RunLupyThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def run(self):
+        global g_lupyIndex
+        print "Thread start (dict lupy index)"
+        try:
+            g_lupyIndex.initialize()
+        except Exception, ex:
+            txt = arsutils.exceptionAsStr(ex)
+            log(SEV_EXC, "exception in lupy index dictionary\n%s\n" % (txt))
+        print "Thread stop (dict lupy index)"
+
 def initLupyIndex(inThread = True):
+    global g_lupyIndex
     if inThread:
-        pass
+        th = RunLupyThread()
+        th.start() 
     else:
         g_lupyIndex.initialize()
 
@@ -373,7 +402,7 @@ def _buildSuggestions(df, origWord, suggestions, dictCode):
     if len(suggestions) > 0:
         df.LineBreakElement()
         df.LineBreakElement()
-        df.TextElement("Suggestions: ", style=styleNameBold)
+        df.TextElement("Did you mean: ", style=styleNameBold)
         first = True
         for word in suggestions:
             if first:
@@ -421,9 +450,10 @@ def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
 
 def buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions, lupyResults):
     df = Definition()
-    df.TextElement("Definition for word '%s' was not found." % word)
-    _buildNearbyWords(df, word, nearbyWords, dictCode)
+    df.TextElement("Home", link="dictform:main") 
+    df.TextElement(" / Definition for word '%s' was not found." % word)
     _buildSuggestions(df, word, suggestions, dictCode)
+    _buildNearbyWords(df, word, nearbyWords, dictCode)
     _buildLupyResults(df, word, lupyResults, dictCode)
 
     return df
