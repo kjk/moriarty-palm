@@ -165,11 +165,10 @@ void DictMainForm::showMain()
 
     elems.push_back(text=new TextElement("You are using "));
     elems.push_back(text=new TextElement(prefs.dictionaryName));
-    elems.push_back(text=new TextElement(" dictionary"));
     
     if (prefs.wordsCountNotChecked != prefs.wordsCount)
     {
-        elems.push_back(new LineBreakElement());
+        //elems.push_back(new LineBreakElement());
         elems.push_back(text=new TextElement(" with "));
         char_t buffer[24];
         int len = formatNumber(prefs.wordsCount, buffer, sizeof(buffer));

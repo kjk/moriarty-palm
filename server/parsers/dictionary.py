@@ -89,8 +89,37 @@ g_fInitialized = False
 # g_fDisabled is set in initDictionar() it's True if there are no dictionary files
 g_fDisabled = None
 
+# dicts code
 WORDNET_CODE = 'wn'
 THESAURUS_CODE = 'th'
+# flags (present - disable this)
+FLAG_EXAMPLES = 'e'
+FLAG_SYNONYMS = 's'
+FLAG_NEARBY_WORDS = 'n'
+FLAG_COMPAQ = 'o'
+
+g_availableDicts = {
+    "wn:" : ["wn:", "an English dictionary", "WordNet full", WORDNET_CODE],
+    "wn:e" : ["wn:e", "an English dictionary (without examples)", "WordNet without examples", WORDNET_CODE],
+    "wn:s" : ["wn:s", "an English dictionary (without synonyms)", "WordNet without synonyms", WORDNET_CODE],
+    "wn:n" : ["wn:n", "an English dictionary (without nearby words)", "WordNet without nearby words", WORDNET_CODE],
+    "wn:esn" : ["wn:esn", "an English dictionary (mini)", "WordNet mini", WORDNET_CODE],
+    "wn:oesn" : ["wn:oesn", "an English dictionary (mini compaq)", "WordNet mini compaq", WORDNET_CODE],
+    
+    "th:" : ["th:", "test Thesaurus dictionary", "test Thesaurus full", THESAURUS_CODE],
+}
+
+def flagsHaveFlag(flags, flag):
+    return -1 != flags.find(flag)
+
+def getWordsCount(dictCode):
+    initDictionary()
+    dictCode = dictCode.split(":")[0]
+    if dictCode == WORDNET_CODE:
+        return len(g_wnWords)
+    if dictCode == THESAURUS_CODE:
+        return 0
+    return 0
 
 # Lupy index.
 # main method is g_lupyIndex.getWords(word, dictCode)
@@ -398,7 +427,7 @@ def test_getNearbyWords():
     assert ['maniac', 'this', 'zippy'] == _getNearbyWords(words, "zzzezo", 3)
     # print "test_getNearbyWords() is ok!\n"
 
-def _buildSuggestions(df, origWord, suggestions, dictCode):
+def _buildSuggestions(df, origWord, suggestions, dictCode, flags):
     if len(suggestions) > 0:
         df.LineBreakElement()
         df.LineBreakElement()
@@ -409,10 +438,10 @@ def _buildSuggestions(df, origWord, suggestions, dictCode):
                 first = False
             else:
                 df.TextElement(", ")
-            link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
+            link = "s+dictterm:%s:%s:%s" % (dictCode, flags, word)
             df.TextElement(word, link=link)
 
-def _buildLupyResults(df, origWord, suggestions, dictCode):
+def _buildLupyResults(df, origWord, suggestions, dictCode, flags):
     if len(suggestions) > 0:
         df.LineBreakElement()
         df.LineBreakElement()
@@ -428,10 +457,10 @@ def _buildLupyResults(df, origWord, suggestions, dictCode):
                 first = False
             else:
                 df.TextElement(", ")
-            link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
+            link = "s+dictterm:%s:%s:%s" % (dictCode, flags, word)
             df.TextElement(word, link=link)
 
-def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
+def _buildNearbyWords(df, origWord, nearbyWords, dictCode, flags):
     if len(nearbyWords) > 0:
         df.LineBreakElement()
         df.LineBreakElement()
@@ -443,18 +472,18 @@ def _buildNearbyWords(df, origWord, nearbyWords, dictCode):
             else:
                 df.TextElement(", ")
             if origWord != word:
-                link = "s+dictterm:%s:%s" % (dictCode.strip(), word)
+                link = "s+dictterm:%s:%s:%s" % (dictCode, flags, word)
                 df.TextElement(word, link=link)
             else:
                 df.TextElement(word)
 
-def buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions, lupyResults):
+def buildDefinitionNotFound(word, nearbyWords, dictCode, flags, suggestions, lupyResults):
     df = Definition()
     df.TextElement("Home", link="dictform:main") 
     df.TextElement(" / Definition for word '%s' was not found." % word)
-    _buildSuggestions(df, word, suggestions, dictCode)
-    _buildNearbyWords(df, word, nearbyWords, dictCode)
-    _buildLupyResults(df, word, lupyResults, dictCode)
+    _buildSuggestions(df, word, suggestions, dictCode, flags)
+    _buildNearbyWords(df, word, nearbyWords, dictCode, flags)
+    _buildLupyResults(df, word, lupyResults, dictCode, flags)
 
     return df
 
@@ -556,7 +585,7 @@ def moreThanOnePosInSynsets(synsets):
     return False
 
 # build a Definition object for a found definition
-def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
+def buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags):
     df = Definition()
     synsets = _parseDef(wordDef)
 
@@ -573,35 +602,41 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
     currPos = ""
     while i < len(synsets):
         synset = synsets[i]
-        if currPos != synset.pos:
-            listNumber = 1
-            currPos = synset.pos
-            if moreThanOnePos:
-                df.LineBreakElement()
-                df.TextElement(roman[posNumber] + " " + _posToText(synset.pos), style=styleNameBoldGreen)
-                posNumber += 1
-            else:
-                df.LineBreakElement()
-                df.TextElement(_posToText(synset.pos), style=styleNameBoldGreen)
+        if flagsHaveFlag(flags, FLAG_COMPAQ):
+            df.LineBreakElement()
+            df.TextElement("\x95 ")
+            df.TextElement(_posToText(synset.pos)+" ", style=styleNameGreen)
+        else:
+            if currPos != synset.pos:
+                listNumber = 1
+                currPos = synset.pos
+                if moreThanOnePos:
+                    df.LineBreakElement()
+                    df.TextElement(roman[posNumber] + " " + _posToText(synset.pos), style=styleNameBoldGreen)
+                    posNumber += 1
+                else:
+                    df.LineBreakElement()
+                    df.TextElement(_posToText(synset.pos), style=styleNameBoldGreen)
 
-        df.LineBreakElement()
-        if listNumber == 1:
-            if i == len(synsets)-1:
-                pass
-            elif currPos != synsets[i+1].pos:
-                pass
+            df.LineBreakElement()
+            if listNumber == 1:
+                if i == len(synsets)-1:
+                    pass
+                elif currPos != synsets[i+1].pos:
+                    pass
+                else:
+                    df.TextElement("%d) " % listNumber)
             else:
                 df.TextElement("%d) " % listNumber)
-        else:
-            df.TextElement("%d) " % listNumber)
-        listNumber += 1
+            listNumber += 1
 
         df.TextElement(synset.defTxt)
-        for ex in synset.examples:
-            df.LineBreakElement()
-            gtxt = df.TextElement("\""+ex+"\"")
-            gtxt.setStyleName(styleNameExample)
-        if len(synset.words) > 1:
+        if not flagsHaveFlag(flags, FLAG_EXAMPLES):
+            for ex in synset.examples:
+                df.LineBreakElement()
+                gtxt = df.TextElement("\""+ex+"\"")
+                gtxt.setStyleName(styleNameExample)
+        if len(synset.words) > 1 and not flagsHaveFlag(flags, FLAG_SYNONYMS):
             df.LineBreakElement()
             df.TextElement("Synonyms: ", style=styleNameBold)
             first = False
@@ -611,10 +646,11 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode):
                         df.TextElement(", ")
                     else:
                         first = True
-                    df.TextElement(syn, link="s+dictterm:%s:%s" % (dictCode.strip(), syn))
+                    df.TextElement(syn, link="s+dictterm:%s:%s:%s" % (dictCode, flags, syn))
         i += 1
 
-    _buildNearbyWords(df, word, nearbyWords, dictCode)
+    if not flagsHaveFlag(flags, FLAG_NEARBY_WORDS):
+        _buildNearbyWords(df, word, nearbyWords, dictCode, flags)
     return df
 
 # get definition of random word for a given dictionary. randomUrl is in the format:
@@ -626,7 +662,7 @@ def getDictionaryRandom(randomUrl, fDebug=False):
     if g_fDisabled:
         return (MODULE_DOWN, None)
 
-    dictCode = randomUrl.split(":",1)[0]
+    (dictCode, flags) = randomUrl.split(":",2)
     if WORDNET_CODE != dictCode:
         return (INVALID_REQUEST, None)
 
@@ -636,7 +672,7 @@ def getDictionaryRandom(randomUrl, fDebug=False):
     nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
     wordDef = _getDef(word)
     assert None != wordDef
-    df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
+    df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags)
     udf = universalDataFormatWithDefinition(df, [["H", word]])
 
     if fDebug:
@@ -654,11 +690,11 @@ def getDictionaryDef(searchTerm, fDebug=False):
     if g_fDisabled:
         return (MODULE_DOWN, None)
 
-    parts = searchTerm.split(":", 1)
-    if 1 == len(parts):
+    parts = searchTerm.split(":", 2)
+    if 3 != len(parts):
         return (INVALID_REQUEST, None)
-    assert 2 == len(parts)
-    (dictCode, word) = parts
+    assert 3 == len(parts)
+    (dictCode, flags, word) = parts
     word = word.strip()
 
     if dictCode != WORDNET_CODE:
@@ -689,15 +725,16 @@ def getDictionaryDef(searchTerm, fDebug=False):
                 if sug in words:
                     suggestions.append(sug)
 
-        df = buildDefinitionNotFound(word, nearbyWords, dictCode, suggestions, lupyResults)
+        df = buildDefinitionNotFound(word, nearbyWords, dictCode, flags, suggestions, lupyResults)
     else:
-        df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode)
+        df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags)
 
     udf = universalDataFormatWithDefinition(df, [["H", word]])
 
     return (DICT_DEF, udf)
 
 def _getAvailableDicts(private):
+    global g_availableDicts
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
@@ -705,23 +742,22 @@ def _getAvailableDicts(private):
     df = Definition()
     df.TextElement("Home", link="dictform:main")
     df.TextElement(" / Select dictionary")
-    df.LineBreakElement(3,2)
+    df.LineBreakElement(1,2)
 
-    df.TextElement("We're sorry, but for now only ")
-    df.TextElement("WordNet", link="s+dictstats:wn")
-    df.TextElement(" dictionary is available.")
+    for name in g_availableDicts:
+        df.BulletElement(False)
+        df.TextElement(g_availableDicts[name][2], link="s+dictstats:%s" % g_availableDicts[name][0])
+        df.PopParentElement()
 
-    df.LineBreakElement(3,2)
-
-    df.TextElement("test other", link="s+dictstats:th")
-    df.TextElement(" this is not working dict - only to test dict change page.")
-
+    # TODO: if private then add some private dicts
+        
     udf = universalDataFormatWithDefinition(df, [["H", "Change dictionary"]])
     return (DICT_DEF, udf)
 
 # request is dict type ("wn" for now)
 def getDictionaryStats(request):
     global g_wnWords, g_fDisabled
+    global g_availableDicts
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
@@ -735,15 +771,12 @@ def getDictionaryStats(request):
 
         return _getAvailableDicts(private)
 
-    res = []        
-    if WORDNET_CODE == request:
-        res.append(["N","an English"])
-        res.append(["S", WORDNET_CODE])
-        res.append(["C",str(len(g_wnWords))])
-    elif "th" == request:
-        res.append(["N","test thesaurus"])
-        res.append(["S", "th"])
-        res.append(["C","0"])
+    res = []
+
+    if request in g_availableDicts:
+        res.append(["N",g_availableDicts[request][1]])
+        res.append(["S", g_availableDicts[request][0]])
+        res.append(["C",str(getWordsCount(request))])
     else:
         return INVALID_REQUEST, None
     return RESULTS_DATA, universalDataFormat(res)

@@ -55,7 +55,7 @@ struct DictionaryPreferences: public Serializable
 {
     enum {
         maxDictionaryCodeLen = 16,
-        maxDictionaryNameLen = 32
+        maxDictionaryNameLen = 64
     };
     
     char_t dictionaryCode[maxDictionaryCodeLen + 1];
