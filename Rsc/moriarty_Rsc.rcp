@@ -133,7 +133,7 @@ ALERT ID invalidRequestAlert
     ERROR
 BEGIN
     TITLE "Server error"
-    MESSAGE "Inalid request."
+    MESSAGE "Invalid request."
     BUTTONS "OK"
 END
 
