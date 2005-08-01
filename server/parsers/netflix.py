@@ -171,7 +171,7 @@ def parseItem(htmlTxt, modulesInfo):
 
     outerList = []
 
-    nameDiv = soup.first("div", {"style":"padding-bottom: 10px;"})
+    nameDiv = soup.first("div", {"style":"color:#1E58D0; padding:15px 0px 0px 20px;"})
     descriptionDiv = soup.first("div", {"class":"description"})
     if not nameDiv or not descriptionDiv:
         return UNKNOWN_FORMAT, None
@@ -1964,7 +1964,17 @@ def saveToFile(fileName, txt):
     fo.write(txt)
     fo.close()
 
+def test():
+    jar = cookielib.CookieJar()
+    
+    retrieveItem(jar, "60004484&trkid=135437;F", None)
+
+
+
 def main():
+    test()
+    return
+    
     user = "krzysztofk@pobox.com"
     pwd = "bruhaha03"
     userId = 1
