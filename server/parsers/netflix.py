@@ -514,7 +514,7 @@ def parseGenreLogged(htmlTxt, modulesInfo, newReleasesMode = False):
     df.TextElement("Browse",link='s+netflixbrowse:;T')
     if newReleasesMode:
         df.TextElement(" / ")
-        df.TextElement("New Releases",link='s+netflixbrowse:NewReleases;T')
+        df.TextElement("New Releases",link='s+netflixbrowse:NewReleases?lnkctr=NavNewReleases;T')
     df.TextElement(" / "+pageTitle)
     df.LineBreakElement(1,2)
 
@@ -1059,7 +1059,7 @@ def parseAddToQueue(htmlTxt):
     if not soup.first("a", {"href":"http://www.netflix.com/YourAccount"}):
         return NETFLIX_REQUEST_PASSWORD
     # test page
-    table = soup.first("table", {"width":"297", "style":"position:relative;top:-30px;"})
+    table = soup.first("table", {"style":"position:relative;%"})
     if not table:
         return UNKNOWN_FORMAT
     textDiv = table.first("div", {"style":"font-family:verdana;%"})
@@ -1510,7 +1510,7 @@ def parseAllNewReleases(htmlTxt, modulesInfo):
     df.TextElement(" / ")
     df.TextElement("Browse",link='s+netflixbrowse:;T')
     df.TextElement(" / ")
-    df.TextElement("New Releases",link='s+netflixbrowse:NewReleases;T')
+    df.TextElement("New Releases",link='s+netflixbrowse:NewReleases?lnkctr=NavNewReleases;T')
     df.TextElement(" / "+pageTitle)
     df.LineBreakElement(1,2)
     # get sections...
