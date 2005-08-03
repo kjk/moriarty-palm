@@ -66,22 +66,35 @@ g_wnLupyIndexedCount = os.path.join(multiUserSupport.getServerStorageDir(), DICT
 
 g_fWnLupyIndexExamples = False
 
+
+TH_DICT_FILE  = "th-dict.txt"
+TH_INDEX_FILE = "th-words-index.pic"
+TH_WORDS_FILE = "th-words.pic"
+
+g_thDictPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, TH_DICT_FILE)
+g_thIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, TH_INDEX_FILE)
+g_thWordsPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, TH_WORDS_FILE)
+
 # how many nearby words we show
 NEARBY_WORDS_TO_SHOW = 8
 
 # it's ok to throw an exception, we don't want to proceed if the file is missing
 # TODO: somehow make it that this file is closed when we kill InfoMan
 g_wnFo = None
-
 g_wnWordIndex = {}
 g_wnWords = []
+
+g_thFo = None
+g_thWordIndex = {}
+g_thWords = []
 
 # random.Random() object used to generate random definitions. Must be initialized
 # in initDictionary
 g_random = None
 
 # protect WN_DICT_FILE file access from multi-thread issues
-g_defReadLock = None
+g_wnDefReadLock = None
+g_thDefReadLock = None
 
 # a flag used to make sure initDictionary() is called only once
 g_fInitialized = False
@@ -106,7 +119,9 @@ g_availableDicts = {
     "wn:esn" : ["wn:esn", "an English dictionary (mini)", "WordNet mini", WORDNET_CODE],
     "wn:oesn" : ["wn:oesn", "an English dictionary (mini compaq)", "WordNet mini compaq", WORDNET_CODE],
     
-    "th:" : ["th:", "test Thesaurus dictionary", "test Thesaurus full", THESAURUS_CODE],
+    "th:" : ["th:", "a Thesaurus dictionary", "Thesaurus full", THESAURUS_CODE],
+    "th:n" : ["th:n", "a Thesaurus dictionary (without nearby words)", "Theasaurus without nearby words", THESAURUS_CODE],
+    "th:on" : ["th:on", "a Thesaurus dictionary (mini compaq)", "Thesaurus mini compaq", THESAURUS_CODE],
 }
 
 def flagsHaveFlag(flags, flag):
@@ -118,7 +133,7 @@ def getWordsCount(dictCode):
     if dictCode == WORDNET_CODE:
         return len(g_wnWords)
     if dictCode == THESAURUS_CODE:
-        return 0
+        return len(g_thWords)
     return 0
 
 # Lupy index.
@@ -170,7 +185,7 @@ class DictLupyIndex:
                 word = g_wnWords[i]
                 if i % 1000 == 0:
                     print " wn - %d words indexed" % i
-                synsets = _parseDef(_getDef(word))
+                synsets = _wnParseDef(_wnGetDef(word))
                 text = ""
                 for syn in synsets:
                     text += syn.defTxt
@@ -337,10 +352,40 @@ def loadPickledFiles():
         print arsutils.exceptionAsStr(ex)
         return False
     print "Finished loading WordNet files"
+
+    global g_thWords, g_thWordIndex, g_thDictPath, g_thIndexPath, g_thWordsPath
+    print "loading th dictionary data files"
+
+    if not arsutils.fFileExists(g_thDictPath):
+        print "Thesaurus dictionary file '%s' doesn't exist" % g_thDictPath
+        return False
+
+    if not arsutils.fFileExists(g_thIndexPath):
+        print "Thesaurus dictionary file '%s' doesn't exist" % g_thIndexPath
+        return False
+
+    if not arsutils.fFileExists(g_thWordsPath):
+        print "Thesaurus dictionary file '%s' doesn't exist" % g_thWordsPath
+        return False
+
+    try:
+        fo = open(g_thIndexPath, "rb")
+        g_thWordIndex = cPickle.load(fo)
+        fo.close()
+
+        fo = open(g_thWordsPath, "rb")
+        g_thWords = cPickle.load(fo)
+        fo.close()
+    except Exception, ex:
+        print arsutils.exceptionAsStr(ex)
+        return False
+    print "Finished loading Thesaurus files"
     return True
 
+
 def initDictionary():
-    global g_wnFo, g_wnDictPath, g_defReadLock, g_random, g_fInitialized, g_fDisabled
+    global g_wnFo, g_wnDictPath, g_wnDefReadLock, g_random, g_fInitialized, g_fDisabled
+    global g_thFo, g_thDictPath, g_thDefReadLock
     if g_fInitialized:
         return
     g_fInitialized = True
@@ -350,8 +395,12 @@ def initDictionary():
     try:
         assert None == g_wnFo
         g_wnFo = open(g_wnDictPath, "rb")
-        assert None == g_defReadLock
-        g_defReadLock = Lock()
+        assert None == g_wnDefReadLock
+        g_wnDefReadLock = Lock()
+        assert None == g_thFo
+        g_thFo = open(g_thDictPath, "rb")
+        assert None == g_thDefReadLock
+        g_thDefReadLock = Lock()
         assert None == g_random
         g_random = random.Random()
         g_random.seed()
@@ -362,11 +411,14 @@ def initDictionary():
 
 def deinitDictionary():
     global g_wnFo, g_fInitialized
+    global g_thFo
     if not g_fInitialized:
         return
     print "deinitDictionary()"
     if None != g_wnFo:
         g_wnFo.close()
+    if None != g_thFo:
+        g_thFo.close()
 
 # given an array of sorted words (sortedWords) and a count of nearby words
 # (nearbyWordsCount), returns an array of words that are alphabetically close
@@ -399,20 +451,39 @@ def _getNearbyWords(sortedWords, word, nearbyWordsCount):
     return sortedWords[firstWordPos:lastWordPos]
 
 # return a definition for a given word or None if doesn't exist
-def _getDef(word):
-    global g_wnFo, g_defReadLock, g_wnWordIndex
+def _wnGetDef(word):
+    global g_wnFo, g_wnDefReadLock, g_wnWordIndex
 
     if not g_wnWordIndex.has_key(word):
         return None
 
     wordDef = None
     (defOffset, defLen) = g_wnWordIndex[word]
-    g_defReadLock.acquire()
+    g_wnDefReadLock.acquire()
     try:
         g_wnFo.seek(defOffset, 0)   # 0 - absolute positioning
         wordDef = g_wnFo.read(defLen)
     finally:
-        g_defReadLock.release()
+        g_wnDefReadLock.release()
+    return wordDef
+
+def _thGetDef(word):
+    global g_thFo, g_thDefReadLock, g_thWordIndex
+
+    if not g_thWordIndex.has_key(word):
+        return None
+
+    wordDef = None
+    pairs = g_thWordIndex[word]
+    try:
+        g_thDefReadLock.acquire()
+        wd2 = []
+        for (defOffset, defLen) in pairs:
+            g_thFo.seek(defOffset, 0)   # 0 - absolute positioning
+            wd2.append(g_thFo.read(defLen))
+        wordDef = wd2
+    finally:
+        g_thDefReadLock.release()
     return wordDef
 
 def test_getNearbyWords():
@@ -503,7 +574,7 @@ def sortByPos(el1, el2):
     return cmp(el1.pos, el2.pos)
 
 # parse definition and return an array of synsets
-def _parseDef(wordDef):
+def _wnParseDef(wordDef):
     synsets = []
 
     curSynset = Synset()
@@ -547,6 +618,20 @@ def _parseDef(wordDef):
     synsets.sort(sortByPos)    
     return synsets
 
+def _thParseDef(wordDef):
+    synsets = []
+
+    for el in wordDef:
+        curSynset = Synset()
+        curSynset.words = el[1:].split(", ")
+        curSynset.defTxt = ""
+        curSynset.exaples = []
+        curSynset.pos = el[0]
+        synsets.append(curSynset)
+    # sort synsets by pos.
+    synsets.sort(sortByPos)    
+    return synsets
+
 def _posToText(pos):
     if pos == "n":
         return "Noun"
@@ -559,16 +644,16 @@ def _posToText(pos):
     print "Unknown pos:%s" % pos
     return "(%s)" % pos
 
-def test_parseDefAll():
+def test_wnParseDefAll():
     global g_wnWords
     print "parsing all definitions"
     n = 1
     for word in g_wnWords:
         if 0 == n % 20000:
             print "processed %d" % n
-        wordDef = _getDef(word)
+        wordDef = _wnGetDef(word)
         try:
-            synsets = _parseDef(wordDef)
+            synsets = _wnParseDef(wordDef)
         except Exception, ex:
             print "word: %s" % word
             print "def: '%s'" % wordDef
@@ -587,8 +672,12 @@ def moreThanOnePosInSynsets(synsets):
 # build a Definition object for a found definition
 def buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags):
     df = Definition()
-    synsets = _parseDef(wordDef)
-
+    if dictCode == WORDNET_CODE:
+        synsets = _wnParseDef(wordDef)
+    elif dictCode == THESAURUS_CODE:
+        synsets = _thParseDef(wordDef)
+    else:
+        assert 0
     styleNameExample = df.AddStyle("ex", color=[127,63,0])
     df.TextElement("Home", link="dictform:main")
     df.TextElement(" / ")
@@ -637,16 +726,20 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags):
                 gtxt = df.TextElement("\""+ex+"\"")
                 gtxt.setStyleName(styleNameExample)
         if len(synset.words) > 1 and not flagsHaveFlag(flags, FLAG_SYNONYMS):
-            df.LineBreakElement()
-            df.TextElement("Synonyms: ", style=styleNameBold)
-            first = False
-            for syn in synset.words:
-                if syn != word:
-                    if first:
-                        df.TextElement(", ")
-                    else:
-                        first = True
-                    df.TextElement(syn, link="s+dictterm:%s:%s:%s" % (dictCode, flags, syn))
+            if "" != synset.defTxt or len(synset.examples)>0:
+                df.LineBreakElement()
+                df.TextElement("Synonyms: ", style=styleNameBold)
+                first = False
+                for syn in synset.words:
+                    if syn != word:
+                        if first:
+                            df.TextElement(", ")
+                        else:
+                            first = True
+                        df.TextElement(syn, link="s+dictterm:%s:%s:%s" % (dictCode, flags, syn))
+            else:
+                df.TextElement(string.join(synset.words, ", "))
+
         i += 1
 
     if not flagsHaveFlag(flags, FLAG_NEARBY_WORDS):
@@ -662,15 +755,25 @@ def getDictionaryRandom(randomUrl, fDebug=False):
     if g_fDisabled:
         return (MODULE_DOWN, None)
 
-    (dictCode, flags) = randomUrl.split(":",2)
-    if WORDNET_CODE != dictCode:
+    parts = randomUrl.split(":")
+    dictCode = parts[0]
+    flags = parts[1]
+    
+    if WORDNET_CODE == dictCode:
+        totalWords = len(g_wnWords)
+        randomWordNo = g_random.randint(0, totalWords-1)
+        word = g_wnWords[randomWordNo]
+        nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
+        wordDef = _wnGetDef(word)
+    elif THESAURUS_CODE == dictCode:
+        totalWords = len(g_thWords)
+        randomWordNo = g_random.randint(0, totalWords-1)
+        word = g_thWords[randomWordNo]
+        nearbyWords = _getNearbyWords(g_thWords, word, NEARBY_WORDS_TO_SHOW)
+        wordDef = _thGetDef(word)
+    else:
         return (INVALID_REQUEST, None)
 
-    totalWords = len(g_wnWords)
-    randomWordNo = g_random.randint(0, totalWords-1)
-    word = g_wnWords[randomWordNo]
-    nearbyWords = _getNearbyWords(g_wnWords, word, NEARBY_WORDS_TO_SHOW)
-    wordDef = _getDef(word)
     assert None != wordDef
     df = buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags)
     udf = universalDataFormatWithDefinition(df, [["H", word]])
@@ -697,13 +800,16 @@ def getDictionaryDef(searchTerm, fDebug=False):
     (dictCode, flags, word) = parts
     word = word.strip()
 
-    if dictCode != WORDNET_CODE:
+    if WORDNET_CODE == dictCode:
+        words = g_wnWords
+        wordDef = _wnGetDef(word)
+    elif THESAURUS_CODE == dictCode:
+        words = g_thWords
+        wordDef = _thGetDef(word)
+    else:
         return (INVALID_REQUEST, None)
-    words = g_wnWords
 
     nearbyWords = _getNearbyWords(words, word, NEARBY_WORDS_TO_SHOW)
-
-    wordDef = _getDef(word)
 
     if fDebug:
         if None == wordDef:
@@ -714,9 +820,10 @@ def getDictionaryDef(searchTerm, fDebug=False):
 
     if None == wordDef:
         # lupy
-        print "lupy start searching"
-        lupyResults = g_lupyIndex.getWords(word, dictCode)
-        print "lupy end searching"
+        if WORDNET_CODE == dictCode:
+            lupyResults = g_lupyIndex.getWords(word, dictCode)
+        else:
+            lupyResults = []
         # ispell
         suggestionsUnfiltred = getSpellcheckSuggestions(word)
         suggestions = []
@@ -781,6 +888,9 @@ def getDictionaryStats(request):
         return INVALID_REQUEST, None
     return RESULTS_DATA, universalDataFormat(res)
 
+def testThes():
+    pass
+
 def usage():
     print "dictionary.py searchTerm"
 
@@ -795,7 +905,7 @@ def main():
 
     if "-test" in sys.argv:
         initDictionary()
-        test_parseDefAll()
+        test_wnParseDefAll()
         test_getNearbyWords()
         pos = sys.argv.index("-test")
         del sys.argv[pos]
@@ -805,6 +915,14 @@ def main():
         initLupyIndex(inThread = False)
 
         pos = sys.argv.index("-lupy")
+        del sys.argv[pos]
+
+    if "-thes" in sys.argv:
+        initDictionary()
+
+        testThes()
+        
+        pos = sys.argv.index("-thes")
         del sys.argv[pos]
 
     if 2 != len(sys.argv):
