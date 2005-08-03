@@ -2641,7 +2641,7 @@ def main():
     else:
         startListsOfBestsCache(2)
 
-    eBay.initEBay()
+    #eBay.initEBay()
 
     try:
         iPediaServer.getAllDbInfos()
