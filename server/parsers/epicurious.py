@@ -112,7 +112,7 @@ def parseRecipe(htmlTxt):
     soup.feed(htmlTxt)
 
     # we need this tags to navigate
-    divHead = soup.first("div",{"class":"recipehed"})
+    divHead = soup.first("div",{"class":"intro"})
     ingredientsImageTag = soup.first("img",{"src":"/images/recipes/recipe_results/ingredients_hed.gif"})
     preperationImageTag = soup.first("img",{"src":"/images/recipes/recipe_results/preperation_hed.gif"})
     reviewsImageTag = soup.first("img",{"src":"/images/recipes/recipe_results/reviews.gif"})
@@ -201,11 +201,12 @@ def parseRecipe(htmlTxt):
 
 
 def main():
-##    fo = open("0005.log", "rt")
+##    fo = open("0019.html", "rt")
 ##    htmlTxt = fo.read()
 ##    fo.close()
-##    (resultType, resultBody) = parseSearch(htmlTxt)
+##    (resultType, resultBody) = parseRecipe(htmlTxt)
 ##    print resultType
+##    print resultBody
     pass
 
 if __name__ == "__main__":
