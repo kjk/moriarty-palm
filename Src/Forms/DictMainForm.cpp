@@ -187,12 +187,12 @@ void DictMainForm::showMain()
     elems.push_back(text=new TextElement(" word definition, "));
     elems.push_back(text=new TextElement("see history"));
     text->setHyperlink(_T("dictform:history") , hyperlinkUrl);
-    elems.push_back(text=new TextElement(" of searches"));
-
-#ifndef SHIPPING
-    elems.push_back(text=new TextElement(" or use "));
+    elems.push_back(text=new TextElement(" of searches or use "));
     elems.push_back(text=new TextElement("another dictionary"));
+#ifdef SHIPPING
     text->setHyperlink(urlSchemaDictChangeDict , hyperlinkUrl);
+#else
+    text->setHyperlink(urlSchemaDictChangeDictNonShip , hyperlinkUrl);
 #endif
     elems.push_back(text=new TextElement("."));
 

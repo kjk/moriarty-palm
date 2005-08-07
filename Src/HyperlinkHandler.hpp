@@ -33,6 +33,7 @@
 #define urlSchemaDictForm                     _T("dictform")
 #define urlSchemaDictStats                    _T("s+dictstats")
 #define urlSchemaDictChangeDict               _T("hs+dictstats:")
+#define urlSchemaDictChangeDictNonShip        _T("hs+dictstats:private")
 
 #define urlSchemaEBookSearch            _T("s+eBook-search")
 #define urlSchemaEBookDownload          _T("s+eBook-download")
