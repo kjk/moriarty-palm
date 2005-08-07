@@ -180,10 +180,10 @@ def main():
 
     print " save files..."
     fo = open(OUT_DICT_FILE_PIC, "wb")
-    cPickle.dump(wordsDict, fo)
+    cPickle.dump(wordsDict, fo, protocol = cPickle.HIGHEST_PROTOCOL)
     fo.close()
     fo = open(OUT_DICT_FILE_WORDS, "wb")
-    cPickle.dump(words, fo)
+    cPickle.dump(words, fo, protocol = cPickle.HIGHEST_PROTOCOL)
     fo.close()
     fo = open(OUT_DICT_FILE_TXT, "wb")
     fo.write(dataTxt)
