@@ -72,12 +72,11 @@ def convert(text):
     wordsDict = {}
     defText = ""
 
-    #text = cleenupText(text)
+    text = cleenupText(text)
 
-    fo = open("test.txt","rt")
-    text = fo.read()
-    fo.close()
-
+    #fo = open("test.txt","rt")
+    #text = fo.read()
+    #fo.close()
 
     print " start converting"
     parts = text.split("     #")
@@ -172,7 +171,7 @@ def main():
         print "http://www.gutenberg.org/browse/authors/r#a20"
         sys.exit(0)
     DATA_FILE_NAME = sys.argv[1]
-    
+
     fo = open(DATA_FILE_NAME, "rt")
     text = fo.read()
     fo.close()
