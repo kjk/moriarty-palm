@@ -26,6 +26,8 @@ public:
 
     void randomWord();
 
+    void changeDict(void);
+
     void handleSearch();
 
     void handleHistory();

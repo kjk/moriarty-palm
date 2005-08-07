@@ -192,7 +192,7 @@ void DictMainForm::showMain()
 #ifndef SHIPPING
     elems.push_back(text=new TextElement(" or use "));
     elems.push_back(text=new TextElement("another dictionary"));
-    text->setHyperlink(_T("hs+dictstats:") , hyperlinkUrl);
+    text->setHyperlink(urlSchemaDictChangeDict , hyperlinkUrl);
 #endif
     elems.push_back(text=new TextElement("."));
 
@@ -236,7 +236,7 @@ void DictMainForm::randomWord()
     LookupManager*       lm;
     CDynStr              url;
     
-    DictionaryPreferences& prefs = application().preferences().dictionaryPreferences;
+    DictionaryPreferences& prefs = app.preferences().dictionaryPreferences;
 
     if (NULL == url.AppendCharP3(urlSchemaDictRandom, urlSeparatorSchemaStr, prefs.dictionaryCode))
         goto NoMemory;
@@ -262,6 +262,27 @@ NoMemory:
      return;
 }
 
+void DictMainForm::changeDict(void)
+{
+    MoriartyApplication& app = application();
+    LookupManager*       lm;
+    CDynStr              url;
+
+    lm = app.lookupManager;
+    if (NULL == lm)
+        goto NoMemory;
+    
+    DictionaryPreferences& prefs = app.preferences().dictionaryPreferences;
+
+    if (memErrNotEnoughSpace == lm->fetchUrl(urlSchemaDictChangeDict))
+        goto NoMemory;
+
+    return;
+NoMemory:
+     app.alert(notEnoughMemoryAlert);
+     return;
+}
+
 bool DictMainForm::handleMenuCommand(UInt16 itemId)
 {
     bool handled=false;
@@ -274,6 +295,10 @@ bool DictMainForm::handleMenuCommand(UInt16 itemId)
 
         case randomWordMenuItem:
             randomWord();
+            return true;
+
+        case changeDictMenuItem:
+            changeDict();
             return true;
 
         case homeMenuItem:

@@ -32,6 +32,7 @@
 #define urlSchemaDictRandom                   _T("s+dictrandom")
 #define urlSchemaDictForm                     _T("dictform")
 #define urlSchemaDictStats                    _T("s+dictstats")
+#define urlSchemaDictChangeDict               _T("hs+dictstats:")
 
 #define urlSchemaEBookSearch            _T("s+eBook-search")
 #define urlSchemaEBookDownload          _T("s+eBook-download")
