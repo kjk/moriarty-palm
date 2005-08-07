@@ -941,14 +941,6 @@ BEGIN
         MENUITEM "Check for updates"     ID checkUpdatesMenuItem
         MENUITEM "About"                 ID aboutMenuItem
     END
-/*
-     PULLDOWN "Test"
-     BEGIN
-         MENUITEM "list"        ID listMenuItem
-         MENUITEM "table"       ID tableMenuItem
-         MENUITEM "renderer"    ID rendererMenuItem
-     END 
-*/     
 END
 #endif
 

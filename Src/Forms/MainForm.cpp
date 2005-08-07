@@ -163,45 +163,6 @@ void ModulesListDrawHandler::drawItem(Graphics& graphics, ExtendedList& list, ui
         }
     }
 
-    /*
-    // show if new version is available, show "(var x.y avaialble!)"
-    // in bold red, right-aligned if server says that a new version x.y
-    // is available
-    if ((moduleIdAbout == module->id) && (!app.preferences().latestClientVersion.empty()))
-    {
-        // we better make sure to keep myVersion up-to-date
-        const char_t *myVersion = appVersion;
-        const char_t *latestVersion = app.preferences().latestClientVersion.c_str();
-        // the logic is simple: if latestVersion != my version then it must
-        // be newer
-        if (versionNumberCmp(latestVersion, myVersion) > 0)
-        {
-            String txt(_T("(ver "));
-            txt += app.preferences().latestClientVersion;
-            txt += " available!)";
-
-            Graphics::FontSetter setFont(graphics, boldFont);
-
-            uint_t displayNameDx = graphics.textWidth(displayName, length) + 4;
-            width = itemBounds.width();
-            width -= displayNameDx;
-            length = txt.length();
-            graphics.charsInWidth(txt.c_str(), length, width);
-
-            p.x = itemBounds.topLeft.x;
-            p.x += (itemBounds.width() - width - 2);
-
-            RGBColorType newColor;
-            RGBColorType oldColor;
-            setRgbColor(newColor, 200, 0, 0);
-            WinSetTextColorRGB(&newColor, &oldColor);
-
-            graphics.drawText(txt.c_str(), length, p);
-
-            WinSetTextColorRGB(&oldColor, NULL);
-        }
-    }
-    */
 #define GREY_COLOR 127, 127, 127
 
     if (module->tracksUpdateTime)
@@ -1050,19 +1011,6 @@ bool MainForm::handleMenuCommand(UInt16 itemId)
         case clearCookieMenuItem:
             application().preferences().cookie.clear();
             break;
-/*
-        case tableMenuItem:
-            setDisplayMode(showSmallModulesTable);
-            break;
-
-        case listMenuItem:
-            setDisplayMode(showSmallModulesList);
-            break;
-
-        case rendererMenuItem:
-            setDisplayMode(showTextRenderer);
-            break;
-*/
 #endif
 
         case checkUpdatesMenuItem:
