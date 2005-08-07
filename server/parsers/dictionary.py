@@ -108,17 +108,18 @@ FLAG_SYNONYMS_OFF = 's'
 FLAG_NEARBY_WORDS_OFF = 'n'
 FLAG_COMPACT = 'o'
 
+# dictCode+Flags   :   [dictCode+Flags, name on palm, name on server, dictCode, order on server, private]
 g_availableDicts = {
-    "wn:" : ["wn:", "an English dictionary", "WordNet", WORDNET_CODE],
-    #"wn:e" : ["wn:e", "an English dictionary (without examples)", "WordNet without examples", WORDNET_CODE],
-    #"wn:s" : ["wn:s", "an English dictionary (without synonyms)", "WordNet without synonyms", WORDNET_CODE],
-    #"wn:n" : ["wn:n", "an English dictionary (without nearby words)", "WordNet without nearby words", WORDNET_CODE],
-    #"wn:esn" : ["wn:esn", "an English dictionary (mini)", "WordNet mini", WORDNET_CODE],
-    "wn:o" : ["wn:o", "an English dictionary (compact)", "WordNet compact", WORDNET_CODE],
+    "wn:" : ["wn:", "an English dictionary", "WordNet", WORDNET_CODE, 1, False],
+    #"wn:e" : ["wn:e", "an English dictionary (without examples)", "WordNet without examples", WORDNET_CODE, 2, False],
+    #"wn:s" : ["wn:s", "an English dictionary (without synonyms)", "WordNet without synonyms", WORDNET_CODE, 3, False],
+    #"wn:n" : ["wn:n", "an English dictionary (without nearby words)", "WordNet without nearby words", WORDNET_CODE, 4, False],
+    "wn:esn" : ["wn:esn", "an English dictionary (mini)", "WordNet mini", WORDNET_CODE, 5, True],
+    "wn:o" : ["wn:o", "an English dictionary (compact)", "WordNet compact", WORDNET_CODE, 6, False],
     
-    "th:" : ["th:", "an English Thesaurus", "Thesaurus full", THESAURUS_CODE],
-    #"th:n" : ["th:n", "an English Thesaurus (without nearby words)", "Theasaurus without nearby words", THESAURUS_CODE],
-    "th:on" : ["th:on", "an English Thesaurus (compact)", "Thesaurus compact", THESAURUS_CODE],
+    "th:" : ["th:", "an English Thesaurus", "Thesaurus full", THESAURUS_CODE, 10, False],
+    "th:n" : ["th:n", "an English Thesaurus (without nearby words)", "Theasaurus without nearby words", THESAURUS_CODE, 11, True],
+    "th:on" : ["th:on", "an English Thesaurus (compact)", "Thesaurus compact", THESAURUS_CODE, 12, False],
 }
 
 # this is a list of dictionaries, sorted by name. It's build from g_availableDicts
@@ -838,11 +839,6 @@ def getDictionaryDef(searchTerm, fDebug=False):
             print wordDef
 
     if None == wordDef:
-        # lupy
-        if WORDNET_CODE == dictCode:
-            lupyResults = g_lupyIndex.getWords(word, dictCode)
-        else:
-            lupyResults = []
         # ispell
         suggestionsUnfiltred = getSpellcheckSuggestions(word)
         suggestions = []
@@ -850,6 +846,14 @@ def getDictionaryDef(searchTerm, fDebug=False):
             for sug in suggestionsUnfiltred:
                 if sug in words:
                     suggestions.append(sug)
+        # lupy
+        if WORDNET_CODE == dictCode:
+            toLupyWords = word
+            if len(word.split()) > 3:
+                toLupyWords = string.join(word.split()[:3])
+            lupyResults = g_lupyIndex.getWords(toLupyWords, dictCode)
+        else:
+            lupyResults = []
 
         df = buildDefinitionNotFound(word, nearbyWords, dictCode, flags, suggestions, lupyResults)
     else:
@@ -858,6 +862,9 @@ def getDictionaryDef(searchTerm, fDebug=False):
     udf = universalDataFormatWithDefinition(df, [["H", word]])
 
     return (DICT_DEF, udf)
+
+def _sortByOrder(el1, el2):
+    return cmp(el1[4], el2[4])
 
 def _getAvailableDicts(private):
     global g_availableDicts, g_dictsSortedByName
@@ -871,13 +878,17 @@ def _getAvailableDicts(private):
     df.TextElement(" / Select dictionary")
     df.LineBreakElement(1,2)
 
+    dicts = []
     for name in g_dictsSortedByName:
-        df.BulletElement(False)
-        df.TextElement(g_availableDicts[name][2], link="s+dictstats:%s" % g_availableDicts[name][0])
-        df.PopParentElement()
+        dicts.append(g_availableDicts[name])
+    dicts.sort(_sortByOrder)
 
-    # TODO: if private then add some private dicts
-        
+    for item in dicts:
+        if not item[5] or private:
+            df.BulletElement(False)
+            df.TextElement(item[2], link="s+dictstats:%s" % item[0])
+            df.PopParentElement()
+
     udf = universalDataFormatWithDefinition(df, [["H", "Change dictionary"]])
     return (DICT_DEF, udf)
 

@@ -302,6 +302,9 @@ def parseWeatherComNew(htmlTxt, htmlTxtFirstDay=None):
         if index == -1:
             text = ""
 
+    if len(returned) == 0:
+        return (LOCATION_UNKNOWN,None)
+
 #    firstDay = ["35"-now,"Skydet","36"-feels,"UV low","37"-dev point,"HUM","visible","preasure","Wind"]
     if htmlTxtFirstDay != None:
         ret = parseFirstDayHtmlYahoo(htmlTxtFirstDay)

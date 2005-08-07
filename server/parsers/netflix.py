@@ -1122,10 +1122,11 @@ def parseQueue(htmlTxt, modulesInfo, informationText="", style=""):
             df.TextElement("At home:", style=styleNameHeader)
             for tr in trList:
                 aItem = tr.first("a", {"href":netflixMoviePrefix+'%'})
-                link = 's+netflixitem:'+clearMovieUrl(aItem['href'])+';T'
-                df.BulletElement(False)
-                df.TextElement(getAllTextFromTag(aItem), link=link)
-                df.PopParentElement()
+                if aItem:
+                    link = 's+netflixitem:'+clearMovieUrl(aItem['href'])+';T'
+                    df.BulletElement(False)
+                    df.TextElement(getAllTextFromTag(aItem), link=link)
+                    df.PopParentElement()
             df.LineBreakElement(1,2)
 
     # queue

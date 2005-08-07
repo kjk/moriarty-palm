@@ -11,7 +11,7 @@ from Retrieve import getHttp
 ## Person Search
 
 def _retrieve_yp_person(firstName,lastName,cityOrZip,state):
-    url = "http://www.yp.com/white-pages-results.php?f=%s&firstname_begins_with=1&l=%s&name_begins_with=1&c=%s&s=%s&client=1482&ver=1.4&type=r"
+    url = "http://www.yp.com/white-pages-results.php?f=%s&firstname_begins_with=1&l=%s&name_begins_with=1&c=%s&s=%s&client=&ver=1.4&type=r"
     url = url % (urllib.quote(firstName),urllib.quote(lastName),urllib.quote(cityOrZip),urllib.quote(state))
     htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
@@ -33,8 +33,8 @@ def _retrieve_411_person(firstName,lastName,cityOrZip,state):
     return res, data
 
 _g_retrieve_person = [
-    _retrieve_411_person,
-    _retrieve_yp_person
+    _retrieve_yp_person,
+    _retrieve_411_person
 ]
 
 def retrievePerson(firstName,lastName,cityOrZip,state):
