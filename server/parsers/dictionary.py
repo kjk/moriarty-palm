@@ -54,18 +54,14 @@ except:
 #   if this data is sent.
 
 DICT_DIR      = "dict"
-WN_DICT_FILE  = "wn-dict.txt"
-WN_INDEX_FILE = "wn-words-index.pic"
-WN_WORDS_FILE = "wn-words.pic"
 
-g_wnDictPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_DICT_FILE)
-g_wnIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_INDEX_FILE)
-g_wnWordsPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, WN_WORDS_FILE)
+g_wnDictPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-dict.txt")
+g_wnIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-words-index.pic")
+g_wnWordsPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-words.pic")
 g_wnLupyIndexPath = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-index-lupy")
 g_wnLupyIndexedCount = os.path.join(multiUserSupport.getServerStorageDir(), DICT_DIR, "wn-index-lupy-count.txt")
 
 g_fWnLupyIndexExamples = False
-
 
 TH_DICT_FILE  = "th-dict.txt"
 TH_INDEX_FILE = "th-words-index.pic"
@@ -105,24 +101,47 @@ g_fDisabled = None
 # dicts code
 WORDNET_CODE = 'wn'
 THESAURUS_CODE = 'th'
-# flags (present - disable this)
-FLAG_EXAMPLES = 'e'
-FLAG_SYNONYMS = 's'
-FLAG_NEARBY_WORDS = 'n'
-FLAG_COMPAQ = 'o'
+
+# flags
+FLAG_EXAMPLES_OFF = 'e'
+FLAG_SYNONYMS_OFF = 's'
+FLAG_NEARBY_WORDS_OFF = 'n'
+FLAG_COMPACT = 'o'
 
 g_availableDicts = {
-    "wn:" : ["wn:", "an English dictionary", "WordNet full", WORDNET_CODE],
-    "wn:e" : ["wn:e", "an English dictionary (without examples)", "WordNet without examples", WORDNET_CODE],
-    "wn:s" : ["wn:s", "an English dictionary (without synonyms)", "WordNet without synonyms", WORDNET_CODE],
-    "wn:n" : ["wn:n", "an English dictionary (without nearby words)", "WordNet without nearby words", WORDNET_CODE],
-    "wn:esn" : ["wn:esn", "an English dictionary (mini)", "WordNet mini", WORDNET_CODE],
-    "wn:oesn" : ["wn:oesn", "an English dictionary (mini compaq)", "WordNet mini compaq", WORDNET_CODE],
+    "wn:" : ["wn:", "an English dictionary", "WordNet", WORDNET_CODE],
+    #"wn:e" : ["wn:e", "an English dictionary (without examples)", "WordNet without examples", WORDNET_CODE],
+    #"wn:s" : ["wn:s", "an English dictionary (without synonyms)", "WordNet without synonyms", WORDNET_CODE],
+    #"wn:n" : ["wn:n", "an English dictionary (without nearby words)", "WordNet without nearby words", WORDNET_CODE],
+    #"wn:esn" : ["wn:esn", "an English dictionary (mini)", "WordNet mini", WORDNET_CODE],
+    "wn:o" : ["wn:o", "an English dictionary (compact)", "WordNet compact", WORDNET_CODE],
     
-    "th:" : ["th:", "a Thesaurus dictionary", "Thesaurus full", THESAURUS_CODE],
-    "th:n" : ["th:n", "a Thesaurus dictionary (without nearby words)", "Theasaurus without nearby words", THESAURUS_CODE],
-    "th:on" : ["th:on", "a Thesaurus dictionary (mini compaq)", "Thesaurus mini compaq", THESAURUS_CODE],
+    "th:" : ["th:", "an English Thesaurus", "Thesaurus full", THESAURUS_CODE],
+    #"th:n" : ["th:n", "an English Thesaurus (without nearby words)", "Theasaurus without nearby words", THESAURUS_CODE],
+    "th:on" : ["th:on", "an English Thesaurus (compact)", "Thesaurus compact", THESAURUS_CODE],
 }
+
+# this is a list of dictionaries, sorted by name. It's build from g_availableDicts
+# each element is the key to g_availableDicts
+g_dictsSortedByName = None
+
+def buildDictsSortedByName():
+    global g_availableDicts, g_dictsSortedByName
+    assert None == g_dictsSortedByName
+    names = []
+    for val in g_availableDicts.values():
+        name = val[2]
+        names.append(name)
+    names.sort()
+    g_dictsSortedByName = []
+    for name in names:
+        # not very efficient, but what the hell
+        for (key, val) in g_availableDicts.items():
+            if val[2] == name:
+                g_dictsSortedByName.append(key)
+    print g_dictsSortedByName
+
+buildDictsSortedByName()
 
 def flagsHaveFlag(flags, flag):
     return -1 != flags.find(flag)
@@ -231,8 +250,8 @@ class DictLupyIndex:
             hits = self._index[dictCode].find(word)
         finally:
             self._lock.release()
-            
-	for h in hits:
+
+        for h in hits:
             results.append(h.get('title'))
 
         return results
@@ -691,7 +710,7 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags):
     currPos = ""
     while i < len(synsets):
         synset = synsets[i]
-        if flagsHaveFlag(flags, FLAG_COMPAQ):
+        if flagsHaveFlag(flags, FLAG_COMPACT):
             df.LineBreakElement()
             df.TextElement("\x95 ")
             df.TextElement(_posToText(synset.pos)+" ", style=styleNameGreen)
@@ -720,12 +739,12 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags):
             listNumber += 1
 
         df.TextElement(synset.defTxt)
-        if not flagsHaveFlag(flags, FLAG_EXAMPLES):
+        if not flagsHaveFlag(flags, FLAG_EXAMPLES_OFF):
             for ex in synset.examples:
                 df.LineBreakElement()
                 gtxt = df.TextElement("\""+ex+"\"")
                 gtxt.setStyleName(styleNameExample)
-        if len(synset.words) > 1 and not flagsHaveFlag(flags, FLAG_SYNONYMS):
+        if len(synset.words) > 1 and not flagsHaveFlag(flags, FLAG_SYNONYMS_OFF):
             if "" != synset.defTxt or len(synset.examples)>0:
                 df.LineBreakElement()
                 df.TextElement("Synonyms: ", style=styleNameBold)
@@ -742,7 +761,7 @@ def buildDefinitionFound(word, wordDef, nearbyWords, dictCode, flags):
 
         i += 1
 
-    if not flagsHaveFlag(flags, FLAG_NEARBY_WORDS):
+    if not flagsHaveFlag(flags, FLAG_NEARBY_WORDS_OFF):
         _buildNearbyWords(df, word, nearbyWords, dictCode, flags)
     return df
 
@@ -841,7 +860,8 @@ def getDictionaryDef(searchTerm, fDebug=False):
     return (DICT_DEF, udf)
 
 def _getAvailableDicts(private):
-    global g_availableDicts
+    global g_availableDicts, g_dictsSortedByName
+    assert None != g_dictsSortedByName
     initDictionary()
     if g_fDisabled:
         return (MODULE_DOWN, None)
@@ -851,7 +871,7 @@ def _getAvailableDicts(private):
     df.TextElement(" / Select dictionary")
     df.LineBreakElement(1,2)
 
-    for name in g_availableDicts:
+    for name in g_dictsSortedByName:
         df.BulletElement(False)
         df.TextElement(g_availableDicts[name][2], link="s+dictstats:%s" % g_availableDicts[name][0])
         df.PopParentElement()
