@@ -318,6 +318,8 @@ def getSpellcheckSuggestions(word):
     # connection to a new aspell process)
     if g_fAspellFailed:
         return None
+    # pass only one word to aspell
+    word = word.split()[0]
 
     suggestions = []
     g_aspellLock.acquire()
