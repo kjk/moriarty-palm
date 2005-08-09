@@ -574,16 +574,23 @@ g_allTests = [
   [70, [Fields.getUrl, "eBook-search: earth; doc pdf"], [Fields.outEBookSearchResults]],
   [71, [Fields.getUrl, "eBook-search: conrad; *"], [Fields.outEBookSearchResults]],
 
-  [72, [Fields.getUrl, "s+dictterm:wn:home"], [Fields.outDictDef]],
-  [73, [Fields.getUrl, "s+dictterm:wn:backstroke"], [Fields.outDictDef]],
-  [74, [Fields.getUrl, "s+dictterm:wn:we return definitions even for some garbage"], [Fields.outDictDef]],
+  [72, [Fields.getUrl, "s+dictterm:wn::home"], [Fields.outDictDef]],
+  [73, [Fields.getUrl, "s+dictterm:wn::backstroke"], [Fields.outDictDef]],
+  [74, [Fields.getUrl, "s+dictterm:wn::we return definitions even for some garbage"], [Fields.outDictDef]],
 
-  [75, [Fields.getUrl, "s+netflixbrowse:NewReleases?lnkctr=NavNewReleases;T"], [Fields.outNetflix]],
+  [75, [Fields.getUrl, "s+netflixlogin:8882f28c9aa404527c30c7d7ca85f92fe0bc8db18638ab6701d39ae045dead3933c456a009c6a3c2f477732c9b8c57f63cef9be446213ab22bcc464325cc810d"], [Fields.outNetflixLoginOk]],
+  [76, [Fields.getUrl, "s+netflixbrowse:NewReleases?lnkctr=NavNewReleases;T"], [Fields.outNetflix]],
 
-  [76,  [Fields.getUrl, "pediarandom"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
-  [77,  [Fields.getUrl, "pediarandom:"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
+  [77,  [Fields.getUrl, "pediarandom"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
+  [78,  [Fields.getUrl, "pediarandom:"], [[Fields.error, str(ServerErrors.invalidRequest)]]],
 
-  [78,  [Fields.get411ReversePhone , "216-479-2500"], [Fields.out411ReversePhoneResult]],
+  [79,  [Fields.get411ReversePhone , "216-479-2500"], [Fields.out411ReversePhoneResult]],
+
+  [80, [Fields.getUrl, "s+dictterm:th::book"], [Fields.outDictDef]],
+  [81, [Fields.getUrl, "s+dictstats:"], [Fields.outDictDef]],
+  [82, [Fields.getUrl, "s+dictstats:wn:"], [Fields.outDictStats]],
+  [83, [Fields.getUrl, "s+dictterm:th:invalid"], [[Fields.error, str(ServerErrors.unexpectedRequestArgument)]]],
+
  ]
 
 def checkTestNumbersUnique():
