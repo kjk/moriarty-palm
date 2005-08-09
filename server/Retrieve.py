@@ -3,7 +3,7 @@
 #
 # All functions related to retrieving data from other servers
 
-import urllib, urllib2, random, time, socket, cookielib, StringIO
+import gzip, urllib, urllib2, random, time, socket, cookielib, StringIO
 from httplib import HTTPConnection, HTTPException
 from ResultType import *
 from arsutils import log, exceptionAsStr, SEV_LOW, SEV_MED, SEV_HI, SEV_EXC, Timer
