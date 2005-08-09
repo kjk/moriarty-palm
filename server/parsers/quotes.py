@@ -25,7 +25,9 @@ def addQuotesToDefinition(df, items, modulesInfo):
             first = False
         else:
             df.LineBreakElement(3,2)
-        df.TextElement(item[1])
+        text = item[1].split("<")[0]
+        text = item[1].split("&lt;")[0]
+        df.TextElement(text.strip())
         te = df.TextElement(item[0], style=styleNameBold)
         te.setJustification(justRight)
 
