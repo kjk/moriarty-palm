@@ -13,24 +13,19 @@ Fixing parsing errors on the server is a priority.
 
                     ## Szymon ##
 
+## add South Korean Won (KRW) currency to currencies module (a user requested 
+that)
+
 ## finish dictionary module
 
 Dictionary files/structure is already there. What remains to be done:
 
-- fix dictionary unit tests 
 - add webster dictionary
-
-## add South Korean Won (KRW) currency to currencies module (a user requested 
-that)
 
                         ## kjk ##
 
 ## ongoing: review new code, new modules, test InfoMan, provide feedback and
   suggestions for improvements
-
-## script that automates process of releasing a new version by building all 
-necessary files (shipping InfoMan.prc version (our and for PalmGear), 
-InfoMan.zip with embedded documention for us and PalmGear)
 
 ## release InfoMan 1.5 with encyclopedia module
 

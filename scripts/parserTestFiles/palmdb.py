@@ -119,7 +119,8 @@ class PDBRecordFromDisk(PDBRecord):
     data = property(_getData,PDBRecord._setData,PDBRecord._delData)
 
 class PDB(object):
-    def __init__(self,fileName=None):
+    def __init__(self,fileName=None,fDisableRecordCheck=False):
+        self.fDisableRecordCheck = fDisableRecordCheck
         self._fileName = fileName
         self._records = []
         if fileName != None:
@@ -232,7 +233,12 @@ class PDB(object):
             # 5, 3, uniqueId, set to 0 (we don't care about it and don't expose it to users)
             recHeaderList.append( struct.unpack(">LB3s", fo.read(8) ) )
             if recHeaderList[n][_OFFSET] >= fileSize:
-                self._raiseInvalidFile()
+                if not self.fDisableRecordCheck:
+                    self._raiseInvalidFile()
+
+        if self.fDisableRecordCheck:
+            fo.close()
+            return
 
         for n in range(_recordsCount):
             print "Offset of rec %d: %d" % (n+1,recHeaderList[n][_OFFSET])
@@ -247,6 +253,12 @@ class PDB(object):
                                                     recHeaderList[n][_OFFSET],
                                                     recSize) )
         fo.close()
+
+    def _getVersion(self):
+        return self._version
+    def _setVersion(self,ver):
+        self._version = ver
+    ver = property(_getVersion, _setVersion)
 
     def _getName(self):
         return self._name

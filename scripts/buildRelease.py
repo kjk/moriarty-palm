@@ -10,7 +10,7 @@
 #
 #  Requirements:
 #  - website docs must already exist
-import sys, os, os.path, string, subprocess, StringIO, cStringIO, bz2, time, traceback, smtplib
+import sys, os, os.path, string, subprocess, StringIO, cStringIO, bz2, time, traceback, smtplib, zipfile, palmdb
 
 g_mailTxt = []
 def logToMail(txt):
@@ -63,6 +63,7 @@ else:
     sys.exit(0)
 
 INFOMAN_MCP = os.path.join(REPO_INFOMAN, "moriarty.mcp")
+FLICKR_MCP = os.path.join(REPO_INFOMAN, "FlickrUploader", "FlickrUploader.mcp")
 
 SHIPPING_TYPE = "Shipping"
 PALMGEAR_TYPE = "Shipping PalmGear"
@@ -235,6 +236,7 @@ def copyFile(srcPath, dstPath, fCompressed=False):
         foDest.close()        
 
 DST_DIR = "c:\\kjk\\tmp\\InfoManRelease"
+WEB_DIR = "c:\\kjk\\src\\mine\\web\\arslexis\\www\\palm\\infoman"
 
 # cleanupDirIfExists will remove everything underneath dir but not
 # the dir itself
@@ -274,44 +276,112 @@ def ensureDir(dir):
 # - print *.prc version number for easy double-checking that version is correct
 def buildRelease():
 
-    #(errCode, errTxt) = buildFullInfoMan(SHIPPING_TYPE)
-    #if 0 != errCode:
-    #    print "failed to build infoman of type %s, errCode=%s, errTxt=%s" % (SHIPPING_TYPE, str(errCode), errTxt)
-    #    return
+    timeStart = time.clock()
+    (errCode, errTxt) = buildFullInfoMan(SHIPPING_TYPE)
+    timeEnd = time.clock()
+    timeDurSecs = timeEnd - timeStart
+    if 0 != errCode:
+        print "failed to build infoman of type %s, errCode=%s, errTxt=%s" % (SHIPPING_TYPE, str(errCode), errTxt)
+        return
+    print "built ArsLexis Infoman in %.2f seconds" % timeDurSecs
 
-    #(errCode, errTxt) = buildFullInfoMan(PALMGEAR_TYPE)
-    #if 0 != errCode:
-    #    print "failed to build infoman of type %s, errCode=%s, errTxt=%s" % (PALMGEAR_TYPE, str(errCode), errTxt)
-    #    return
+    timeStart = time.clock()
+    (errCode, errTxt) = buildFullInfoMan(PALMGEAR_TYPE)
+    timeEnd = time.clock()
+    timeDurSecs = timeEnd - timeStart
+    print "built PalmGear Infoman in %.2f seconds" % timeDurSecs
+    if 0 != errCode:
+        print "failed to build infoman of type %s, errCode=%s, errTxt=%s" % (PALMGEAR_TYPE, str(errCode), errTxt)
+        return
 
-    #time.sleep(10)
-    #os.remove(FLICKR_MCP)
-    #os.remove(INFOMAN_MCP)
-    #updateInfoMan()
+    time.sleep(10)
+    os.remove(FLICKR_MCP)
+    os.remove(INFOMAN_MCP)
+    updateInfoMan()
 
     cleanupDirIfExists(DST_DIR)
     ensureDir(DST_DIR)
     ensureDir(os.path.join(DST_DIR, "ArsLexis"))
     ensureDir(os.path.join(DST_DIR, "ArsLexis", "InfoMan"))
+    ensureDir(os.path.join(DST_DIR, "ArsLexis", "InfoMan", "manual"))
+    ensureDir(os.path.join(DST_DIR, "ArsLexis", "InfoMan", "manual", "gfx"))
     ensureDir(os.path.join(DST_DIR, "PalmGear"))
     ensureDir(os.path.join(DST_DIR, "PalmGear", "InfoMan"))
+    ensureDir(os.path.join(DST_DIR, "PalmGear", "InfoMan", "manual"))
+    ensureDir(os.path.join(DST_DIR, "PalmGear", "InfoMan", "manual", "gfx"))
 
     srcPath = os.path.join(REPO_INFOMAN, SHIPPING_TYPE, "InfoMan.prc")
-    dstPath = os.path.join(DST_DIR, "ArsLexis", "InfoMan.prc")
-    copyFile(srcPath, dstPath)
     dstPath = os.path.join(DST_DIR, "ArsLexis", "InfoMan", "InfoMan.prc")
     copyFile(srcPath, dstPath)
 
     srcPath = os.path.join(REPO_INFOMAN, PALMGEAR_TYPE, "InfoMan.prc")
-    dstPath = os.path.join(DST_DIR, "PalmGear", "InfoMan.prc")
-    copyFile(srcPath, dstPath)
     dstPath = os.path.join(DST_DIR, "PalmGear", "InfoMan", "InfoMan.prc")
     copyFile(srcPath, dstPath)
 
-    # TODO: 
-    # - copy the docs to InfoMan dirs
-    # - zip the InfoMan directory into InfoMan.zip file
+    srcPath = os.path.join(WEB_DIR, "UserGuide.html")
+    dstPath = os.path.join(DST_DIR, "ArsLexis", "InfoMan", "UserGuide.html")
+    copyFile(srcPath, dstPath)
+
+    srcPath = os.path.join(WEB_DIR, "UserGuide-pg.html")
+    dstPath = os.path.join(DST_DIR, "PalmGear", "InfoMan", "UserGuide.html")
+    copyFile(srcPath, dstPath)
+
+    srcPath = os.path.join(WEB_DIR, "manual", "default.css")
+    dstPath = os.path.join(DST_DIR, "ArsLexis", "InfoMan", "manual", "default.css")
+    copyFile(srcPath, dstPath)
+    dstPath = os.path.join(DST_DIR, "PalmGear", "InfoMan", "manual", "default.css")
+    copyFile(srcPath, dstPath)
+
+    srcPath = os.path.join(WEB_DIR, "manual", "gfx", "arslexis-logo.gif")
+    dstPath = os.path.join(DST_DIR, "ArsLexis", "InfoMan", "manual", "gfx", "arslexis-logo.gif")
+    copyFile(srcPath, dstPath)
+    dstPath = os.path.join(DST_DIR, "PalmGear", "InfoMan", "manual", "gfx", "arslexis-logo.gif")
+    copyFile(srcPath, dstPath)
+
+    srcPath = os.path.join(WEB_DIR, "manual", "gfx", "main.gif")
+    dstPath = os.path.join(DST_DIR, "ArsLexis", "InfoMan", "manual", "gfx", "main.gif")
+    copyFile(srcPath, dstPath)
+    dstPath = os.path.join(DST_DIR, "PalmGear", "InfoMan", "manual", "gfx", "main.gif")
+    copyFile(srcPath, dstPath)
+
+    os.chdir(os.path.join(DST_DIR, "ArsLexis"))
+    zipFile = zipfile.ZipFile("InfoMan.zip", "w", zipfile.ZIP_DEFLATED)
+    zipFile.write(os.path.join("InfoMan", "InfoMan.prc"))
+    zipFile.write(os.path.join("InfoMan", "UserGuide.html"))
+    zipFile.write(os.path.join("InfoMan", "manual", "default.css"))
+    zipFile.write(os.path.join("InfoMan", "manual", "gfx", "main.gif"))
+    zipFile.write(os.path.join("InfoMan", "manual", "gfx", "arslexis-logo.gif"))
+    zipFile.close()
+
+    os.chdir(os.path.join(DST_DIR, "ArsLexis", "InfoMan"))
+    zipFile = zipfile.ZipFile("InfoMan.zip", "w", zipfile.ZIP_DEFLATED)
+    zipFile.write("InfoMan.prc")
+    zipFile.close()
+
+    os.chdir(os.path.join(DST_DIR, "PalmGear"))
+    zipFile = zipfile.ZipFile("InfoMan.zip", "w", zipfile.ZIP_DEFLATED)
+    zipFile.write(os.path.join("InfoMan", "InfoMan.prc"))
+    zipFile.write(os.path.join("InfoMan", "UserGuide.html"))
+    zipFile.write(os.path.join("InfoMan", "manual", "default.css"))
+    zipFile.write(os.path.join("InfoMan", "manual", "gfx", "main.gif"))
+    zipFile.write(os.path.join("InfoMan", "manual", "gfx", "arslexis-logo.gif"))
+    zipFile.close()
+
+    os.chdir(os.path.join(DST_DIR, "PalmGear", "InfoMan"))
+    zipFile = zipfile.ZipFile("InfoMan.zip", "w", zipfile.ZIP_DEFLATED)
+    zipFile.write("InfoMan.prc")
+    zipFile.close()
+
+    # TODO:
     # - print Infoman.prc version number
+    #   (currently palmdb.PDB() doesn't understand the InfoMan.prc, no idea why
+    #   (is it because of embedding flickr?))
+
+    print "InfoMan relase for ArsLexis is in directory:\n  %s" % os.path.join(DST_DIR, "ArsLexis")
+    #prc = palmdb.PDB(os.path.join(DST_DIR, "ArsLexis", "InfoMan", "InfoMan.prc"), fDisableRecordCheck=True)
+    #print "  name:    %s\n  version: %s" % (prc.name, prc.ver)
+
+    print "InfoMan relase for PalmGear is in directory:\n  %s" % os.path.join(DST_DIR, "ArsLexis")
 
 def main():
     buildRelease()
