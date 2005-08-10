@@ -390,6 +390,8 @@ def getDeviceNameByOcOd(oc, od):
             name = "Tungsten T3"
         elif od=='TnT5':
             name = "Tungsten T5"
+        elif od=='TunX':
+            name = "LifeDrive"
     return name
 
 def decodeDi(devInfo):

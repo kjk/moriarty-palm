@@ -19,7 +19,7 @@ from downloadStats import *
 #   - an average number of requests per day
 #   - for each request type, count of requests
 # - a generic procedure that generates html table out of list of items
-# - rewrite in Ruby On Rails with AJAX support
+# - in devices, show how many registered
 
 PORT = 1974
 
