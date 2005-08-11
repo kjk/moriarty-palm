@@ -293,7 +293,7 @@ def _update_cache():
                 key, value = item
 
                 if key in ["KRW"]:
-                    print "Func: %d" % (str(func))
+                    print "Func: %s" % (str(func))
                     print "Key: %s   Value: %s " % (key, str(value))
                 if tracked.has_key(key) and 0 != value:
                     out[key] = value
