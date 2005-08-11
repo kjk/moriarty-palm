@@ -183,6 +183,7 @@ _g_tracked_currencies = {
     "KGS": ("Soms", "Kyrgyzstan"),
     "KMF": ("Francs", "Comoros"),
     "KPW": ("Won", "Korea (North)"),
+    "KRW": ("Won", "Korea (South)"),
     "KWD": ("Dinars", "Kuwait"),
     "LAK": ("Kips", "Laos"),
     "LBP": ("Pounds", "Lebanon"),
@@ -290,6 +291,10 @@ def _update_cache():
                 continue
             for item in data.iteritems():
                 key, value = item
+
+                if key in ["KRW"]:
+                    print "Func: %d" % (str(func))
+                    print "Key: %s   Value: %s " % (key, str(value))
                 if tracked.has_key(key) and 0 != value:
                     out[key] = value
                     del tracked[key]

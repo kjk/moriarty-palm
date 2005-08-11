@@ -134,6 +134,7 @@ void CurrencyMainForm::handleControlSelect(const EventType& event)
             uint_t index = prefs.selectedCurrencies[sel];
             prefs.deselectCurrency(index);
             selCurrenciesList_.setSelection(0);
+            update();
             break;
         }
 
