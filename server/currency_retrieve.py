@@ -292,9 +292,9 @@ def _update_cache():
             for item in data.iteritems():
                 key, value = item
 
-                if key in ["KRW"]:
-                    print "Func: %s" % (str(func))
-                    print "Key: %s   Value: %s " % (key, str(value))
+                #if key in ["KRW"]:
+                #    print "Func: %s" % (str(func))
+                #    print "Key: %s   Value: %s " % (key, str(value))
                 if tracked.has_key(key) and 0 != value:
                     out[key] = value
                     del tracked[key]
