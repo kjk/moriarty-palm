@@ -9,11 +9,11 @@
 
 /* centralize all the strings that depend on the version number so that we
    don't forget update them when we update version number */
-#define appVersion             "1.5"
+#define appVersion             "1.6"
 /* this is what we send as our id (clientInfoField) to the server */
-#define clientInfo             "Palm 1.5"
+#define clientInfo             "Palm 1.6"
 
-#define updateCheckURL          _T("http://www.arslexis.com/updates/palm-infoman-1-5.html")
+#define updateCheckURL          _T("http://www.arslexis.com/updates/palm-infoman-1-6.html")
 
 #define appPrefDatabase appName " Prefs"
 

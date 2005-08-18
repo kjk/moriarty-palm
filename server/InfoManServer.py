@@ -1442,8 +1442,18 @@ class InfoManProtocol(LineReceiver):
         if 0 == len(currencies):
             return ServerErrors.moduleTemporarilyDown
 
+        # older clients have no KRW
+        krw = True
+        clientVersion = self.getFieldValue(Fields.clientInfo)
+        if "Palm " == clientVersion[:5]:
+            version = float(clientVersion[5:])
+            if version < 1.6:
+                print "Older client - ignore KRW"
+                krw = False
+
         for key, value in currencies.iteritems():
-            out.append([key, str(value)])
+            if key != "KRW" or krw:
+                out.append([key, str(value)])
 
         c = lambda x, y: cmp(x[0], y[0])
         out.sort(c)
