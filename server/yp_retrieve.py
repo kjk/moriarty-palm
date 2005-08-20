@@ -8,10 +8,13 @@ import m411
 import m411_by411
 from Retrieve import getHttp
 
+wy_com_address = "http://65.116.24.186"
+
+
 ## Person Search
 
 def _retrieve_yp_person(firstName,lastName,cityOrZip,state):
-    url = "http://www.yp.com/white-pages-results.php?f=%s&firstname_begins_with=1&l=%s&name_begins_with=1&c=%s&s=%s&client=&ver=1.4&type=r"
+    url = wy_com_address+"/white-pages-results.php?f=%s&firstname_begins_with=1&l=%s&name_begins_with=1&c=%s&s=%s&client=&ver=1.4&type=r"
     url = url % (urllib.quote(firstName),urllib.quote(lastName),urllib.quote(cityOrZip),urllib.quote(state))
     htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
@@ -115,8 +118,8 @@ def _retrieve_411_reverseAreaCode(code):
     return res, data    
 
 _g_retrieve_reverseAreaCode = [
-    _retrieve_411_reverseAreaCode,
-    _retrieve_yp_reverseAreaCode
+    _retrieve_yp_reverseAreaCode,
+    _retrieve_411_reverseAreaCode
 ]
 
 def retrieveReverseAreaCode(code):
@@ -257,7 +260,7 @@ def retrieveAreaCodeByCity(city, state):
 ## reverse Phone
 
 def _retrieve_yp_reversePhone(xxx,yyy,zzzz):
-    url = "http://yp.com/wp-p-results.php?npa=%s&np3=%s&np4=%s&client=1482&ver=1.2&type=p&phone=%s%s"
+    url = wy_com_address+"/wp-p-results.php?npa=%s&np3=%s&np4=%s&client=1482&ver=1.2&type=p&phone=%s%s"
     url = url % (xxx,yyy,zzzz,yyy,zzzz)
     htmlText = getHttp(url, retryCount=3)
     if htmlText is None:
@@ -309,10 +312,10 @@ def retrieveReversePhone(xxx,yyy,zzzz):
 
 ## Business Search
 
-ypServerUrlBusinessSearch             = "http://yp.com//yplist.php?cn=%s&cz=%s&cs2=%s&lc=&styp=1&flvl=1"
-ypServerUrlBusinessSearchYPsa         = "http://yp.com//yplist.php?cn=%s&cz=%s&cs2=%s&lc=&YPsa=1&styp=1&flvl=1"
-ypServerUrlBusinessSearchCategory     = "http://yp.com/ypcat.php?find=%s&radsearchby=cs&cz=%s&cs2=%s"
-ypServerUrlBusinessSearchCategoryYPsa = "http://yp.com/ypcat.php?find=%s&radsearchby=cs&cz=%s&YPsa=1&cs2=%s"
+ypServerUrlBusinessSearch             = wy_com_address+"//yplist.php?cn=%s&cz=%s&cs2=%s&lc=&styp=1&flvl=1"
+ypServerUrlBusinessSearchYPsa         = wy_com_address+"//yplist.php?cn=%s&cz=%s&cs2=%s&lc=&YPsa=1&styp=1&flvl=1"
+ypServerUrlBusinessSearchCategory     = wy_com_address+"/ypcat.php?find=%s&radsearchby=cs&cz=%s&cs2=%s"
+ypServerUrlBusinessSearchCategoryYPsa = wy_com_address+"/ypcat.php?find=%s&radsearchby=cs&cz=%s&YPsa=1&cs2=%s"
 
 def _retrieve_yp_business(name,cityOrZip,state,surrounding,categoryOrName):
     url = ""
@@ -421,7 +424,7 @@ def retrieveBusinessSearchByUrl(urlIn):
     type = "?"
     url = ""
     if urlIn.startswith("yplist.php"):
-        url = "http://yp.com/%s" % urlIn
+        url = wy_com_address+"/%s" % urlIn
         type = "yp"
     elif urlIn.startswith("/servlet"):
         url = "http://www.dexonline.com%s" % urlIn
