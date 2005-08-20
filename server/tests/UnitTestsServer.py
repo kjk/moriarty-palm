@@ -590,7 +590,6 @@ g_allTests = [
   [81, [Fields.getUrl, "s+dictstats:"], [Fields.outDictDef]],
   [82, [Fields.getUrl, "s+dictstats:wn:"], [Fields.outDictStats]],
   [83, [Fields.getUrl, "s+dictterm:th:invalid"], [[Fields.error, str(ServerErrors.unexpectedRequestArgument)]]],
-
  ]
 
 def checkTestNumbersUnique():
