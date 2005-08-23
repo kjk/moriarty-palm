@@ -68,57 +68,59 @@ def personSearch(htmlTxt):
         return (res, None)
 
     tableSummaryList = soup.first("table", {"id":"listings"})
-    for tr in tableSummaryList.fetch("tr"):
-        td = tr.first("td")
-        if td:
-            spanList = td.fetch("span",{"id":"subtext"})
-            if len(spanList) == 2:
-                spanTextB = spanList[0]
-                spanText = spanList[1]
-                if spanText and spanTextB:
-                    name = getAllTextFromTag(spanTextB).replace("\t"," ").replace("\n"," ").replace("   "," ").replace("  "," ").strip()
-                    textToSplit = getAllTextFromToInBrFormat(spanText,getLastElementFromTag(spanText).next)
-                    textSplitted = textToSplit.split("<br>")
-                    if len(textSplitted) > 2:
-                        address = textSplitted[0].strip()
-                        city = textSplitted[1].strip()
-                        phone = textSplitted[2].strip()
-                        returned.append([name, address, city, phone])
-                    elif len(textSplitted) == 2:
-                        address = ""
-                        city = textSplitted[0].strip()
-                        phone = textSplitted[1].strip()
-                        returned.append([name, address, city, phone])
+    if tableSummaryList:
+        for tr in tableSummaryList.fetch("tr"):
+            td = tr.first("td")
+            if td:
+                spanList = td.fetch("span",{"id":"subtext"})
+                if len(spanList) == 2:
+                    spanTextB = spanList[0]
+                    spanText = spanList[1]
+                    if spanText and spanTextB:
+                        name = getAllTextFromTag(spanTextB).replace("\t"," ").replace("\n"," ").replace("   "," ").replace("  "," ").strip()
+                        textToSplit = getAllTextFromToInBrFormat(spanText,getLastElementFromTag(spanText).next)
+                        textSplitted = textToSplit.split("<br>")
+                        if len(textSplitted) > 2:
+                            address = textSplitted[0].strip()
+                            city = textSplitted[1].strip()
+                            phone = textSplitted[2].strip()
+                            returned.append([name, address, city, phone])
+                        elif len(textSplitted) == 2:
+                            address = ""
+                            city = textSplitted[0].strip()
+                            phone = textSplitted[1].strip()
+                            returned.append([name, address, city, phone])
 
     if 0 == len(returned):
         # some special numbers...
         tableSummaryList = soup.first("table", {"id":"listings"})
         name = ""
-        for tr in tableSummaryList.fetch("tr"):
-            td = tr.first("td")
-            if td:
-                spanList = td.fetch("span",{"id":"subtext"})
-                if 0 == len(spanList):
-                    spanList = td.fetch("div",{"id":"subtext"})
-                if len(spanList) == 1:
-                    name = getAllTextFromTag(spanList[0])
-                elif len(spanList) % 4 == 0:
-                    ind = 0
-                    while ind < len(spanList):
-                        smallName = getAllTextFromTag(spanList[ind])
-                        textToSplit = getAllTextFromToInBrFormat(spanList[ind+3],getLastElementFromTag(spanList[ind+3]).next)
-                        parts = textToSplit.split("<br>")
-                        if len(parts) > 2:
-                            address = parts[0].strip()
-                            city = parts[1].strip()
-                            phone = parts[2].strip()
-                            returned.append([name + " (%s)"%smallName, address, city, phone])
-                        elif len(parts) == 2:
-                            address = smallName
-                            city = parts[0].strip()
-                            phone = parts[1].strip()
-                            returned.append([name, address, city, phone])
-                        ind += 4
+        if tableSummaryList:
+            for tr in tableSummaryList.fetch("tr"):
+                td = tr.first("td")
+                if td:
+                    spanList = td.fetch("span",{"id":"subtext"})
+                    if 0 == len(spanList):
+                        spanList = td.fetch("div",{"id":"subtext"})
+                    if len(spanList) == 1:
+                        name = getAllTextFromTag(spanList[0])
+                    elif len(spanList) % 4 == 0:
+                        ind = 0
+                        while ind < len(spanList):
+                            smallName = getAllTextFromTag(spanList[ind])
+                            textToSplit = getAllTextFromToInBrFormat(spanList[ind+3],getLastElementFromTag(spanList[ind+3]).next)
+                            parts = textToSplit.split("<br>")
+                            if len(parts) > 2:
+                                address = parts[0].strip()
+                                city = parts[1].strip()
+                                phone = parts[2].strip()
+                                returned.append([name + " (%s)"%smallName, address, city, phone])
+                            elif len(parts) == 2:
+                                address = smallName
+                                city = parts[0].strip()
+                                phone = parts[1].strip()
+                                returned.append([name, address, city, phone])
+                            ind += 4
         
     if 0 == len(returned):
         return (UNKNOWN_FORMAT, None)
