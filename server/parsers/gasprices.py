@@ -208,7 +208,7 @@ def getGasPricesForZip(jar, zipCode, dbgLevel=0):
             return (LOCATION_UNKNOWN, None)
 
     # print "**** location: %s" % url
-    htmlTxt = getHttp(url, referer=gasBuddyUrl, dbgLevel=dbgLevel, cookieJar = jar)
+    htmlTxt = getHttp(url, referer=gasBuddyUrl, dbgLevel=dbgLevel, cookieJar = jar, retryCount=2)
     if None == htmlTxt:
         return retrieveFailed(url)
 
@@ -242,7 +242,7 @@ def getGasPricesForZip(jar, zipCode, dbgLevel=0):
         url = "%s%s" % (server, htmlTxt[urlStart:urlEnd])
         if dbgLevel > 0:
             print "url: %s" % url
-        htmlTxt = getHttp(url, referer=gasBuddyUrl, dbgLevel=dbgLevel, cookieJar = jar)
+        htmlTxt = getHttp(url, referer=gasBuddyUrl, dbgLevel=dbgLevel, cookieJar = jar, retryCount=2)
         if None == htmlTxt:
             return retrieveFailed(url)
 
