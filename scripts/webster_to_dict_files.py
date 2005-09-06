@@ -8,19 +8,19 @@ from parserUtils import *
 from entities import convertEntities
 
 DATA_FILE_NAMES = [
-##    "test.txt",
+    "test.txt",
     
-    "pgw050ab.txt",
-    "pgw050c.txt",
-    "pgw050de.txt",
-    "pgw050fh.txt",
-    "pgw050il.txt",
-    "pgw050mo.txt",
-    "pgw050pq.txt",
-    "pgw050r.txt",
-    "pgw050s.txt",
-    "pgw050tw.txt",
-    "pgw050xz.txt",
+##    "pgw050ab.txt",
+##    "pgw050c.txt",
+##    "pgw050de.txt",
+##    "pgw050fh.txt",
+##    "pgw050il.txt",
+##    "pgw050mo.txt",
+##    "pgw050pq.txt",
+##    "pgw050r.txt",
+##    "pgw050s.txt",
+##    "pgw050tw.txt",
+##    "pgw050xz.txt",
     ]
 
 OUT_DIR = "."
@@ -304,6 +304,8 @@ def convert(text):
             else:
                 g_allIgnoredP += str(p) + "\n\n"
 
+def sortIgnoreCase(el1, el2):
+    return cmp(el1.lower(), el2.lower())
 
 def main():
     global g_wordsDict, g_dataTxt, g_words
@@ -335,7 +337,7 @@ def main():
     for name in g_wordsDict:
         g_words.append(name)
     print " sorting words list"
-    g_words.sort()
+    g_words.sort(sortIgnoreCase)
 
     print "save files..."
     fo = open(OUT_DICT_FILE_PIC, "wb")

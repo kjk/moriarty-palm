@@ -68,6 +68,9 @@ g_pos = {"N" : "n",
          "b" : "v", ## this will be ignored
          }
 
+def sortIgnoreCase(el1, el2):
+    return cmp(el1.lower(), el2.lower())
+
 def convert(text):
     wordsDict = {}
     defText = ""
@@ -158,7 +161,7 @@ def convert(text):
     allWords = []
     for word in wordsDict:
         allWords.append(word)
-    allWords.sort()    
+    allWords.sort(sortIgnoreCase)
     print " finished."
     return wordsDict, defText, allWords
 
