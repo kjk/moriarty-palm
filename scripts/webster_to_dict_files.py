@@ -8,19 +8,19 @@ from parserUtils import *
 from entities import convertEntities
 
 DATA_FILE_NAMES = [
-    "test.txt",
+##    "test.txt",
     
-##    "pgw050ab.txt",
-##    "pgw050c.txt",
-##    "pgw050de.txt",
-##    "pgw050fh.txt",
-##    "pgw050il.txt",
-##    "pgw050mo.txt",
-##    "pgw050pq.txt",
-##    "pgw050r.txt",
-##    "pgw050s.txt",
-##    "pgw050tw.txt",
-##    "pgw050xz.txt",
+    "pgw050ab.txt",
+    "pgw050c.txt",
+    "pgw050de.txt",
+    "pgw050fh.txt",
+    "pgw050il.txt",
+    "pgw050mo.txt",
+    "pgw050pq.txt",
+    "pgw050r.txt",
+    "pgw050s.txt",
+    "pgw050tw.txt",
+    "pgw050xz.txt",
     ]
 
 OUT_DIR = "."
@@ -232,11 +232,19 @@ def addWord(word, pos, defs, quotes):
     
 
 def getQuote(quoteTag):
-    # todo: ...
+    # we add quote as text\n^author pair, or text when author is unknown or missing
 
-
-    
-    return '%s' % getAllTextFromTag(quoteTag)
+    allText = getAllTextFromTag(quoteTag)
+    iList = quoteTag.fetch("i")
+    author = ""
+    if len(iList) > 0:
+        author = getAllTextFromTag(iList[-1])
+        
+    if allText[allText.find(author):] == author:
+        allText = allText[:allText.find(author)].strip()
+        allText += "\n^" + author
+       
+    return '%s' % allText
     
 def convert(text):
     global g_allIgnoredP
