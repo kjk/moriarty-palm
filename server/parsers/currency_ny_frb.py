@@ -50,10 +50,10 @@ def parseCurrencyData(htmlText):
         if isFirstRow:
             isFirstRow = False
             continue
-        region = str(cells[1].fetch("div")[0].contents[0]).strip()
+        region = retrieveContents(cells[1].fetch("div")[0].contents[0])
         try:
-            rate = float(str(cells[3].fetch("div")[0].contents[0]).strip())
-            if "*" == str(cells[0].contents[0]).strip():
+            rate = float(retrieveContents(cells[3].fetch("div")[0].contents[0]))
+            if "*" == retrieveContents(cells[0].contents[0]):
                 rate = 1/rate
             abbrev = _g_regionsToISO[region]
             currencies[abbrev] = rate
@@ -62,14 +62,17 @@ def parseCurrencyData(htmlText):
     return (RESULTS_DATA, currencies)
 
 def main():
-    import sys
-    fileName = sys.argv[1]
-    f = open(fileName, "r")
-    try:
-        htmlText = f.read()
-        print parseCurrencyData(htmlText)
-    finally:
-        f.close()
+#     import sys
+#     fileName = sys.argv[1]
+#     f = open(fileName, "r")
+#     try:
+#         htmlText = f.read()
+#         print parseCurrencyData(htmlText)
+#     finally:
+#         f.close()
+    import currency_retrieve
+    print currency_retrieve._retrieve_ny_frb()
+
 
 if __name__ == "__main__":
     main()
