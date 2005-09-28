@@ -8,7 +8,7 @@ from parserUtils import *
 from entities import convertEntities
 
 DATA_FILE_NAMES = [
-##    "test.txt",
+#    "test.txt",
     
     "pgw050ab.txt",
     "pgw050c.txt",
@@ -136,12 +136,11 @@ def removeAccents(text):
 def handleSeeWords():
     global g_seeWordDict, g_dataTxt
     global g_wordsDict
-    return
     for name in g_seeWordDict:
         try:
             if g_wordsDict[g_seeWordDict[name]] != None:
 
-                textToSave = "^" + g_seeWordDict[name] + "\n"
+                textToSave = "!" + g_seeWordDict[name] + "\n"
                 length = len(textToSave)
                 offset = len(g_dataTxt)
                 pair = [offset, length]
