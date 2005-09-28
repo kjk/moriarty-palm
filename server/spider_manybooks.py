@@ -57,7 +57,7 @@ def _save_spider_data(data):
     done = False
     ex = None
     while not done:
-        try:        
+        try:
             shutil.copyfile(tmp_path, _g_spider_data_path)
             done = True
         except KeyboardInterrupt, e:
@@ -69,7 +69,7 @@ def _save_spider_data(data):
 def _transform_author(a):
     if a.lower() in ebooks.g_author_exceptions:
         return a
-        
+
     aa = a.rsplit(None, 1)
     if len(aa) < 2:
         return a
@@ -81,6 +81,9 @@ def _spider_book_info(url, letter):
         soup = BeautifulSoup()
         soup.feed(html)
         h1 = soup.first("h1")
+        if h1 is None:
+            return None
+
         assert h1 is not None
         title = retrieveContents(h1).decode("iso-8859-1")
 
@@ -127,7 +130,7 @@ def _spider_book_info(url, letter):
 
                 val = opt["value"]
                 formats.append((format, val))
-                
+
             except Exception, ex:
                 log(SEV_EXC, exceptionAsStr(ex))
         formats.sort()
@@ -177,7 +180,7 @@ class _Spider:
         if not os.path.exists(ebooks.g_storage):
             return
         map(os.remove, [os.path.join(ebooks.g_storage, name) for name in os.listdir(ebooks.g_storage) if cls.temp_file_pattern.match(name)])
-    
+
     def __init__(self, force = False):
         self._lock = thread.allocate_lock()
         self._file_count = 0
@@ -190,7 +193,7 @@ class _Spider:
         else:
             self._data = _load_spider_data()
         self._merge_temps()
-        
+
     def _flush_books(self):
         f = file(os.path.join(ebooks.g_storage, "manybooks-spider-%03d.tmp" % self._file_count), "wb")
         try:
@@ -241,23 +244,24 @@ class _Spider:
                 i = _find_book_index(books, url, index)
             finally:
                 self._lock.release()
-                
+
             if -1 != i:
                 index = i + 1
             else:
                 book = _spider_book_info(url, letter)
-                spidered += 1
-                self._lock.acquire()
-                try:
-                    self._fresh_books.append((letter, index + offset, book))
-                    if len(self._fresh_books) == self.flush_after:
-                        self._flush_books()
-                    offset += 1
-                    self._offsets[letter] = offset
-                    if self._data[letter][0] + offset  == count:
-                        return True, count, spidered
-                finally:
-                    self._lock.release()
+                if book is not None:
+                    spidered += 1
+                    self._lock.acquire()
+                    try:
+                        self._fresh_books.append((letter, index + offset, book))
+                        if len(self._fresh_books) == self.flush_after:
+                            self._flush_books()
+                        offset += 1
+                        self._offsets[letter] = offset
+                        if self._data[letter][0] + offset  == count:
+                            return True, count, spidered
+                    finally:
+                        self._lock.release()
         return (index + offset == count), index, spidered
 
     def _spider_letter_page(self, letter, page, index):
@@ -273,7 +277,7 @@ class _Spider:
                 self._data[letter] = [0, []]
         finally:
             self._lock.release()
-        
+
         page = 1
         index = 0
         count = 0
@@ -312,13 +316,13 @@ class _Spider:
                 finally:
                     f.close()
                     os.remove(temp)
-                    
+
                 for letter, index, book in data:
                     letter_data = self._data.get(letter, None)
                     if letter_data is None:
                         letter_data = [0, []]
                         self._data[letter] = letter_data
-                        
+
                     assert index <= letter_data[0]
                     letter_data[1].insert(index, book)
                     letter_data[0] += 1
@@ -331,7 +335,7 @@ class _Spider:
 
         threads = []
         exception = None
-        
+
         try:
             if True:
                 step = 2
@@ -359,7 +363,7 @@ class _Spider:
 
         if exception is not None:
             raise exception
-        
+
         print "Spider finished, %d new records added." % count
         return count
 

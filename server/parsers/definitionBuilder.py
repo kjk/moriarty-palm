@@ -415,7 +415,7 @@ class Definition:
         if underline != None:
             value += "text-decoration:%s;" % underline
         return value
-        
+
     def AddStyle(self, name, fontSize=None, color=None, backgroundColor=None, bold=None, italics=None, superscript=None, subscript=None, strike=None, underline=None):
         if None == self._styles:
             self._styles = []
@@ -426,7 +426,7 @@ class Definition:
 
     def setTitle(self, title):
         self._title = title
-        
+
 ## Build style values...
 styleValueFontSizeLarge    = "large"
 styleValueUnderlineDotted  = "x-underline-dotted"
@@ -440,7 +440,7 @@ class BCF:
         self.elementsCount = 0
         self.version = None
         self.totalLength = 0
-        
+
         start = 0
         end = len(bcf)
         # parse header
@@ -466,7 +466,7 @@ class BCF:
                 paramsEnd += start
                 while start < paramsEnd:
                     paramCode = bcf[start:start+4]
-                    start += 4                    
+                    start += 4
                     assert paramCode in paramsTypes
                     lenCode = bcf[start]
                     start += 1
@@ -477,7 +477,7 @@ class BCF:
                         paramLen = int(lenCode,16)
                     value = bcf[start:start+paramLen]
                     start += paramLen
-                    el.addParam(Param(paramCode, value))            
+                    el.addParam(Param(paramCode, value))
 
         assert self.elementsCount == len(self.elements)
 
@@ -502,4 +502,4 @@ class BCF:
                     if param._value.startswith(startsWith):
                         links.append(param._value)
         return links
-        
+
