@@ -305,6 +305,7 @@ class BeautifulSoup(SGMLParser, Tag):
             self.feed(text)
 
     def feed(self, text):
+        text = text.replace("<! -- HMYYH Project Engage link location -->", "")
         SGMLParser.feed(self, text)
         self.endData()
             
