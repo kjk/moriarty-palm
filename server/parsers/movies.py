@@ -62,6 +62,9 @@ def parseMovies(htmlTxt):
             return (LOCATION_UNKNOWN,None)
         if htmlTxt[9:].startswith(".movies.dcn.yahoo.com uncompressed/chunked"):
             return (LOCATION_UNKNOWN,None)
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
+
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
 

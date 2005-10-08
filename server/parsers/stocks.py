@@ -43,6 +43,9 @@ def testNoResults(soup):
 #   NO_RESULTS: no results found
 #   UNKNOWN_FORMAT : resultBody is None
 def parseList(htmlTxt):
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
+    
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
 
@@ -113,6 +116,8 @@ def parseList(htmlTxt):
 #   NO_RESULTS: no results found
 #   UNKNOWN_FORMAT : resultBody is None
 def parseListValidateLast(htmlTxt):
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
 
@@ -188,6 +193,8 @@ def parseListValidateLast(htmlTxt):
 #   NO_RESULTS: no results found
 #   UNKNOWN_FORMAT : resultBody is None
 def parseName(htmlTxt):
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
 
@@ -229,6 +236,8 @@ def parseName(htmlTxt):
 #   UNKNOWN_FORMAT : resultBody is None
 #   NO_RESULST : resultsBody in None (bad symbol)
 def parseStock(htmlTxt):
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
 

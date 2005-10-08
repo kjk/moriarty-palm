@@ -26,6 +26,8 @@ horoscopeUrlLink       = "L"
 
 # htmlTxt is a html page
 def parseHoroscope(htmlTxt):
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
 

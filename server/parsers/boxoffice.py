@@ -32,6 +32,8 @@ def retrieveBoxOffice(fDebug=False):
 
 def parseYahooBoxOfficeOld(htmlTxt, url=None):
     returned = []
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
     findTable = soup.fetch("table",{"border":"0", "cellpadding":"4", "cellspacing":"0", "width":"100%"})
@@ -98,6 +100,8 @@ def parseYahooBoxOffice(htmlTxt, url=None, fDebug=False):
     # stupid Yahoo! changed the format for box office charts and doesn't properly
     # close tr tag. hopefully this won't break things even when they (if) fix
     # their format
+    # this is funy
+    htmlTxt = htmlTxt.replace("<! -- ", "<!---")
     htmlTxt = string.replace(htmlTxt, "Theaters</a></B></Font></TD>", "Theaters</a></B></Font></TD></TR>")
     returned = []
     soup = BeautifulSoup()

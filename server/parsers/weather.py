@@ -384,7 +384,8 @@ def retrieveWeather(jar, location):
             htmlText2 = response.read()
         finally:
             response.close()
-
+        # this is funy
+        htmlText2 = htmlText2.replace("<! -- ", "<!---")
         return parseWeatherComNew(htmlText, htmlText2)
     else:
         request = urllib2.Request(weatherMultiselectServerUrl % urllib.quote(location))
