@@ -261,7 +261,8 @@ SERVER_DOWN_UPDATE_MAIL_FREQENCY = 60*60 # not more often than every hour
 #SERVER_DOWN_UPDATE_MAIL_FREQENCY = 60
 
 # list of e-mail addresses to which send the e-mail
-EMAILS_TO_NOTIFY_ABOUT_SERVER_STATE = ["krzysztofk@pobox.com", "kjk@arslexis.com", "kkowalczyk@gmail.com", "szknitter@wp.pl", "smiech@op.pl", "szknitter@mail.ru", "a.ciarkowski@interia.pl"]
+#EMAILS_TO_NOTIFY_ABOUT_SERVER_STATE = ["krzysztofk@pobox.com", "kjk@arslexis.com", "kkowalczyk@gmail.com", "szknitter@wp.pl", "smiech@op.pl", "szknitter@mail.ru", "a.ciarkowski@interia.pl"]
+EMAILS_TO_NOTIFY_ABOUT_SERVER_STATE = ["krzysztofk@pobox.com", "kjk@arslexis.com", "kkowalczyk@gmail.com"]
 # this is our rackshack server
 #MAILHOST = "ipedia.arslexis.com"
 MAILHOST = "127.0.0.1"

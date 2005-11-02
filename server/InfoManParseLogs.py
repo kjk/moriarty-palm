@@ -173,7 +173,8 @@ def fDeviceInfoUnique(deviceInfo):
 # Which mail server to use when sending an e-mail
 MAILHOST = None
 # list of e-mail addresses to which send the e-mail
-EMAILS_TO_NOTIFY = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com", "arslexis@mail.ru", "a.ciarkowski@interia.pl"]
+EMAILS_TO_NOTIFY = ["kkowalczyk@gmail.com"]
+#EMAILS_TO_NOTIFY = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com", "arslexis@mail.ru", "a.ciarkowski@interia.pl"]
 #EMAILS_TO_NOTIFY = ["szknitter@wp.pl", "smiech@op.pl"]
 
 FROM = None

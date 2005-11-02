@@ -32,8 +32,8 @@ g_fBuildDone = False
 
 # list of e-mail addresses to which send the e-mail
 
-MAIL_TO_ALL     = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com", "szknitter@wp.pl", "a.ciarkowski@interia.pl"]
 MAIL_TO_JUST_ME = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com"]
+MAIL_TO_ALL     = MAIL_TO_JUST_ME
 
 # MAIL_HOST must be set as an environment variable e.g. "127.0.0.1"
 MAIL_HOST = None

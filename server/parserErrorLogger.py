@@ -15,14 +15,15 @@ def getParsingFailuresDir():
 # list of e-mail addresses to which send the e-mail
 def getEmailsToNotifyAboutParsingFailures():
     userName = multiUserSupport.getServerUser()
-    addr = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com", "szknitter@wp.pl", "smiech@op.pl", "szknitter@mail.ru", "a.ciarkowski@interia.pl"]
+    addr = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com"]
+    #  addr = ["krzysztofk@pobox.com", "kkowalczyk@gmail.com", "szknitter@wp.pl", "smiech@op.pl", "szknitter@mail.ru", "a.ciarkowski@interia.pl"]
     # one of us?
     if "infoman-kjk"== userName:
         addr = ["krzysztofk@pobox.com"]
-    if "infoman-szymon"== userName:
-        addr = ["arslexis@wp.pl, arslexis@op.pl, arslexis@mail.ru"]
-    if "infoman-andrzej"== userName:
-        addr = ["a.ciarkowski@interia.pl"]
+#    if "infoman-szymon"== userName:
+#        addr = ["arslexis@wp.pl, arslexis@op.pl, arslexis@mail.ru"]
+#    if "infoman-andrzej"== userName:
+#        addr = ["a.ciarkowski@interia.pl"]
     return addr
 
 lastFileNumber = -1
