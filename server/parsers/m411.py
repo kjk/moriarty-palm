@@ -5,7 +5,7 @@
 #  411
 #  http://yp.com
 #
-import string
+import string, arsutils, sys
 try:
     from BeautifulSoup import BeautifulSoup
     from BeautifulSoup import Tag
@@ -439,14 +439,32 @@ def reverseZIPCodeLookup(htmlTxt):
 def ZIPCodeByCity(htmlTxt):
     return areaCodeByCity(htmlTxt)
 
+def usage():
+    print "usage: movies.py [-file $fileToParse]"
 
 def main():
-    fo = open("test.html","rt")
-    txt = fo.read()
+    fileName = arsutils.getRemoveCmdArg("-file")
+    if None == fileName:
+        usage()
+        sys.exit(0)
+
+    if 1 != len(sys.argv):
+        usage()
+        sys.exit(0)
+
+    fo = open(fileName, "rb")
+    htmlTxt = fo.read()
     fo.close()
-    code, body = reversePhoneLookup(txt)
-    print code
-    print body
+    (resultType, resultBody) = reversePhoneLookup(htmlTxt, fileName, fDebug=True)
+
+    if MODULE_DOWN == resultType:
+        print "module down"
+    if PARSING_FAILED == resultType:
+        print "parsing failed"
+    if RESULTS_DATA == resultType:
+        print "got BOXOFFICE"
+        print udfPrettyPrint(resultBody)
+        #print resultBody
 
 if __name__ == "__main__":
     main()

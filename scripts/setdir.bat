@@ -9,8 +9,11 @@ if %computername%==RABBAN goto SetAndrzejDVD
 echo "Don't know the setup for computer %computername%"
 exit
 
-:SetDVD
 :SetDVD2
+SET DIR=c:\kjk\src\moriarty_palm
+goto Done
+
+:SetDVD
 :SetTlap
 :SetKjklap1
 SET DIR=c:\kjk\src\mine\moriarty_palm
