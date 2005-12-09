@@ -1,4 +1,3 @@
-# -*- coding: cp1250 -*-
 import os, sys, string
 
 from array import array
@@ -237,13 +236,10 @@ class Element:
     def setOwnStyle(self, value):
         self.addParam(Param(paramStyleEntry, value))
 
-# used to sort styles
 def _cmpStyleByName(a,b):
     return cmp(a[0],b[0])
 
-##
-# Stores all DefinitnionElements.
-##
+# Stores all DefinitnionElements
 class Definition:
     def __init__(self):
         self._elements = []
