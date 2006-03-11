@@ -1,10 +1,4 @@
-#### Copyright: Krzysztof Kowalczyk
-# Owner: Szymon Knitter
-#
-# Purpose:
-#  411
-#  http://yp.com
-#
+# Purpose: handle parsing of 411 queries from http://yp.com
 import string, arsutils, sys
 try:
     from BeautifulSoup import BeautifulSoup
@@ -440,7 +434,7 @@ def ZIPCodeByCity(htmlTxt):
     return areaCodeByCity(htmlTxt)
 
 def usage():
-    print "usage: movies.py [-file $fileToParse]"
+    print "usage: m411.py [-file $fileToParse]"
 
 def main():
     fileName = arsutils.getRemoveCmdArg("-file")

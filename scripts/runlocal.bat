@@ -4,7 +4,6 @@
 @if %computername%==DVD goto SetDVD
 @if %computername%==DVD2 goto SetDVD
 @if %computername%==TLAP goto SetDVD
-@if %computername%==KJKLAP1 goto SetKjklap1
 @if %computername%==MAGG goto SetSzymon
 @if %computername%==GIZMO goto SetAndrzej
 @if %computername%==RABBAN goto SetAndrzejDVD
@@ -14,12 +13,7 @@
 
 :SetDVD
 @SET DSTDIR=c:\kjk\infoman\src
-@SET SRCDIR=c:\kjk\src\mine\moriarty_palm
-@goto SetupDone
-
-:SetKjklap1
-@SET DSTDIR=c:\kjk\infoman\src
-@SET SRCDIR=c:\kjk\src\mine\moriarty_palm
+@SET SRCDIR=c:\kjk\src\moriarty_palm
 @goto SetupDone
 
 :SetSzymon

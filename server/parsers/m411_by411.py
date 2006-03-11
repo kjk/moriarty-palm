@@ -1,12 +1,7 @@
-#### Copyright: Krzysztof Kowalczyk
-# Owner: Szymon Knitter
-#
-# Purpose:
-#  411
-#  http://www.411.com
-#
+# Purpose: handle parsing of 411 queries from http://www.411.com
 import string
 try:
+    import BeautifulSoup21
     from BeautifulSoup import BeautifulSoup
     from BeautifulSoup import Tag
 except Exception:
@@ -15,6 +10,7 @@ except Exception:
 from ResultType import *
 from entities import convertNamedEntities
 from entities import convertNumberedEntities
+from entities import convertEntities23
 from epicurious import uncapitalizeText
 from parserUtils import *
 
@@ -55,10 +51,44 @@ def testNoResults(soup):
             return TOO_MANY_RESULTS
     return RESULTS_DATA
 
-# Returns data in format:
-# RESULTS_DATA in UDF
-#
 def personSearch(htmlTxt):
+    returned = []
+    soup = BeautifulSoup21.BeautifulSoup(htmlTxt)
+
+    res = testNoResults(soup)
+    if RESULTS_DATA != res:
+        return (res, None)
+
+    divTag = soup.first("div", {"id" : "subtext"})
+    if not divTag:
+        print "No divTag"
+        return (UNKNOWN_FORMAT, None)
+    #print "Found divTag"
+    #print divTag
+    #print
+    #print divTag.span
+    #print
+    #print divTag.span.strong
+    spanTag = divTag.span
+    strongTag = divTag.span.strong
+    nameStr = convertNumberedEntities(strongTag.string.strip()) #.strip() #.string.strip()
+    print nameStr
+    addrStreetTag = spanTag.nextSibling
+    addrStreet = addrStreetTag.string.strip()
+    print addrStreet
+    addrCityTag = addrStreetTag.nextSibling.nextSibling
+    addrCity = addrCityTag.string.strip()
+    print addrCity
+    addrPhoneTag = addrCityTag.nextSibling.nextSibling
+    addrPhone = addrPhoneTag.string.strip()
+    print addrPhone
+    #print strongTag.nextSibling
+    #print strongTag.nextSibling.nextSibling
+    return (UNKNOWN_FORMAT, None)
+
+# Returns data in format:
+# [name, address, city, phone]+ in UDF
+def personSearch2(htmlTxt):
     returned = []
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
@@ -67,6 +97,7 @@ def personSearch(htmlTxt):
     if RESULTS_DATA != res:
         return (res, None)
 
+    # TODO: different search
     tableSummaryList = soup.first("table", {"id":"listings"})
     if tableSummaryList:
         for tr in tableSummaryList.fetch("tr"):
@@ -90,42 +121,42 @@ def personSearch(htmlTxt):
                             city = textSplitted[0].strip()
                             phone = textSplitted[1].strip()
                             returned.append([name, address, city, phone])
-
-    if 0 == len(returned):
-        # some special numbers...
-        tableSummaryList = soup.first("table", {"id":"listings"})
-        name = ""
-        if tableSummaryList:
-            for tr in tableSummaryList.fetch("tr"):
-                td = tr.first("td")
-                if td:
-                    spanList = td.fetch("span",{"id":"subtext"})
-                    if 0 == len(spanList):
-                        spanList = td.fetch("div",{"id":"subtext"})
-                    if len(spanList) == 1:
-                        name = getAllTextFromTag(spanList[0])
-                    elif len(spanList) % 4 == 0:
-                        ind = 0
-                        while ind < len(spanList):
-                            smallName = getAllTextFromTag(spanList[ind])
-                            textToSplit = getAllTextFromToInBrFormat(spanList[ind+3],getLastElementFromTag(spanList[ind+3]).next)
-                            parts = textToSplit.split("<br>")
-                            if len(parts) > 2:
-                                address = parts[0].strip()
-                                city = parts[1].strip()
-                                phone = parts[2].strip()
-                                returned.append([name + " (%s)"%smallName, address, city, phone])
-                            elif len(parts) == 2:
-                                address = smallName
-                                city = parts[0].strip()
-                                phone = parts[1].strip()
-                                returned.append([name, address, city, phone])
-                            ind += 4
+        if len(returned>0):
+            return (RESULTS_DATA,universalDataFormatReplaceEntities(returned))
         
-    if 0 == len(returned):
-        return (UNKNOWN_FORMAT, None)
-    return (RESULTS_DATA,universalDataFormatReplaceEntities(returned))
+    # some special numbers...
+    tableSummaryList = soup.first("table", {"id":"listings"})
+    name = ""
+    if tableSummaryList:
+        for tr in tableSummaryList.fetch("tr"):
+            td = tr.first("td")
+            if td:
+                spanList = td.fetch("span",{"id":"subtext"})
+                if 0 == len(spanList):
+                    spanList = td.fetch("div",{"id":"subtext"})
+                if len(spanList) == 1:
+                    name = getAllTextFromTag(spanList[0])
+                elif len(spanList) % 4 == 0:
+                    ind = 0
+                    while ind < len(spanList):
+                        smallName = getAllTextFromTag(spanList[ind])
+                        textToSplit = getAllTextFromToInBrFormat(spanList[ind+3],getLastElementFromTag(spanList[ind+3]).next)
+                        parts = textToSplit.split("<br>")
+                        if len(parts) > 2:
+                            address = parts[0].strip()
+                            city = parts[1].strip()
+                            phone = parts[2].strip()
+                            returned.append([name + " (%s)"%smallName, address, city, phone])
+                        elif len(parts) == 2:
+                            address = smallName
+                            city = parts[0].strip()
+                            phone = parts[1].strip()
+                            returned.append([name, address, city, phone])
+                        ind += 4
+        if len(returned>0):
+            return (RESULTS_DATA,universalDataFormatReplaceEntities(returned))
 
+    return (UNKNOWN_FORMAT, None)
 
 def sortByCityFunc(el1, el2):
     # el1 and el2 are tuples with first element being city name, 

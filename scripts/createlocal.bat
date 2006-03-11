@@ -3,7 +3,6 @@
 if %computername%==DVD goto SetDVD
 if %computername%==DVD2 goto SetDVD2
 if %computername%==TLAP goto SetTlap
-if %computername%==KJKLAP1 goto SetKjklap1
 if %computername%==MAGG goto SetSzymon
 if %computername%==GIZMO goto SetAndrzej
 if %computername%==RABBAN goto SetAndrzejDVD
@@ -21,9 +20,8 @@ rem (used by runlocal.bat)
 :SetDVD
 :SetDVD2
 :SetTlap
-:SetKjklap1
 SET DSTDIR=c:\kjk\infoman\src
-SET SRCDIR=c:\kjk\src\mine\moriarty_palm
+SET SRCDIR=c:\kjk\src\moriarty_palm
 SET COPY_LOB_CACHE=0
 goto SetupDone
 

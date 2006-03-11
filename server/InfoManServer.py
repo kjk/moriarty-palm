@@ -2629,7 +2629,7 @@ def main():
     if fDetectRemoveCmdFlag( "-disableregcheck" ):
         g_fDisableRegistrationCheck = True
 
-    dontUpdateEBooks = fDetectRemoveCmdFlag("-no-ebooks-update")
+    updateEBooks = fDetectRemoveCmdFlag("-ebooks-update")
 
     fDbExists = False
     try:
@@ -2670,7 +2670,7 @@ def main():
     log(SEV_MED, "Started InfoMan server on port %d\n" % port)
     thread.start_new_thread(currency_retrieve.startCurrencyCaching, ())
 
-    if not dontUpdateEBooks:
+    if updateEBooks:
         _check_ebooks_update()
 
     runServer(port, InfoManProtocol)

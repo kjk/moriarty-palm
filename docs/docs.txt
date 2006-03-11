@@ -1,0 +1,4 @@
+## Running the server locally on a pc
+
+run scripts\runlocal.bat
+

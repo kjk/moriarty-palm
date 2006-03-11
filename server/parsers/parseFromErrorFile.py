@@ -1,17 +1,27 @@
-# read the content of the parsing failures file and inokes
-# apropriate parser on the data in it. This is to make it easier
-# inspecting parsing failures
-# TODO: needs to be written
+import sys, m411_by411
 
-import sys, string
+def usageAndExit():
+    print "Usage: parseFromErrorFile.py $fileName"
+    sys.exit(0)
 
 def main():
-    # file name is the first argument
-    fileName = sys.argv[0]
-    print fileName
-    # read the file, parse the content and invoke proper parser
-    # based on it. dump the result to stdout
+    if len(sys.argv) != 2:
+        usageAndExit();
+    fileName = sys.argv[1]
+    fo = open(fileName, "rb")
+    query = fo.readline().strip()
+    queryArg = fo.readline().strip()
+    queryUrl = fo.readline().strip()
+    queryHtml = fo.read()
+    fo.close()
+    print "query: " + query
+    print "arg: " + queryArg
+    print "url:" + queryUrl
 
-if __main__ == "__main__":
+    if query == "411-Reverse-Phone":
+        res = m411_by411.reversePhoneLookup(queryHtml)
+        print res
+if __name__ == "__main__":
     main()
+
     
