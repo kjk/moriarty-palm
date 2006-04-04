@@ -92,17 +92,6 @@ def retrieveInternational(code):
 
 ## reverse area Code
 
-def _retrieve_yp_reverseAreaCode(code):
-    url = "http://yp.whitepages.com/log_feature/sort/search/Reverse_Areacode?npa=%s&sort=alpha"
-    url = url % code
-    htmlText = getHttp(url, retryCount=3)
-    if htmlText is None:
-        return (RETRIEVE_FAILED, None)
-    res, data = m411.reverseAreaCodeLookup(htmlText)
-    if res == UNKNOWN_FORMAT:
-        logParsingFailure("411-Reverse-Area-Code", code, htmlText, url)
-    return res, data    
-
 def _retrieve_411_reverseAreaCode(code):
     url = "http://www.411.com/log_feature/sort/search/Reverse_Areacode?npa=%s&sort=alpha"
     url = url % code
@@ -115,7 +104,7 @@ def _retrieve_411_reverseAreaCode(code):
     return res, data    
 
 _g_retrieve_reverseAreaCode = [
-    _retrieve_yp_reverseAreaCode,
+    m411.retrieveYpReverseAreaCode,
     _retrieve_411_reverseAreaCode
 ]
 

@@ -610,7 +610,7 @@ def retrieveSwitchboardBusiness(name,cityOrZip,state,surrounding,categoryOrName)
     if res == UNKNOWN_FORMAT:
         logParsingFailure("411-Business-Search", name+","+cityOrZip+","+state+","+surrounding+","+categoryOrName, htmlText, url)
     return res, data
-    
+
 def main():
     retrieveSwitchboardBusiness("hill", "", "IL", "No", "Name")
 

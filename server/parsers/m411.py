@@ -1,6 +1,7 @@
 # Purpose: handle parsing of 411 queries from http://yp.com
 import string, arsutils, sys
 try:
+    import BeautifulSoup21
     from BeautifulSoup import BeautifulSoup
     from BeautifulSoup import Tag
 except Exception:
@@ -11,6 +12,8 @@ from entities import convertNamedEntities
 from entities import convertNumberedEntities
 from epicurious import uncapitalizeText
 from parserUtils import *
+from Retrieve import getHttp, getHttpCached
+from parserErrorLogger import logParsingFailure
 
 # flags - just for tests
 m411NoResultsText = None
@@ -335,7 +338,6 @@ def reverseAreaCodeLookup(htmlTxt):
         return (UNKNOWN_FORMAT,m411UnknownFormatText)
     return (RESULTS_DATA,universalDataFormatReplaceEntities(returned))
 
-
 # Return data in format:
 # RESULTS_DATA in UDF
 #  <Person> <Address> <City> <Phone>
@@ -433,18 +435,69 @@ def reverseZIPCodeLookup(htmlTxt):
 def ZIPCodeByCity(htmlTxt):
     return areaCodeByCity(htmlTxt)
 
+def parseYpReverseAreaCode(htmlTxt):
+    result = []
+    if -1 != htmlTxt.find("search returned no results"):
+        #print "no results"
+        return (NO_RESULTS, None)
+    soup = BeautifulSoup21.BeautifulSoup(htmlTxt)
+
+    table = soup.first("table", {"id" : "listings"})
+    if 0 == len(table):
+        #print "parseYpReverseAreaCode: no table found"
+        return (NO_RESULTS, None)
+
+    trs = table.fetch("tr")
+    if 0 == len(trs):
+        #print "parseYpReverseAreaCode: no trs found"
+        return (NO_RESULTS, None)
+
+    trs = trs[1:] # first one is a header
+    for tr in trs:
+        tds = tr.fetch("td")
+        if 3 != len(tds):
+            continue
+        entry = [td.string.strip() for td in tds]
+        # print entry
+        result.append(entry)
+            
+    if 0 == len(result):
+        #print "parseYpReverseAreaCode: no results found!"
+        return (NO_RESULTS, None)
+        
+    #print "RESULTS_DATA len %d" % len(result)
+    return (RESULTS_DATA, universalDataFormatReplaceEntities(result))
+
+def retrieveYpReverseAreaCode(zipCode):
+    url = "http://yp.whitepages.com/log_feature/sort/search/Reverse_Areacode?npa=%s&sort=alpha" % zipCode
+    print "retrieveYpReverseAreaCode"
+    #use cached for testing
+    #htmlText = getHttpCached(url, retryCount=3)
+    htmlText = getHttp(url, retryCount=3)
+    if htmlText is None:
+        return (RETRIEVE_FAILED, None)
+    res, data = parseYpReverseAreaCode(htmlText)
+    if res == UNKNOWN_FORMAT:
+        logParsingFailure("411-Reverse-Area-Code", zipCode, htmlText, url)
+    return res, data    
+
 def usage():
-    print "usage: m411.py [-file $fileToParse]"
+    print "usage: m411.py [-file $fileToParse] [-reverseZip zipCode]"
 
 def main():
     fileName = arsutils.getRemoveCmdArg("-file")
-    if None == fileName:
+    zipCode = arsutils.getRemoveCmdArg("-reverseZip")
+    if None == fileName and None == zipCode:
         usage()
         sys.exit(0)
 
     if 1 != len(sys.argv):
         usage()
         sys.exit(0)
+
+    if None != zipCode:
+        retrieveYpReverseAreaCode(zipCode)
+        return
 
     fo = open(fileName, "rb")
     htmlTxt = fo.read()
