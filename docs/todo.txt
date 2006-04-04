@@ -1,5 +1,10 @@
 # This file is a random list of things that we can add to InfoMan.
-# todo-scheduled.txt is the file that contains the current schedule.
+
+## finish utf8 changes for server/client
+## finish wince InfoMan port
+## add South Korean Won (KRW) currency to currencies module (a user requested that)
+##Dictionary files/structure is already there. What remains to be done:
+ - add webster dictionary
 
 ## a simple windows gui program that pings the server from time to time (e.g. 
 every 5 min) and sends an e-mail if the server is down.

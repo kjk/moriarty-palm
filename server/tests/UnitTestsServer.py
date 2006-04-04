@@ -314,6 +314,10 @@ class ServerTests(unittest.TestCase):
         self.prepare411ReversePhone("425-882-0110")
         self.getResponse([Fields.out411ReversePhoneResult, Fields.transactionId])
 
+    def test_411ReversePhoneOk2(self):
+        self.prepare411ReversePhone("216-479-2500")
+        self.getResponse([Fields.out411ReversePhoneResult, Fields.transactionId])
+
     def test_411ReversePhoneNoResults(self):
         self.prepare411ReversePhone("555-555-5555")
         self.getResponse([Fields.outNoResults, Fields.transactionId])

@@ -46,7 +46,7 @@ g_testData = [
   ["data\\m411\\InternationalCodeSearch", m411.internationalCodeSearch],
   ["data\\m411\\PersonSearch", m411.personSearch],
   ["data\\m411\\BusinessSearch", m411.businessSearch],
-  ["data\\m411\\BusinessSearch\\switchboard", m411_by411.businessSearchSwitchboard],
+  ["data\\m411\\BusinessSearch\\switchboard", m411_by411.parseSwitchboardBusiness],
   #["data\\currency_exchangerate", currency_exchangerate.parseCurrencyData],
   ["data\\gasprices", gasprices.parseGas],
   ["data\\netflix\\browse", netflix.parseBrowse],

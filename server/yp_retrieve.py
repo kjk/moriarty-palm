@@ -1,15 +1,12 @@
+import urllib, urllib2
 from parserUtils import *
 from ResultType import *
 from arsutils import log, SEV_LOW, SEV_MED, SEV_HI, SEV_EXC, exceptionAsStr
 from parserErrorLogger import logParsingFailure
-import urllib
-import urllib2
-import m411
-import m411_by411
+import m411, m411_by411
 from Retrieve import getHttp
 
 wy_com_address = "http://65.116.24.186"
-
 
 ## Person Search
 
@@ -366,39 +363,8 @@ def _retrieve_dex_business(name,cityOrZip,state,surrounding,categoryOrName):
         logParsingFailure("411-Business-Search", name+","+cityOrZip+","+state+","+surrounding+","+categoryOrName, htmlText, url)
     return res, data
 
-
-switchboardServerUrlBusinessSearch            = "http://www.switchboard.com/bin/cgidir.dll?PR=116&mem=1&L=%s&A=&T=%s&S=%s&Z=&ST=1&SD=&LNK=43:24"
-switchboardServerUrlBusinessSearchZip         = "http://www.switchboard.com/bin/cgidir.dll?PR=116&mem=1&L=%s&A=&T=&Z=%s&S=%s&ST=1&SD=&LNK=43:24"
-switchboardServerUrlBusinessSearchCategory    = "http://www.switchboard.com/bin/cgidir.dll?MEM=1&PR=133&Search=Search&KW=%s&T=%s&Z=&S=%s"
-switchboardServerUrlBusinessSearchCategoryZip = "http://www.switchboard.com/bin/cgidir.dll?MEM=1&PR=133&Search=Search&KW=%s&T=&Z=%s&S=%s"
-
-def _retrieve_switchboard_business(name,cityOrZip,state,surrounding,categoryOrName):
-    ## from 
-    url = ""
-    zip = False
-    if cityOrZip.isdigit() and len(cityOrZip) == 5:
-        zip = True
-    if categoryOrName == "Name":
-        if zip:
-            url = switchboardServerUrlBusinessSearchZip % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
-        else:
-            url = switchboardServerUrlBusinessSearch % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
-    if categoryOrName == "Category":
-        if zip:
-            url = switchboardServerUrlBusinessSearchCategoryZip % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
-        else:
-            url = switchboardServerUrlBusinessSearchCategory % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
-
-    htmlText = getHttp(url)
-    if htmlText is None:
-        return (RETRIEVE_FAILED, None)
-    res, data = m411_by411.businessSearchSwitchboard(htmlText)
-    if res == UNKNOWN_FORMAT:
-        logParsingFailure("411-Business-Search", name+","+cityOrZip+","+state+","+surrounding+","+categoryOrName, htmlText, url)
-    return res, data
-
 _g_retrieve_business = [
-    _retrieve_switchboard_business,
+    m411_by411.retrieveSwitchboardBusiness,
     _retrieve_yp_business,
     _retrieve_dex_business
 ]
@@ -450,7 +416,7 @@ def retrieveBusinessSearchByUrl(urlIn):
     elif type == "dex":
         res, data = m411_by411.businessSearchDex(htmlText)
     elif type == "switch":
-        res, data = m411_by411.businessSearchSwitchboard(htmlText)
+        res, data = m411_by411.parseSwitchboardBusiness(htmlText)
 
     # ending
     if res == UNKNOWN_FORMAT:

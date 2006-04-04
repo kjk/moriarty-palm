@@ -2,3 +2,8 @@
 
 run scripts\runlocal.bat
 
+## Testing
+
+parse.bat $fileWithParsingErrors
+calls into server\parsers\parseFromErrorFile.py
+

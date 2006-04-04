@@ -1,5 +1,5 @@
 # Purpose: handle parsing of 411 queries from http://www.411.com
-import string
+import string, urllib, urllib2
 try:
     import BeautifulSoup21
     from BeautifulSoup import BeautifulSoup
@@ -8,11 +8,10 @@ except Exception:
     print "requires BeautifulSoup module from http://www.crummy.com/software/BeautifulSoup/"
     raise
 from ResultType import *
-from entities import convertNamedEntities
-from entities import convertNumberedEntities
-from entities import convertEntities23
-from epicurious import uncapitalizeText
+from entities import convertNamedEntities, convertNumberedEntities, convertEntities23
 from parserUtils import *
+from Retrieve import getHttp, getHttpCached
+from parserErrorLogger import logParsingFailure
 
 # flags - just for tests
 m411NoResultsText = None
@@ -51,7 +50,7 @@ def testNoResults(soup):
             return TOO_MANY_RESULTS
     return RESULTS_DATA
 
-def personSearch(htmlTxt):
+def personSearch2(htmlTxt):
     returned = []
     soup = BeautifulSoup21.BeautifulSoup(htmlTxt)
 
@@ -88,7 +87,7 @@ def personSearch(htmlTxt):
 
 # Returns data in format:
 # [name, address, city, phone]+ in UDF
-def personSearch2(htmlTxt):
+def personSearch(htmlTxt):
     returned = []
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
@@ -300,7 +299,6 @@ def reversePhoneLookup(htmlTxt):
     # unknown format - may be some business?
     # TODO:?
     return UNKNOWN_FORMAT, None
-    
 
 # Returns data in format: (this is not from 411, but from www.dexonline.com)
 # RESULTS_DATA - in UDF
@@ -406,12 +404,60 @@ def businessSearchDex(htmlTxt):
                     returned.append((name,href))
                     resultsCount += 1
         if 0 == resultsCount:
-            return (UNKNOWN_FORMAT,m411UnknownFormatText)
+            return (UNKNOWN_FORMAT, m411UnknownFormatText)
         else:
             return (MULTIPLE_SELECT,universalDataFormatReplaceEntities(returned))
             
     return (RESULTS_DATA,universalDataFormatReplaceEntities(returned))
 
+# Parse result of switchboard business search query
+# Possible results:
+#   RESULTS_DATA + list of [name, address, city, phone] in UDF
+#   NO_RESULTS if search returns no results
+# TODO:
+#  NO_CITY - if city name was not found
+def parseSwitchboardBusiness(htmlTxt):
+    result = []
+    #print "parseSwitchboardBusiness\n"
+
+    # the "no results" page has this string in it: "<!--YP_NORESULTS_KERNAL-->"
+    if -1 != htmlTxt.find("YP_NORESULTS_KERNAL"):
+        return (NO_RESULTS, None)
+
+    soup = BeautifulSoup21.BeautifulSoup()
+    soup.feed(htmlTxt)
+    listings = soup.fetch("div", {"class" : "listing"})
+
+    for listing in listings:
+        nameDiv = listing.first("div", {"class" : "name"})
+        nameTxt = nameDiv.string.strip()
+        #print nameTxt
+
+        addrDiv = listing.first("div", {"class" : "address"})
+        addrTxt = addrDiv.next.strip()
+        # TODO: somehow figureout zip code from url or fetch the page and parse it
+        cityTxt = addrDiv.br.next.strip().replace("zip code", "")
+        #print addrTxt
+        #print cityTxt
+
+        phoneDivs = listing.fetch("div", {"class" : "phone"})
+        phoneTxt = ""
+        for phoneDiv in phoneDivs:
+            spans = phoneDiv.fetch("span")
+            if 0 == len(spans):
+                continue
+            phoneTxtList = [span.string.strip() for span in spans]
+            phoneTxt = string.join(phoneTxtList, " ")
+            if len(phoneTxt) > 0:
+                break
+        #print phoneTxt
+        #print
+        result.append([nameTxt, addrTxt, cityTxt, phoneTxt])
+
+    if 0 == len(result):
+        return (NO_RESULTS, None)
+    return (RESULTS_DATA, universalDataFormatReplaceEntities(result))
+    #return (UNKNOWN_FORMAT,m411UnknownFormatText)
 
 # Returns data in format: (this is not from 411, but from www.switchboard.com)
 # RESULTS_DATA - in UDF
@@ -420,7 +466,8 @@ def businessSearchDex(htmlTxt):
 #
 # MULTIPLE_SELECT - when category search is running (in udf)
 #
-def businessSearchSwitchboard(htmlTxt):
+# TODO: remove this, parseSwitchboardBusiness is the new godness
+def parseSwitchboardBusinessOld(htmlTxt):
     returned = []
     soup = BeautifulSoup()
     soup.feed(htmlTxt)
@@ -533,14 +580,40 @@ def businessSearchSwitchboard(htmlTxt):
 
     return (RESULTS_DATA,universalDataFormatReplaceEntities(returned))
 
-  
+switchboardServerUrlBusinessSearch            = "http://www.switchboard.com/bin/cgidir.dll?PR=116&mem=1&L=%s&A=&T=%s&S=%s&Z=&ST=1&SD=&LNK=43:24"
+switchboardServerUrlBusinessSearchZip         = "http://www.switchboard.com/bin/cgidir.dll?PR=116&mem=1&L=%s&A=&T=&Z=%s&S=%s&ST=1&SD=&LNK=43:24"
+switchboardServerUrlBusinessSearchCategory    = "http://www.switchboard.com/bin/cgidir.dll?MEM=1&PR=133&Search=Search&KW=%s&T=%s&Z=&S=%s"
+switchboardServerUrlBusinessSearchCategoryZip = "http://www.switchboard.com/bin/cgidir.dll?MEM=1&PR=133&Search=Search&KW=%s&T=&Z=%s&S=%s"
 
-    
+def retrieveSwitchboardBusiness(name,cityOrZip,state,surrounding,categoryOrName):
+    url = ""
+    zip = False
+    if cityOrZip.isdigit() and len(cityOrZip) == 5:
+        zip = True
+    if categoryOrName == "Name":
+        if zip:
+            url = switchboardServerUrlBusinessSearchZip % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
+        else:
+            url = switchboardServerUrlBusinessSearch % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
+    if categoryOrName == "Category":
+        if zip:
+            url = switchboardServerUrlBusinessSearchCategoryZip % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
+        else:
+            url = switchboardServerUrlBusinessSearchCategory % (urllib.quote(name),urllib.quote(cityOrZip),urllib.quote(state))
+
+    # using cached for testing
+    #htmlText = getHttpCached(url)
+    htmlText = getHttp(url)
+    if htmlText is None:
+        return (RETRIEVE_FAILED, None)
+    res, data = parseSwitchboardBusiness(htmlText)
+    if res == UNKNOWN_FORMAT:
+        logParsingFailure("411-Business-Search", name+","+cityOrZip+","+state+","+surrounding+","+categoryOrName, htmlText, url)
+    return res, data
     
 def main():
-    pass
+    retrieveSwitchboardBusiness("hill", "", "IL", "No", "Name")
 
 if __name__ == "__main__":
     main()
 
-    

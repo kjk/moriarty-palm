@@ -1,10 +1,6 @@
-#### Copyright: Krzysztof Kowalczyk
-# Owner: Szymon Knitter
-#
 # Purpose:
 #  functions that helps parsing with BeautifulSoup
 #  and some others usefull stuff
-#
 import string
 try:
     from BeautifulSoup import BeautifulSoup
@@ -149,8 +145,8 @@ def universalDataFormatReplaceEntities(listOfLists):
         headerItem = []
         for item in smallList:
             #remove entities
-            item = convertNumberedEntities(0, item)
-            item = convertNamedEntities(0, item)
+            item = convertNumberedEntities(item)
+            item = convertNamedEntities(item)
             # add it to lists
             results.append(item)
             headerItem.append("%d" % len(item))
@@ -167,8 +163,8 @@ def universalDataFormatWithDefinition(definition, listOfLists):
     for smallList in listOfLists:
         headerItem = []
         for item in smallList:
-            item = convertNumberedEntities(0, item)
-            item = convertNamedEntities(0, item)
+            item = convertNumberedEntities(item)
+            item = convertNamedEntities(item)
             results.append(item)
             headerItem.append("%d" % len(item))
         header.append(string.join(headerItem," "))
