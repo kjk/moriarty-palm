@@ -361,8 +361,8 @@ def getHttpCached(url, postData = None, handleRedirect=True, dbgLevel=0, referer
     global g_cacheDict, g_cacheDir
     loadUrlCache()
     if g_cacheDict.has_key(url):
-        print "found url %s in cache" % url
         fileName = g_cacheDict[url]
+        print "found url %s in cache %s" % (url, fileName)
         fo = open(fileName, "rb")
         htmlTxt = fo.read()
         fo.close()

@@ -289,17 +289,6 @@ def areaCodeByCity(htmlTxt):
 def ZIPCodeByCity(htmlTxt):
     return areaCodeByCity(htmlTxt)
 
-def reversePhoneLookup(htmlTxt):
-    res, data = personSearch(htmlTxt)
-    if res in [NO_RESULTS, RESULTS_DATA]:
-        return res, data
-    # all except unknown
-    if res != UNKNOWN_FORMAT:
-        return NO_RESULTS, None
-    # unknown format - may be some business?
-    # TODO:?
-    return UNKNOWN_FORMAT, None
-
 # Returns data in format: (this is not from 411, but from www.dexonline.com)
 # RESULTS_DATA - in UDF
 #
@@ -424,8 +413,7 @@ def parseSwitchboardBusiness(htmlTxt):
     if -1 != htmlTxt.find("YP_NORESULTS_KERNAL"):
         return (NO_RESULTS, None)
 
-    soup = BeautifulSoup21.BeautifulSoup()
-    soup.feed(htmlTxt)
+    soup = BeautifulSoup21.BeautifulSoup(htmlTxt)
     listings = soup.fetch("div", {"class" : "listing"})
 
     for listing in listings:
@@ -611,8 +599,67 @@ def retrieveSwitchboardBusiness(name,cityOrZip,state,surrounding,categoryOrName)
         logParsingFailure("411-Business-Search", name+","+cityOrZip+","+state+","+surrounding+","+categoryOrName, htmlText, url)
     return res, data
 
+# Given a string "firstName        lastName", strip the whitespace
+# and return "firstName lastName"
+def cleanupName(txt):
+    if -1 == txt.find(" "):
+        return txt
+    names = txt.split(" ", 1)
+    nameClean = string.join([name.strip() for name in names], " ")
+    return nameClean
+    
+# Returns data in format: [name, address, city, phone]+ in UDF
+def parse411ReversePhoneLookup(htmlTxt):
+    result = []
+    if -1 != htmlTxt.find("We did not find a listing"):
+        print "parse411ReversePhoneLookup: no results"
+        return (NO_RESULTS, None)
+    soup = BeautifulSoup21.BeautifulSoup(htmlTxt)
+    div = soup.first("div", {"id" : "subtext"})
+    if not div:
+        print "parse411ReversePhoneLookup: no div"
+        return (UNKNOWN_FORMAT, None)
+
+    nameTxt = div.span.strong.string
+    if not nameTxt:
+        print "parse411ReversePhoneLookup: no name"
+        return (UNKNOWN_FORMAT, None)
+    nameTxt = convertNumberedEntities(nameTxt)
+    nameTxt = convertNamedEntities(nameTxt)
+    nameTxt = cleanupName(nameTxt)
+    #print nameTxt
+
+    addr = div.next.next.next.next.next.next
+    addressTxt = addr.string
+    #print addressTxt
+
+    city = addr.next.next
+    cityTxt = city.string
+    #print cityTxt
+
+    phone = city.next.next
+    phoneTxt = phone.string
+    #print phoneTxt
+
+    result.append([nameTxt, addressTxt, cityTxt, phoneTxt])
+    return (RESULTS_DATA, universalDataFormatReplaceEntities(result))
+
+def retrieve411ReversePhone(xxx, yyy, zzzz):
+    url = "http://www.411.com/search/Reverse_Phone?phone=%s-%s-%s" % (xxx,yyy,zzzz)
+    # using cached for testing
+    #htmlText = getHttpCached(url)
+    htmlText = getHttp(url)
+    if htmlText is None:
+        return (RETRIEVE_FAILED, None)
+    res, data = parse411ReversePhoneLookup(htmlText)
+    if res == UNKNOWN_FORMAT:
+        logParsingFailure("411-Reverse-Phone", xxx + "-" + yyy + "-" + zzzz, htmlText, url)
+    return res, data    
+
 def main():
-    retrieveSwitchboardBusiness("hill", "", "IL", "No", "Name")
+    #retrieveSwitchboardBusiness("hill", "", "IL", "No", "Name")
+    #retrieve411ReversePhone("777", "682", "9999")
+    retrieve411ReversePhone("770", "682", "1533")
 
 if __name__ == "__main__":
     main()

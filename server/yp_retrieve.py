@@ -256,17 +256,6 @@ def _retrieve_yp_reversePhone(xxx,yyy,zzzz):
         logParsingFailure("411-Reverse-Phone", xxx+"-"+yyy+"-"+zzzz, htmlText, url)
     return res, data    
 
-def _retrieve_411_reversePhone(xxx,yyy,zzzz):
-    url = "http://www.411.com/search/Reverse_Phone?phone=%s-%s-%s"
-    url = url % (xxx,yyy,zzzz)
-    htmlText = getHttp(url)
-    if htmlText is None:
-        return (RETRIEVE_FAILED, None)
-    res, data = m411_by411.reversePhoneLookup(htmlText)
-    if res == UNKNOWN_FORMAT:
-        logParsingFailure("411-Reverse-Phone", xxx+"-"+yyy+"-"+zzzz, htmlText, url)
-    return res, data    
-
 def _retrieve_whitepages_reversePhone(xxx,yyy,zzzz):
     url = "http://yp.whitepages.com/1048/search/Reverse_Phone?phone=%s%s%s"
     url = url % (xxx,yyy,zzzz)
@@ -279,7 +268,7 @@ def _retrieve_whitepages_reversePhone(xxx,yyy,zzzz):
     return res, data    
 
 _g_retrieve_reversePhone = [
-    _retrieve_411_reversePhone,
+    m411_by411.retrieve411ReversePhone,
     _retrieve_yp_reversePhone,
     _retrieve_whitepages_reversePhone  ## this is not fully tested (but can help sometimes)
 ]
